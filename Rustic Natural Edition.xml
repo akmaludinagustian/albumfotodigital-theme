@@ -1,0 +1,562 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<!--
+Theme Name: Royal Heirloom
+Author: Album Foto Digital
+Copyright: 2026
+Version: 1.0
+-->
+<html xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
+<head>
+<meta charset='UTF-8'/>
+<meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'/>
+<title><data:blog.pageTitle/></title>
+<link href='https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&amp;family=Playfair+Display:ital,wght@0,400;0,700;1,400&amp;family=Lato:wght@300;400&amp;display=swap' rel='stylesheet'/>
+
+<b:skin><![CDATA[
+/* Reset */
+body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #2f3640; touch-action: none; }
+]]></b:skin>
+
+<style>
+/*<![CDATA[*/
+:root {
+    --book-w: 420px;
+    --book-h: 600px;
+    --wood-dark: #4e342e;
+    --wood-light: #6d4c41;
+    --kraft-paper: #d7ccc8;
+    --paper-old: #fcf6ee; 
+    --grid-line: #e0d0c0; /* Warna garis grid cokelat pudar */
+    --text-brown: #3e2723;
+    --accent-leaf: #556b2f;
+}
+
+body {
+    background-color: #2f3640;
+    background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.1'/%3E%3C/svg%3E");
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    font-family: 'Lato', sans-serif;
+    perspective: 2500px;
+    user-select: none;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* --- STAGE --- */
+.stage {
+    width: var(--book-w); height: var(--book-h);
+    position: relative; 
+    transform-style: preserve-3d; 
+    transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+    cursor: grab;
+    will-change: transform;
+}
+.stage:active { cursor: grabbing; }
+.stage.closed { transform: translateX(0); }
+.stage.opened { transform: translateX(50%); }
+
+/* --- SHEET --- */
+.sheet {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    transform-origin: left center;
+    transform-style: preserve-3d; 
+    transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+    will-change: transform;
+}
+.sheet.flipped { transform: rotateY(-180deg); }
+.sheet.inactive { visibility: hidden; pointer-events: none; }
+
+/* --- FACE (KERTAS GRID RUSTIC) --- */
+.face {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    backface-visibility: hidden; -webkit-backface-visibility: hidden;
+    overflow: hidden;
+    background-color: var(--paper-old);
+    
+    /* VINTAGE GRID PATTERN (Kotak-kotak Cokelat Pudar) */
+    background-image: 
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 25px 25px;
+    
+    border-radius: 3px 8px 8px 3px;
+}
+
+.face.front { 
+    z-index: 2; 
+    box-shadow: inset 3px 0 20px rgba(62, 39, 35, 0.15); 
+    border-right: 1px solid #d7ccc8; 
+}
+.face.back { 
+    z-index: 1; transform: rotateY(180deg); 
+    border-radius: 8px 3px 3px 8px; border-left: 1px solid #d7ccc8;
+    box-shadow: inset -3px 0 20px rgba(62, 39, 35, 0.15);
+    /* Pattern sama untuk belakang */
+    background-image: 
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 25px 25px;
+}
+
+/* --- COVER (WOOD PLANK) --- */
+.cover-skin {
+    background-color: var(--wood-dark);
+    /* Texture Kayu */
+    background-image: 
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 40px),
+        url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.15'/%3E%3C/svg%3E");
+    border: none;
+    border-left: 5px solid #3e2723;
+    box-shadow: inset 10px 0 40px rgba(0,0,0,0.6), 15px 15px 50px rgba(0,0,0,0.5);
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    position: relative; border-radius: 3px 10px 10px 3px;
+}
+
+/* Label Kraft */
+.kraft-label {
+    background-color: var(--kraft-paper);
+    background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.1'/%3E%3C/svg%3E");
+    padding: 40px 30px;
+    width: 70%;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    position: relative;
+    border: 1px dashed #8d6e63;
+    z-index: 5;
+}
+
+.jute-string {
+    position: absolute; top: 0; bottom: 0; left: 15%;
+    width: 4px; background: #d7ccc8;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.5);
+    z-index: 6;
+    background-image: repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(0,0,0,0.2) 2px, rgba(0,0,0,0.2) 4px);
+}
+
+.dried-leaf {
+    position: absolute; width: 100px; height: 100px;
+    background: radial-gradient(circle at 30% 30%, #a1887f, transparent 60%),
+                radial-gradient(circle at 70% 70%, #8d6e63, transparent 60%);
+    opacity: 0.6; filter: blur(5px); pointer-events: none;
+}
+.leaf-top { top: 10px; right: 10px; transform: rotate(45deg); }
+.leaf-bottom { bottom: 10px; left: 10px; transform: rotate(-135deg); }
+
+.main-title {
+    font-family: 'Dancing Script', cursive; font-size: 3.5rem; font-weight: 700;
+    line-height: 1.1; margin: 0; color: var(--text-brown);
+    text-shadow: 1px 1px 0px rgba(255,255,255,0.5);
+}
+
+.blog-title {
+    font-family: 'Playfair Display', serif; font-size: 1rem; letter-spacing: 2px;
+    color: #5d4037; text-transform: uppercase; margin-top: 15px; border-top: 1px solid #8d6e63; padding-top: 5px;
+}
+
+.click-hint { 
+    position: absolute; bottom: 40px; width: 100%; text-align: center; 
+    color: #d7ccc8; font-family: 'Lato', sans-serif; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase;
+    opacity: 0.8; animation: pulse 3s infinite; pointer-events: none;
+}
+@keyframes pulse { 0%,100%{opacity:0.5} 50%{opacity:1} }
+
+/* --- GRID SYSTEM --- */
+.grid-layout { display: grid; width: 100%; height: 100%; padding: 35px; box-sizing: border-box; gap: 15px; }
+.photo-item {
+    position: relative; overflow: hidden; 
+    border-radius: 2px; background: #fff;
+    padding: 5px; /* Frame Putih */
+    box-shadow: 2px 3px 10px rgba(0,0,0,0.15); 
+    cursor: zoom-in; transition: transform 0.3s; backface-visibility: hidden;
+    transform: rotate(var(--rot));
+}
+.photo-item:hover { transform: scale(1.05) rotate(0deg) !important; z-index: 10; box-shadow: 0 10px 25px rgba(0,0,0,0.25); }
+.photo-item img { width: 100%; height: 100%; object-fit: cover; display: block; filter: sepia(20%) contrast(1.05); }
+
+/* Layouts */
+.layout-2 { grid-template-rows: 1fr 1fr; grid-template-columns: 1fr; }
+.layout-3 { grid-template-columns: 1.2fr 0.8fr; grid-template-rows: 1fr 1fr; }
+.layout-3 .photo-item:nth-child(1) { grid-row: span 2; }
+.layout-4 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
+.layout-5 { grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr; grid-template-rows: 1.2fr 1fr; }
+.layout-5 .photo-item:nth-child(1) { grid-column: span 3; }
+.layout-5 .photo-item:nth-child(2) { grid-column: span 3; }
+.layout-5 .photo-item:nth-child(3), .layout-5 .photo-item:nth-child(4), .layout-5 .photo-item:nth-child(5) { grid-column: span 2; }
+.layout-6 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr 1fr; }
+
+.pg-num { position: absolute; bottom: 15px; width: 100%; text-align: center; color: #8d6e63; font-family: 'Playfair Display'; font-style: italic; }
+.loader { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color: #d7ccc8; font-family: 'Dancing Script'; font-size: 1.5rem; }
+
+/* --- LIGHTBOX --- */
+#lightbox {
+    position: fixed; inset: 0; background: rgba(30,25,20,0.95); z-index: 9999;
+    display: flex; justify-content: center; align-items: center; flex-direction: column;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s;
+}
+#lightbox.active { opacity: 1; pointer-events: auto; }
+
+#lb-container {
+    width: 100%; height: 80vh; display: flex; justify-content: center; align-items: center;
+    overflow: hidden; position: relative; flex-grow: 1; 
+}
+
+#lb-img {
+    max-width: 90%; max-height: 100%;
+    box-shadow: 0 10px 50px rgba(0,0,0,0.5); 
+    border: 5px solid #fff; border-radius: 2px;
+    transform-origin: center center;
+    transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.3s ease;
+    cursor: zoom-in;
+}
+#lb-img.zoomed { cursor: grab; }
+#lb-img.zoomed:active { cursor: grabbing; }
+
+.slide-in-right { animation: slideRight 0.4s forwards; }
+.slide-in-left { animation: slideLeft 0.4s forwards; }
+@keyframes slideRight { from { transform: translateX(40px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+@keyframes slideLeft { from { transform: translateX(-40px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+.lb-nav {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    background: transparent; color: #d7ccc8; border: 1px solid #8d6e63;
+    width: 50px; height: 50px; border-radius: 50%; font-size: 24px;
+    cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center;
+    z-index: 10002;
+}
+.lb-nav:hover { background: #5d4037; color: #fff; }
+.lb-prev { left: 20px; } .lb-next { right: 20px; }
+
+.lb-counter {
+    position: absolute; bottom: 30px; 
+    color: #a1887f; font-family: 'Lato', sans-serif; font-size: 0.9rem; letter-spacing: 2px;
+    z-index: 10002; pointer-events: none;
+}
+
+.lb-close {
+    position: absolute; top: 20px; right: 20px; color: #a1887f; font-size: 40px; cursor: pointer;
+    font-family: sans-serif; transition: 0.3s; z-index: 10003;
+}
+.lb-close:hover { transform: rotate(90deg) scale(1.2); color: #fff; }
+
+/* --- RESPONSIVE MOBILE --- */
+@media (max-width: 850px) {
+    :root { --book-w: 90vw; --book-h: 65vh; }
+    .stage.closed { transform: translateX(0); }
+    .stage.opened { transform: translateX(0); }
+    .lb-nav { display: none !important; }
+}
+/*]]>*/
+</style>
+</head>
+<body>
+
+<b:section id='main' showaddelement='no'/>
+
+<!-- LIGHTBOX -->
+<div id='lightbox'>
+    <div class='lb-close' onclick='closeLightbox()'>&#215;</div>
+    <div id='lb-container'>
+        <div class='lb-nav lb-prev' onclick='prevPhoto()'>&#8592;</div>
+        <img alt='Preview' id='lb-img' onclick='toggleZoom()' src=''/>
+        <div class='lb-nav lb-next' onclick='nextPhoto()'>&#8594;</div>
+    </div>
+    <div class='lb-counter' id='lb-counter'>1 / 100</div>
+</div>
+
+<!-- STAGE -->
+<div class='stage closed' id='stage'>
+    
+    <!-- COVER DEPAN -->
+    <div class='sheet' id='sheet-0' style='z-index: 1000;'>
+        <div class='face front cover-skin'>
+            <div class='dried-leaf leaf-top'/>
+            <div class='dried-leaf leaf-bottom'/>
+            <div class='jute-string'/>
+            
+            <div class='kraft-label'>
+                <h1 class='main-title'>Album<br/>Kenangan</h1>
+                <div class='blog-title'><data:blog.title/></div>
+            </div>
+            
+            <div class='click-hint'>Geser untuk membuka &#8594;</div>
+        </div>
+        
+        <!-- Intro Page -->
+        <div class='face back'>
+            <div style='display:flex; height:100%; align-items:center; justify-content:center; flex-direction:column; padding:40px; text-align:center; color:var(--text-brown);'>
+                <h2 style='font-family:&apos;Dancing Script&apos;; font-size:2.5rem; margin-bottom:15px;'>Kata Pengantar</h2>
+                <div style='width:50px; height:2px; background:var(--text-brown); margin-bottom:20px; opacity:0.5;'/>
+                <p style='font-family:&apos;Lato&apos;; font-style:italic; font-size:1.1rem; line-height:1.6;'>&quot;Menyimpan kenangan alam<br/>dan cerita kita.&quot;</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- AREA DINAMIS -->
+    <div id='dynamic-area'/>
+
+    <!-- COVER BELAKANG -->
+    <div class='sheet' id='sheet-end'>
+        <div class='face front'>
+            <div style='display:flex; height:100%; align-items:center; justify-content:center; flex-direction:column; color:var(--text-brown);'>
+                <h2 style='font-family:&apos;Dancing Script&apos;; font-size:2.5rem;'>Terima Kasih</h2>
+                <div style='font-size:1.5rem; margin-top:10px;'> &#10043; </div>
+            </div>
+        </div>
+        <div class='face back cover-skin'>
+            <div class='jute-string'/>
+        </div>
+    </div>
+</div>
+
+<script>
+//<![CDATA[
+var photos = [];
+var currentSheet = 0;
+var totalSheets = 0;
+var stage = document.getElementById('stage');
+var dynamicArea = document.getElementById('dynamic-area');
+var endSheet = document.getElementById('sheet-end');
+var isPortrait = window.matchMedia("(max-width: 850px) and (orientation: portrait)").matches;
+
+function loadFeed(json) {
+    if(!json.feed || !json.feed.entry) { useDemo(); return; }
+    var entries = json.feed.entry;
+    for(var i=0; i<entries.length; i++) {
+        var div = document.createElement('div');
+        div.innerHTML = entries[i].content.$t;
+        var imgs = div.getElementsByTagName('img');
+        for(var k=0; k<imgs.length; k++) {
+            var src = imgs[k].src;
+            if(src.indexOf('blogspot') > -1 || src.indexOf('googleusercontent') > -1) {
+                 src = src.replace(/\/s\d+(-c)?\//, '/s2048/').replace(/=s\d+/, '=s2048');
+            }
+            photos.push(src);
+        }
+    }
+    if(photos.length > 0) buildBook(); else useDemo();
+}
+
+function useDemo() {
+    for(var i=0; i<12; i++) photos.push("https://via.placeholder.com/1000x1000/fdf5e6/5d4037?text=Foto+" + (i+1));
+    buildBook();
+}
+
+(function(){
+    dynamicArea.innerHTML = '<div class="loader">Memuat...</div>';
+    var script = document.createElement('script');
+    var url = "/feeds/posts/default?alt=json-in-script&callback=loadFeed&max-results=50";
+    script.src = url;
+    script.onerror = function() { useDemo(); };
+    document.body.appendChild(script);
+})();
+
+function buildBook() {
+    dynamicArea.innerHTML = '';
+    var photoIdx = 0;
+    var sheetCount = 0;
+
+    while(photoIdx < photos.length) {
+        sheetCount++;
+        var sheet = document.createElement('div');
+        sheet.className = 'sheet';
+        sheet.id = 'sheet-' + sheetCount;
+        sheet.style.zIndex = 100 - sheetCount; 
+
+        var countFront = Math.floor(Math.random() * 5) + 2; 
+        var frontHTML = generateGrid(photoIdx, countFront);
+        photoIdx += countFront;
+
+        var backHTML = "";
+        if(isPortrait) {
+            backHTML = '<div class="face back"><div style="display:flex;height:100%;align-items:center;justify-content:center;color:#d7ccc8;font-size:2rem;">&#10022;</div></div>';
+        } else {
+            if (photoIdx < photos.length) {
+                var countBack = Math.floor(Math.random() * 5) + 2;
+                backHTML = generateGrid(photoIdx, countBack, true);
+                photoIdx += countBack;
+            } else {
+                 backHTML = '<div class="face back"></div>';
+            }
+        }
+
+        sheet.innerHTML = frontHTML + backHTML;
+        dynamicArea.appendChild(sheet);
+    }
+    
+    totalSheets = sheetCount + 1;
+    endSheet.id = 'sheet-' + totalSheets;
+    endSheet.style.zIndex = 1;
+    optimizeVisibility();
+}
+
+function generateGrid(startIndex, count, isBack) {
+    if(startIndex + count > photos.length) count = photos.length - startIndex;
+    if(count === 0) return '<div class="face ' + (isBack ? 'back' : 'front') + '"></div>';
+    if(count < 2) count = 2; 
+
+    var html = '<div class="face ' + (isBack ? 'back' : 'front') + '"><div class="grid-layout layout-' + count + '">';
+    for(var i=0; i<count; i++) {
+        var currentIdx = startIndex + i;
+        if(currentIdx < photos.length) {
+            // Rotasi acak Rustic
+            var rot = (Math.random() * 4 - 2).toFixed(1);
+            html += `<div class="photo-item" style="--rot:${rot}deg" onclick="openLightbox(${currentIdx})">
+                        <img src="${photos[currentIdx]}" loading="lazy">
+                     </div>`;
+        }
+    }
+    html += '</div><div class="pg-num"></div></div>';
+    return html;
+}
+
+function optimizeVisibility() {
+    for(var i=0; i<=totalSheets; i++) {
+        var el = document.getElementById('sheet-'+i);
+        if(!el) continue;
+        if(i === 0) {
+            if(currentSheet <= 3) el.classList.remove('inactive');
+            else el.classList.add('inactive');
+            continue;
+        }
+        if(i >= currentSheet - 3 && i <= currentSheet + 3) {
+            el.classList.remove('inactive');
+        } else {
+            el.classList.add('inactive');
+        }
+    }
+}
+
+function openBook() {
+    stage.classList.remove('closed');
+    stage.classList.add('opened');
+    nextPage();
+}
+
+function closeBook() {
+    for(var i=totalSheets; i>=1; i--) {
+        var el = document.getElementById('sheet-'+i);
+        if(el) { el.classList.remove('flipped'); el.style.zIndex = (100 - i); }
+    }
+    var cover = document.getElementById('sheet-0');
+    cover.classList.remove('flipped'); cover.style.zIndex = 1000;
+    
+    currentSheet = 0;
+    stage.classList.remove('opened'); stage.classList.add('closed');
+    optimizeVisibility();
+}
+
+function nextPage() {
+    if(currentSheet < totalSheets) {
+        var el = document.getElementById('sheet-' + currentSheet);
+        if(el) {
+            el.style.zIndex = 1000; 
+            el.classList.add('flipped');
+            setTimeout(() => { el.style.zIndex = 200 + currentSheet; }, 400); 
+            currentSheet++;
+            optimizeVisibility();
+        }
+    }
+}
+
+function prevPage() {
+    if(currentSheet > 0) {
+        currentSheet--;
+        var el = document.getElementById('sheet-' + currentSheet);
+        if(el) {
+            el.style.zIndex = 1000; 
+            el.classList.remove('flipped');
+            setTimeout(() => {
+                if(currentSheet === 0) { el.style.zIndex = 1000; closeBook(); } 
+                else { el.style.zIndex = (100 - currentSheet); }
+            }, 400); 
+            optimizeVisibility();
+        }
+    }
+}
+
+var startX = 0, endX = 0, isLbOpen = false, isDragging = false;
+
+document.addEventListener('mousedown', function(e) { if(isLbOpen) return; startX = e.clientX; isDragging = true; });
+document.addEventListener('mouseup', function(e) { if(isLbOpen || !isDragging) return; isDragging = false; endX = e.clientX; processInput(e.target); });
+document.addEventListener('touchstart', function(e) { if(isLbOpen) { lbTouchStart(e); return; } startX = e.changedTouches[0].clientX; });
+document.addEventListener('touchend', function(e) { if(isLbOpen) { lbTouchEnd(e); return; } endX = e.changedTouches[0].clientX; processInput(e.target); });
+
+function processInput(target) {
+    if (Math.abs(endX - startX) > 50) {
+        if (endX < startX) { if(currentSheet === 0) openBook(); else nextPage(); } else { prevPage(); }
+        return;
+    }
+    if (target.tagName === 'IMG' || target.classList.contains('photo-item')) return; 
+    if (endX > window.innerWidth / 2) { if(currentSheet === 0) openBook(); else nextPage(); } else { prevPage(); }
+}
+
+var lb = document.getElementById('lightbox');
+var lbImg = document.getElementById('lb-img');
+var lbCounter = document.getElementById('lb-counter');
+var lbContainer = document.getElementById('lb-container');
+var scale = 1, currentPhotoIndex = 0;
+var pointX = 0, pointY = 0, pStartX = 0, pStartY = 0, isPanning = false, lbTxS = 0, lbTxE = 0;
+
+function openLightbox(idx) {
+    isLbOpen = true;
+    currentPhotoIndex = idx;
+    lbImg.src = photos[currentPhotoIndex];
+    lb.classList.add('active');
+    updateCounter();
+    resetZoom();
+    if(window.event) window.event.stopPropagation();
+}
+
+function updateCounter() { lbCounter.innerText = "FOTO " + (currentPhotoIndex + 1) + " / " + photos.length; }
+function closeLightbox() { isLbOpen = false; lb.classList.remove('active'); }
+lb.addEventListener('click', function(e) { if (e.target === lb || e.target === lbContainer) closeLightbox(); });
+
+function toggleZoom() { if(scale === 1) maxZoom(); else resetZoom(); }
+function maxZoom() { scale = 2.5; lbImg.classList.add('zoomed'); updateTransform(); }
+function resetZoom() { scale = 1; pointX = 0; pointY = 0; lbImg.classList.remove('zoomed'); updateTransform(); }
+function updateTransform() { lbImg.style.transform = `translate(${pointX}px, ${pointY}px) scale(${scale})`; }
+
+lbImg.addEventListener('mousedown', function(e) { if(scale <= 1) return; e.preventDefault(); isPanning = true; pStartX = e.clientX - pointX; pStartY = e.clientY - pointY; lbImg.style.transition = "none"; });
+window.addEventListener('mousemove', function(e) { if(!isPanning) return; e.preventDefault(); pointX = e.clientX - pStartX; pointY = e.clientY - pStartY; updateTransform(); });
+window.addEventListener('mouseup', function() { if(isPanning) { isPanning = false; lbImg.style.transition = "transform 0.3s ease"; } });
+
+function lbTouchStart(e) { if(scale > 1) { isPanning = true; pStartX = e.touches[0].clientX - pointX; pStartY = e.touches[0].clientY - pointY; lbImg.style.transition = "none"; } else { lbTxS = e.changedTouches[0].clientX; } }
+lbImg.addEventListener('touchmove', function(e) { if(scale > 1 && isPanning) { e.preventDefault(); pointX = e.touches[0].clientX - pStartX; pointY = e.touches[0].clientY - pStartY; updateTransform(); } });
+function lbTouchEnd(e) { if(scale > 1) { isPanning = false; lbImg.style.transition = "transform 0.3s ease"; } else { lbTxE = e.changedTouches[0].clientX; if(Math.abs(lbTxE - lbTxS) > 50) { if(lbTxE < lbTxS) nextPhoto(); else prevPhoto(); } } }
+
+function changePhoto(newIdx, direction) {
+    lbImg.style.transition = "all 0.3s ease";
+    lbImg.style.opacity = 0;
+    lbImg.style.transform = direction === 'next' ? "translateX(-30px)" : "translateX(30px)";
+    setTimeout(() => {
+        currentPhotoIndex = newIdx;
+        lbImg.src = photos[currentPhotoIndex];
+        updateCounter();
+        resetZoom(); 
+        lbImg.style.transition = "none";
+        lbImg.style.transform = direction === 'next' ? "translateX(30px)" : "translateX(-30px)";
+        void lbImg.offsetWidth;
+        lbImg.style.transition = "all 0.3s ease";
+        lbImg.style.opacity = 1;
+        lbImg.style.transform = "translate(0,0) scale(1)";
+    }, 300);
+}
+
+function nextPhoto() { if(currentPhotoIndex < photos.length - 1) changePhoto(currentPhotoIndex + 1, 'next'); }
+function prevPhoto() { if(currentPhotoIndex > 0) changePhoto(currentPhotoIndex - 1, 'prev'); }
+
+document.addEventListener('keydown', function(e){
+    if(isLbOpen) {
+        if(e.key === "Escape") closeLightbox();
+        if(e.key === "ArrowRight") nextPhoto();
+        if(e.key === "ArrowLeft") prevPhoto();
+        return;
+    }
+    if(e.key === "ArrowRight") nextPage();
+    if(e.key === "ArrowLeft") prevPage();
+});
+//]]>
+</script>
+
+</body>
+</html>
