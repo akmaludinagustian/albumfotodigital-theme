@@ -1,0 +1,810 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<!--
+Theme Name: Soldier Memories Tactical Dynamic
+Author: Exalted Influence
+Copyright: 2026
+Version: 1.0
+-->
+<html xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
+<head>
+<meta charset='UTF-8'/>
+<meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'/>
+<title><data:blog.pageTitle/></title>
+<link href='https://fonts.googleapis.com/css2?family=Oswald:wght@600;700&amp;family=Share+Tech+Mono&amp;family=Barlow+Condensed:wght@700;900&amp;family=Rajdhani:wght@600;700&amp;display=swap' rel='stylesheet'/>
+
+<b:skin><![CDATA[
+body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; touch-action: none; }
+]]></b:skin>
+
+<style>
+/*<![CDATA[*/
+:root {
+    --book-w: 420px;
+    --book-h: 560px;
+    --army:   #3b4a2f;
+    --camo1:  #4a5e38;
+    --camo2:  #6b7c47;
+    --camo3:  #2e3a22;
+    --camo4:  #8a9a6a;
+    --camo5:  #1e2818;
+    --khaki:  #b8a878;
+    --tan:    #d4c090;
+    --sand:   #e8d8a8;
+    --metal:  #8a9088;
+    --rust:   #c87840;
+    --red:    #c03028;
+    --paper:  #d8cc98;
+}
+
+/* ====== BACKGROUND: jungle / battlefield ====== */
+body {
+    background: radial-gradient(ellipse at 30% 20%, #2e3a1a 0%, #1a2210 50%, #0d1508 100%);
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    font-family: 'Oswald', sans-serif;
+    perspective: 2500px;
+    user-select: none;
+    -webkit-font-smoothing: antialiased;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Dense foliage / terrain grid bg */
+body::before {
+    content: '';
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background-image:
+        /* Camo blobs */
+        radial-gradient(ellipse 120px 80px  at  8% 15%, rgba(60,80,35,0.55)  0%, transparent 100%),
+        radial-gradient(ellipse 90px  60px  at 22% 40%, rgba(45,60,25,0.5)   0%, transparent 100%),
+        radial-gradient(ellipse 140px 70px  at 40%  8%, rgba(70,90,45,0.45)  0%, transparent 100%),
+        radial-gradient(ellipse 100px 90px  at 58% 28%, rgba(40,55,20,0.5)   0%, transparent 100%),
+        radial-gradient(ellipse 80px  110px at 75% 12%, rgba(65,85,40,0.45)  0%, transparent 100%),
+        radial-gradient(ellipse 130px 65px  at 90% 35%, rgba(50,68,30,0.5)   0%, transparent 100%),
+        radial-gradient(ellipse 110px 80px  at 12% 70%, rgba(55,75,32,0.45)  0%, transparent 100%),
+        radial-gradient(ellipse 95px  120px at 30% 85%, rgba(40,58,22,0.5)   0%, transparent 100%),
+        radial-gradient(ellipse 150px 60px  at 55% 75%, rgba(68,88,42,0.45)  0%, transparent 100%),
+        radial-gradient(ellipse 85px  100px at 80% 65%, rgba(45,62,28,0.5)   0%, transparent 100%),
+        radial-gradient(ellipse 120px 75px  at 95% 82%, rgba(58,78,35,0.45)  0%, transparent 100%);
+    animation: camoPulse 12s ease-in-out infinite alternate;
+}
+@keyframes camoPulse {
+    0%   { opacity: 0.7; }
+    100% { opacity: 1; }
+}
+
+/* Scanline overlay — military monitor feel */
+body::after {
+    content: '';
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background-image: repeating-linear-gradient(
+        0deg,
+        transparent 0px, transparent 3px,
+        rgba(0,0,0,0.06) 3px, rgba(0,0,0,0.06) 4px
+    );
+}
+
+/* Floating debris / particles */
+.bg-deco {
+    position: fixed; pointer-events: none; z-index: 0;
+    animation: driftUp linear infinite;
+    opacity: 0;
+}
+@keyframes driftUp {
+    0%   { transform: translateY(110vh) rotate(0deg) scale(0.8); opacity: 0; }
+    8%   { opacity: 0.6; }
+    92%  { opacity: 0.6; }
+    100% { transform: translateY(-10vh) rotate(180deg) scale(1); opacity: 0; }
+}
+
+/* HUD corner brackets */
+.hud-corner {
+    position: fixed; pointer-events: none; z-index: 1;
+    width: 40px; height: 40px;
+    border-color: rgba(120,160,60,0.5);
+    border-style: solid;
+}
+.hud-tl { top:16px; left:16px;  border-width: 2px 0 0 2px; }
+.hud-tr { top:16px; right:16px; border-width: 2px 2px 0 0; }
+.hud-bl { bottom:16px; left:16px;  border-width: 0 0 2px 2px; }
+.hud-br { bottom:16px; right:16px; border-width: 0 2px 2px 0; }
+
+/* Blinking status dot */
+.radar-dot {
+    position: fixed; top: 24px; right: 70px; z-index: 1;
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #60c030;
+    box-shadow: 0 0 8px #60c030;
+    animation: radarBlink 1.4s ease-in-out infinite;
+}
+@keyframes radarBlink { 0%,100%{opacity:1;} 50%{opacity:0.1;} }
+
+/* Mission status text */
+.status-text {
+    position: fixed; top: 20px; left: 70px; z-index: 1;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.55rem; color: rgba(120,180,60,0.6);
+    letter-spacing: 2px; text-transform: uppercase;
+    animation: textFlicker 3s ease-in-out infinite;
+}
+@keyframes textFlicker { 0%,100%{opacity:0.6;} 45%{opacity:0.6;} 50%{opacity:0.2;} 55%{opacity:0.6;} }
+
+/* ====== STAGE ====== */
+.stage {
+    width: var(--book-w); height: var(--book-h);
+    position: relative; z-index: 2;
+    transform-style: preserve-3d;
+    transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+    cursor: crosshair; will-change: transform;
+    filter:
+        drop-shadow(0 20px 50px rgba(0,0,0,0.7))
+        drop-shadow(0 0 20px rgba(80,120,40,0.3));
+}
+.stage:active { cursor: crosshair; }
+.stage.closed { transform: translateX(0) rotateY(-5deg); }
+.stage.opened { transform: translateX(50%); }
+
+/* ====== SHEET ====== */
+.sheet {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    transform-origin: left center;
+    transform-style: preserve-3d;
+    transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+    will-change: transform;
+}
+.sheet.flipped { transform: rotateY(-180deg); }
+.sheet.inactive { visibility: hidden; pointer-events: none; }
+
+/* ====== FACE ====== */
+.face {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    backface-visibility: hidden; -webkit-backface-visibility: hidden;
+    overflow: hidden; background: var(--sand);
+    border-radius: 3px 12px 12px 3px;
+}
+.face.front { z-index: 2; box-shadow: inset 5px 0 18px rgba(0,0,0,0.15); border-right: 2px solid #a09060; }
+.face.back {
+    z-index: 1; transform: rotateY(180deg); background: #d0c488;
+    border-radius: 12px 3px 3px 12px; border-left: 2px solid #a09060;
+    box-shadow: inset -5px 0 18px rgba(0,0,0,0.12);
+}
+
+/* ====== CAMO COVER ====== */
+.cover-skin {
+    position: relative;
+    border-radius: 3px 12px 12px 3px;
+    overflow: hidden;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    box-shadow:
+        inset 14px 0 35px rgba(0,0,0,0.4),
+        inset -2px 0 8px rgba(255,255,255,0.04),
+        inset 0 -6px 20px rgba(0,0,0,0.3);
+}
+
+/* SVG camo background */
+.camo-bg {
+    position: absolute; inset: 0;
+    background-color: var(--camo1);
+    background-image:
+        /* Layer 1 - dark blobs */
+        radial-gradient(ellipse 80px 55px  at 15% 20%, var(--camo5)  0%, transparent 100%),
+        radial-gradient(ellipse 65px 90px  at 35% 10%, var(--camo3)  0%, transparent 100%),
+        radial-gradient(ellipse 100px 45px at 60% 22%, var(--camo5)  0%, transparent 100%),
+        radial-gradient(ellipse 70px 80px  at 80% 8%,  var(--camo3)  0%, transparent 100%),
+        radial-gradient(ellipse 90px 55px  at 95% 30%, var(--camo5)  0%, transparent 100%),
+        /* Layer 2 - mid blobs */
+        radial-gradient(ellipse 75px 60px  at 10% 48%, var(--camo3)  0%, transparent 100%),
+        radial-gradient(ellipse 110px 50px at 28% 60%, var(--army)   0%, transparent 100%),
+        radial-gradient(ellipse 80px 70px  at 50% 45%, var(--camo5)  0%, transparent 100%),
+        radial-gradient(ellipse 65px 85px  at 72% 55%, var(--camo3)  0%, transparent 100%),
+        radial-gradient(ellipse 90px 45px  at 88% 48%, var(--army)   0%, transparent 100%),
+        /* Layer 3 - light patches */
+        radial-gradient(ellipse 85px 60px  at 20% 78%, var(--camo4)  0%, transparent 100%),
+        radial-gradient(ellipse 70px 90px  at 42% 85%, var(--camo2)  0%, transparent 100%),
+        radial-gradient(ellipse 100px 55px at 65% 75%, var(--camo4)  0%, transparent 100%),
+        radial-gradient(ellipse 75px 70px  at 85% 82%, var(--camo2)  0%, transparent 100%),
+        /* Layer 4 - accents */
+        radial-gradient(ellipse 50px 40px  at 5%  90%, var(--camo5)  0%, transparent 100%),
+        radial-gradient(ellipse 60px 45px  at 55% 92%, var(--camo3)  0%, transparent 100%),
+        radial-gradient(ellipse 45px 55px  at 90% 88%, var(--camo5)  0%, transparent 100%);
+    pointer-events: none;
+}
+
+/* Worn texture grain */
+.camo-grain {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.18'/%3E%3C/svg%3E");
+    mix-blend-mode: multiply;
+}
+
+/* Edge wear / vignette */
+.camo-vignette {
+    position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(ellipse 85% 85% at 50% 50%, transparent 55%, rgba(0,0,0,0.55) 100%);
+}
+
+/* Spine */
+.spine-fold {
+    position: absolute; left: 18px; top: 0; bottom: 0; width: 5px;
+    background: linear-gradient(to right, rgba(0,0,0,0.45), rgba(0,0,0,0.1), transparent);
+    z-index: 20;
+}
+
+/* ====== STICKER LAYER ====== */
+.stickers-layer {
+    position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 10;
+}
+.stk {
+    position: absolute; line-height: 1;
+    filter: drop-shadow(1px 2px 5px rgba(0,0,0,0.6));
+}
+
+/* Dog tag SVG sticker helper */
+.dog-tag {
+    display: inline-block;
+    position: relative;
+}
+
+/* ====== TITLE AREA ====== */
+.cover-center {
+    text-align: center; z-index: 15;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 8px;
+    position: relative;
+}
+
+/* Worn stamped plate behind title */
+.stamp-plate {
+    position: absolute;
+    inset: -18px -22px;
+    background: rgba(0,0,0,0.35);
+    border: 2px solid rgba(160,148,80,0.4);
+    border-radius: 4px;
+    box-shadow: inset 0 2px 8px rgba(0,0,0,0.4), 0 2px 8px rgba(0,0,0,0.5);
+    z-index: -1;
+}
+
+.title-my   { display: flex; gap: 5px; align-items: center; margin-bottom: 2px; }
+.title-memories { display: flex; gap: 3px; align-items: center; }
+
+.ltr {
+    display: inline-flex; align-items: center; justify-content: center;
+    font-weight: 900; line-height: 1;
+    transform-origin: center;
+    border-radius: 3px;
+    box-shadow: 2px 3px 8px rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.1) inset;
+    text-shadow: 1px 2px 3px rgba(0,0,0,0.5);
+}
+
+/* Chevron / rank bar */
+.rank-bar {
+    display: flex; align-items: center; gap: 6px;
+    margin: 2px 0;
+}
+.rank-bar .chev {
+    font-size: 0.9rem; color: var(--khaki);
+    text-shadow: 0 0 6px rgba(180,160,80,0.6);
+    animation: chevGlow 2s ease-in-out infinite alternate;
+}
+@keyframes chevGlow { 0%{opacity:0.6;} 100%{opacity:1; filter:brightness(1.3);} }
+.rank-bar .line {
+    width: 28px; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--khaki), transparent);
+    box-shadow: 0 0 4px rgba(180,160,80,0.4);
+}
+
+/* Dog tag chain hint */
+.dogtag-chain {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.58rem;
+    color: rgba(200,190,140,0.7);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 2px;
+}
+
+/* Site title */
+.site-title-cover {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.77rem;
+    width: 200px;
+    white-space: wrap;
+    color: rgba(200,190,130,0.85);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-top: 6px;
+    background: rgba(0,0,0,0.35);
+    padding: 4px 16px 5px;
+    border-radius: 2px;
+    border: 1px solid rgba(160,148,80,0.35);
+    box-shadow: inset 0 1px 4px rgba(0,0,0,0.3);
+}
+
+.click-hint {
+    position: absolute; bottom: 20px; width: 100%; text-align: center;
+    color: rgba(160,180,80,0.7); font-family: 'Share Tech Mono', monospace;
+    font-size: 0.55rem; letter-spacing: 3px; text-transform: uppercase;
+    animation: pulse 2s infinite; pointer-events: none;
+}
+@keyframes pulse { 0%,100%{opacity:0.35} 50%{opacity:0.9} }
+
+/* ====== PHOTO GRID ====== */
+.grid-layout {
+    display: grid; width: 100%; height: 100%;
+    padding: 26px; box-sizing: border-box; gap: 10px;
+    background: linear-gradient(160deg, #d8cc98 0%, #c8ba80 100%);
+}
+.photo-item {
+    position: relative; overflow: hidden; border-radius: 3px;
+    background: #b8a870;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.25), 0 0 0 2px rgba(100,90,50,0.3);
+    cursor: crosshair; transition: transform 0.2s; backface-visibility: hidden;
+}
+.photo-item:hover { transform: scale(1.04); z-index: 10; box-shadow: 0 10px 28px rgba(0,0,0,0.4), 0 0 0 2px rgba(140,160,60,0.5); }
+.photo-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* Tape — olive masking tape */
+.photo-item::before {
+    content: '';
+    position: absolute; top: -4px; left: 50%; transform: translateX(-50%);
+    width: 36px; height: 11px;
+    background: rgba(140,158,80,0.55);
+    border-radius: 1px; z-index: 5;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+}
+/* Photo border like field print */
+.photo-item::after {
+    content: '';
+    position: absolute; inset: 0;
+    border: 2px solid rgba(100,90,50,0.25);
+    border-radius: 3px;
+    pointer-events: none; z-index: 4;
+}
+
+.layout-1 { grid-template-rows: 1fr; grid-template-columns: 1fr; }
+.layout-2 { grid-template-rows: 1fr 1fr; grid-template-columns: 1fr; }
+.layout-3 { grid-template-columns: 1.2fr 0.8fr; grid-template-rows: 1fr 1fr; }
+.layout-3 .photo-item:nth-child(1) { grid-row: span 2; }
+.layout-4 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
+.layout-5 { grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr; grid-template-rows: 1.2fr 1fr; }
+.layout-5 .photo-item:nth-child(1) { grid-column: span 3; }
+.layout-5 .photo-item:nth-child(2) { grid-column: span 3; }
+.layout-5 .photo-item:nth-child(3), .layout-5 .photo-item:nth-child(4), .layout-5 .photo-item:nth-child(5) { grid-column: span 2; }
+.layout-6 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr 1fr; }
+
+.pg-num { position: absolute; bottom: 8px; width: 100%; text-align: center; color: #908060; font-size: 0.55rem; font-family: 'Share Tech Mono'; letter-spacing: 2px; text-transform: uppercase; }
+.loader { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color: #a0b060; font-family:'Share Tech Mono'; font-size:0.8rem; letter-spacing:3px; text-transform:uppercase; }
+
+/* ====== LIGHTBOX ====== */
+#lightbox {
+    position: fixed; inset: 0;
+    background: rgba(5,8,3,0.97);
+    z-index: 9999;
+    display: flex; justify-content: center; align-items: center; flex-direction: column;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s;
+}
+#lightbox.active { opacity: 1; pointer-events: auto; }
+#lb-container { width: 100%; height: 80vh; display: flex; justify-content: center; align-items: center; overflow: hidden; position: relative; flex-grow: 1; }
+#lb-img { max-width: 90%; max-height: 100%; box-shadow: 0 0 60px rgba(80,120,40,0.4); border: 2px solid #606840; border-radius: 3px; transform-origin: center center; transition: transform 0.3s cubic-bezier(0.25,0.46,0.45,0.94), opacity 0.3s ease; cursor: crosshair; }
+#lb-img.zoomed { cursor: crosshair; }
+.lb-nav { position: absolute; top: 50%; transform: translateY(-50%); background: transparent; color: #a0b060; border: 1px solid #606840; width: 50px; height: 50px; border-radius: 2px; font-size: 22px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; z-index: 10002; font-family:'Oswald'; }
+.lb-nav:hover { background: #3b4a2f; color: #d0c878; }
+.lb-prev { left: 20px; } .lb-next { right: 20px; }
+.lb-counter { position: absolute; bottom: 30px; color: #a0b060; font-family: 'Share Tech Mono'; font-size: 0.8rem; letter-spacing: 3px; z-index: 10002; pointer-events: none; text-transform: uppercase; }
+.lb-close { position: absolute; top: 20px; right: 20px; color: #a0b060; font-size: 38px; cursor: pointer; transition: 0.3s; z-index: 10003; }
+.lb-close:hover { color: #d0c878; transform: rotate(90deg); }
+
+@media (max-width: 850px) {
+    :root { --book-w: 88vw; --book-h: 60vh; }
+    .stage.closed { transform: translateX(0) rotateY(-3deg); }
+    .stage.opened { transform: translateX(0); }
+    .lb-nav { display: none !important; }
+    .ltr { font-size: 0.72em !important; padding: 3px 6px !important; }
+    .title-memories { gap: 2px !important; flex-wrap: nowrap; }
+    .title-my { gap: 3px !important; }
+    .cover-center { gap: 5px !important; width: 72%; }
+    .stamp-plate { inset: -12px -14px !important; }
+    .rank-bar { gap: 4px !important; }
+    .rank-bar .line { width: 18px !important; }
+    .dogtag-chain { font-size: 0.48rem !important; letter-spacing: 1px !important; }
+    .site-title-cover { font-size: 0.82rem !important; padding: 3px 10px 4px !important; letter-spacing: 1.5px !important; }
+}
+/*]]>*/
+</style>
+</head>
+<body>
+
+<!-- HUD corners -->
+<div class='hud-corner hud-tl'></div>
+<div class='hud-corner hud-tr'></div>
+<div class='hud-corner hud-bl'></div>
+<div class='hud-corner hud-br'></div>
+<div class='radar-dot'></div>
+<div class='status-text'>&#9632; MISSION ACTIVE &#183; STANDBY</div>
+
+<!-- Floating military emoji -->
+<div class='bg-deco' style='left:5%;  animation-duration:14s; animation-delay:0s;   font-size:20px;'>&#128313;</div><!-- military medal -->
+<div class='bg-deco' style='left:14%; animation-duration:10s; animation-delay:1.5s; font-size:18px;'>&#9889;</div>
+<div class='bg-deco' style='left:24%; animation-duration:12s; animation-delay:3.2s; font-size:22px;'>&#128737;</div><!-- shield -->
+<div class='bg-deco' style='left:35%; animation-duration:9s;  animation-delay:0.5s; font-size:16px;'>&#11088;</div><!-- star -->
+<div class='bg-deco' style='left:46%; animation-duration:15s; animation-delay:2.2s; font-size:20px;'>&#127941;</div><!-- medal -->
+<div class='bg-deco' style='left:57%; animation-duration:11s; animation-delay:4.5s; font-size:18px;'>&#128313;</div>
+<div class='bg-deco' style='left:67%; animation-duration:13s; animation-delay:1.2s; font-size:22px;'>&#128296;</div><!-- tools -->
+<div class='bg-deco' style='left:77%; animation-duration:10s; animation-delay:2.8s; font-size:16px;'>&#9670;</div><!-- diamond -->
+<div class='bg-deco' style='left:88%; animation-duration:12s; animation-delay:3.8s; font-size:20px;'>&#128737;</div>
+<div class='bg-deco' style='left:10%; animation-duration:16s; animation-delay:5.5s; font-size:18px;'>&#127941;</div>
+<div class='bg-deco' style='left:52%; animation-duration:8s;  animation-delay:6.2s; font-size:16px;'>&#9733;</div>
+<div class='bg-deco' style='left:74%; animation-duration:14s; animation-delay:0.4s; font-size:20px;'>&#11088;</div>
+
+<b:section id='main' showaddelement='no'/>
+
+<!-- LIGHTBOX -->
+<div id='lightbox'>
+    <div class='lb-close' onclick='closeLightbox()'>&#215;</div>
+    <div id='lb-container'>
+        <div class='lb-nav lb-prev' onclick='prevPhoto()'>&#9664;</div>
+        <img alt='Preview' id='lb-img' onclick='toggleZoom()' src=''/>
+        <div class='lb-nav lb-next' onclick='nextPhoto()'>&#9654;</div>
+    </div>
+    <div class='lb-counter' id='lb-counter'>FILE 01 / 12</div>
+</div>
+
+<!-- STAGE -->
+<div class='stage closed' id='stage'>
+
+    <!-- COVER DEPAN -->
+    <div class='sheet' id='sheet-0' style='z-index: 1000;'>
+        <div class='face front cover-skin'>
+            <div class='camo-bg'></div>
+            <div class='camo-grain'></div>
+            <div class='camo-vignette'></div>
+            <div class='spine-fold'></div>
+
+            <div class='stickers-layer'>
+
+                <!-- TOP LEFT — medal + star cluster -->
+                <div class='stk' style='left:28px; top:18px; font-size:28px; transform:rotate(-10deg);'>&#127941;</div><!-- medal -->
+                <div class='stk' style='left:64px; top:14px;'>
+                    <svg width='16' height='16'><polygon points='8,0 10,6 16,6 11.5,9.5 13.5,16 8,12.5 2.5,16 4.5,9.5 0,6 6,6' fill='#c8b040' stroke='#a09020' stroke-width='0.8'/></svg>
+                </div>
+                <div class='stk' style='left:50px; top:52px;'>
+                    <svg width='10' height='10'><circle cx='5' cy='5' r='4.5' fill='#c87840'/></svg>
+                </div>
+                <div class='stk' style='left:74px; top:44px; font-size:11px; color:#a0b060; font-family:"Share Tech Mono",monospace; letter-spacing:1px;'>&#9733;</div>
+
+                <!-- TOP CENTER -->
+                <div class='stk' style='left:38%; top:8px; font-size:18px;'>&#128313;</div><!-- military button -->
+                <div class='stk' style='left:53%; top:10px;'>
+                    <svg width='14' height='14'><polygon points='7,0 9,5 14,5 10.5,8.5 12,13.5 7,10.5 2,13.5 3.5,8.5 0,5 5,5' fill='#d4b030' stroke='#a08010' stroke-width='0.5'/></svg>
+                </div>
+
+                <!-- TOP RIGHT — rank badge -->
+                <div class='stk' style='right:26px; top:16px; font-size:26px; transform:rotate(8deg);'>&#128737;</div><!-- shield -->
+                <div class='stk' style='right:60px; top:46px;'>
+                    <svg width='18' height='18'><polygon points='9,0 11.5,7 18,7 13,11 15,18 9,14 3,18 5,11 0,7 6.5,7' fill='#b8a030' stroke='#806800' stroke-width='0.8'/></svg>
+                </div>
+                <div class='stk' style='right:24px; top:52px; font-size:11px;'>&#9733;</div>
+
+                <!-- LEFT SIDE -->
+                <div class='stk' style='left:16px; top:125px; font-size:24px; transform:rotate(-12deg);'>&#127941;</div><!-- medal -->
+                <div class='stk' style='left:22px; top:196px;'>
+                    <!-- Chevron SVG -->
+                    <svg width='28' height='20' viewBox='0 0 28 20'><polyline points='2,18 14,4 26,18' fill='none' stroke='#c8b040' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/><polyline points='2,13 14,0 26,13' fill='none' stroke='#d4c060' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' opacity='0.7'/></svg>
+                </div>
+                <div class='stk' style='left:16px; top:272px; font-size:22px; transform:rotate(6deg);'>&#128296;</div><!-- tool -->
+                <div class='stk' style='left:20px; top:348px;'>
+                    <svg width='12' height='12'><circle cx='6' cy='6' r='5.5' fill='#c87040'/></svg>
+                </div>
+                <div class='stk' style='left:18px; top:416px; font-size:26px; transform:rotate(-5deg);'>&#128313;</div>
+                <div class='stk' style='left:14px; top:488px;'>
+                    <svg width='10' height='10'><polygon points='5,0 6.5,3.5 10,3.5 7.5,6 8.5,10 5,8 1.5,10 2.5,6 0,3.5 3.5,3.5' fill='#b8a030'/></svg>
+                </div>
+
+                <!-- RIGHT SIDE — dog tag SVG -->
+                <div class='stk' style='right:24px; top:120px;'>
+                    <svg width='34' height='48' viewBox='0 0 34 48'>
+                        <!-- Dog tag shape -->
+                        <rect x='2' y='8' width='30' height='36' rx='4' ry='4' fill='#8a9088' stroke='#606860' stroke-width='1.5'/>
+                        <rect x='2' y='8' width='30' height='36' rx='4' ry='4' fill='none' stroke='rgba(255,255,255,0.12)' stroke-width='0.8'/>
+                        <!-- chain hole -->
+                        <circle cx='17' cy='5' r='3' fill='#5a6058' stroke='#404840' stroke-width='1'/>
+                        <!-- engraved text lines -->
+                        <line x1='6' y1='20' x2='28' y2='20' stroke='#606860' stroke-width='1'/>
+                        <line x1='6' y1='27' x2='28' y2='27' stroke='#606860' stroke-width='1'/>
+                        <line x1='6' y1='34' x2='22' y2='34' stroke='#606860' stroke-width='1'/>
+                        <!-- shine -->
+                        <rect x='4' y='10' width='12' height='30' rx='3' fill='rgba(255,255,255,0.06)'/>
+                    </svg>
+                </div>
+                <div class='stk' style='right:20px; top:192px; font-size:20px; transform:rotate(10deg);'>&#11088;</div>
+                <div class='stk' style='right:22px; top:268px;'>
+                    <!-- Chevron right side -->
+                    <svg width='28' height='20' viewBox='0 0 28 20'><polyline points='2,18 14,4 26,18' fill='none' stroke='#c8b040' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/><polyline points='2,13 14,0 26,13' fill='none' stroke='#d4c060' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' opacity='0.7'/></svg>
+                </div>
+                <div class='stk' style='right:16px; top:352px; font-size:22px; transform:rotate(-8deg);'>&#128313;</div>
+                <div class='stk' style='right:22px; top:418px; font-size:24px; transform:rotate(12deg);'>&#127941;</div>
+                <div class='stk' style='right:14px; bottom:65px; font-size:20px;'>&#9733;</div>
+
+                <!-- AROUND TITLE -->
+                <div class='stk' style='left:60px; top:160px;'>
+                    <svg width='22' height='22'><polygon points='11,0 14,8 22,8 16,12.5 18.5,21 11,16.5 3.5,21 6,12.5 0,8 8,8' fill='#c8b040' stroke='#906800' stroke-width='0.8'/></svg>
+                </div>
+                <div class='stk' style='right:58px; top:168px; font-size:16px;'>&#9670;</div>
+                <div class='stk' style='left:62%; top:155px; font-size:14px;'>&#11088;</div>
+
+                <!-- BELOW TITLE -->
+                <div class='stk' style='left:82px; top:315px; font-size:20px; transform:rotate(8deg);'>&#128296;</div>
+                <div class='stk' style='right:72px; top:322px; font-size:22px; transform:rotate(-6deg);'>&#128313;</div>
+                <div class='stk' style='right:108px; top:380px;'>
+                    <svg width='13' height='13'><circle cx='6.5' cy='6.5' r='6' fill='#c87040'/></svg>
+                </div>
+                <div class='stk' style='left:56%; top:395px;'>
+                    <svg width='12' height='12'><polygon points='6,0 7.5,4.5 12,4.5 8.5,7.5 10,12 6,9.5 2,12 3.5,7.5 0,4.5 4.5,4.5' fill='#b8a030'/></svg>
+                </div>
+
+                <!-- BOTTOM -->
+                <div class='stk' style='left:50%; bottom:92px; transform:translateX(-60%) rotate(-4deg); font-size:28px;'>&#128737;</div><!-- shield -->
+                <div class='stk' style='right:75px; bottom:76px;'>
+                    <svg width='22' height='22'><polygon points='11,0 14,8 22,8 16,12.5 18.5,21 11,16.5 3.5,21 6,12.5 0,8 8,8' fill='#c8b040' stroke='#806800' stroke-width='1'/></svg>
+                </div>
+
+                <!-- RANK PATCHES — bottom left area -->
+                <div class='stk' style='left:105px; top:66px; font-size:13px;'>&#127941;</div>
+                <div class='stk' style='right:104px; top:82px; font-size:11px;'>&#9733;</div>
+                <div class='stk' style='left:37%; bottom:126px; font-size:12px;'>&#9670;</div>
+                <div class='stk' style='right:37%; bottom:114px; font-size:13px;'>&#11088;</div>
+            </div>
+
+            <!-- ====== TITLE CENTER ====== -->
+            <div class='cover-center'>
+                <div class='stamp-plate'></div>
+
+                <!-- "MY" — stencil style -->
+                <div class='title-my'>
+                    <div class='ltr' style='background:#3b4a2f; color:#d4c060; font-family:"Oswald",sans-serif; font-size:1.6rem; padding:4px 11px; transform:rotate(-3deg); letter-spacing:3px; border:1px solid rgba(180,160,60,0.3);'>M</div>
+                    <div class='ltr' style='background:#c8b040; color:#1e2818; font-family:"Barlow Condensed",sans-serif; font-size:1.6rem; padding:4px 11px; transform:rotate(4deg); letter-spacing:3px;'>Y</div>
+                </div>
+
+                <!-- Rank bar divider -->
+                <div class='rank-bar'>
+                    <div class='line'></div>
+                    <span class='chev'>&#9650;</span>
+                    <span class='chev'>&#9650;</span>
+                    <span class='chev'>&#9650;</span>
+                    <div class='line'></div>
+                </div>
+
+                <!-- "MEMORIES" — stencil ransom style -->
+                <div class='title-memories'>
+                    <div class='ltr' style='background:#4a5e38; color:#e0d080; font-family:"Oswald",sans-serif; font-size:1.85rem; padding:5px 10px; transform:rotate(-2deg); letter-spacing:2px;'>M</div>
+                    <div class='ltr' style='background:#c8b040; color:#1e2818; font-family:"Barlow Condensed",sans-serif; font-size:1.85rem; padding:5px 9px; transform:rotate(3deg);'>e</div>
+                    <div class='ltr' style='background:#2e3a22; color:#a0b860; font-family:"Oswald",sans-serif; font-size:1.85rem; padding:5px 9px; transform:rotate(-4deg); letter-spacing:2px;'>m</div>
+                    <div class='ltr' style='background:#8a9a6a; color:#1a2010; font-family:"Barlow Condensed",sans-serif; font-size:1.85rem; padding:5px 8px; transform:rotate(3deg);'>O</div>
+                    <div class='ltr' style='background:#d4c090; color:#2e3a22; font-family:"Oswald",sans-serif; font-size:1.85rem; padding:5px 9px; transform:rotate(-2deg); letter-spacing:2px;'>R</div>
+                    <div class='ltr' style='background:#c87840; color:white; font-family:"Barlow Condensed",sans-serif; font-size:1.85rem; padding:5px 7px; transform:rotate(5deg);'>I</div>
+                    <div class='ltr' style='background:#1e2818; color:#c8b040; font-family:"Oswald",sans-serif; font-size:1.85rem; padding:5px 9px; transform:rotate(-3deg); letter-spacing:2px;'>E</div>
+                    <div class='ltr' style='background:#c03028; color:white; font-family:"Barlow Condensed",sans-serif; font-size:1.85rem; padding:5px 8px; transform:rotate(3deg);'>S</div>
+                </div>
+
+                <!-- Dog tag chain line -->
+                <div class='dogtag-chain'>&#183;&#183;&#183; ID : ANONYMOUS &#183;&#183;&#183;</div>
+
+                <!-- Site title -->
+                <div class='site-title-cover'>&#9733; <data:blog.title/> &#9733;</div>
+            </div>
+
+            <div class='click-hint'>&#9658; OPEN FILE &#183; SWIPE &#9664;</div>
+        </div>
+
+        <!-- INTRO PAGE -->
+        <div class='face back'>
+            <div style='display:flex;height:100%;align-items:center;justify-content:center;flex-direction:column;padding:36px;text-align:center;background:linear-gradient(160deg,#d8cc98,#c8ba80);gap:16px;'>
+                <div style='font-size:3rem;line-height:1;filter:drop-shadow(0 3px 8px rgba(0,0,0,0.3));'>&#127941;</div>
+                <h2 style='font-family:"Oswald",sans-serif;color:#3b4a2f;font-size:1.8rem;margin:0;letter-spacing:4px;text-transform:uppercase;text-shadow:1px 1px 0 rgba(255,255,255,0.3);'>Get Ready, Soldier!</h2>
+                <div style='display:flex;align-items:center;gap:6px;'>
+                    <div style='width:40px;height:2px;background:#8a9a6a;'></div>
+                    <span style='font-size:0.9rem;'>&#9650;&#9650;&#9650;</span>
+                    <div style='width:40px;height:2px;background:#8a9a6a;'></div>
+                </div>
+                <p style='font-family:"Share Tech Mono",monospace;font-size:0.82rem;line-height:1.9;color:#5a6040;margin:0;letter-spacing:1px;'>
+                    &quot;The best memories are carved <br/>with loyal friends.&quot;
+                </p>
+                <div style='font-size:1.8rem;margin-top:4px;'>&#128737; &#9733; &#128313;</div>
+            </div>
+        </div>
+    </div>
+
+    <div id='dynamic-area'/>
+
+    <!-- BACK COVER -->
+    <div class='sheet' id='sheet-end'>
+        <div class='face front'>
+            <div style='display:flex;height:100%;align-items:center;justify-content:center;flex-direction:column;background:linear-gradient(160deg,#d0c488,#c0b478);gap:14px;'>
+                <div style='font-size:3rem;'>&#127881;</div>
+                <h2 style='font-family:"Oswald",sans-serif;letter-spacing:4px;color:#3b4a2f;font-size:1.7rem;margin:0;text-transform:uppercase;text-shadow:1px 1px 0 rgba(255,255,255,0.2);'>MISSION COMPLETE</h2>
+                <div style='display:flex;align-items:center;gap:6px;'>
+                    <div style='width:30px;height:2px;background:#8a9a6a;'></div>
+                    <span style='font-size:0.8rem;'>&#9650;&#9650;&#9650;</span>
+                    <div style='width:30px;height:2px;background:#8a9a6a;'></div>
+                </div>
+                <div style='font-family:"Share Tech Mono",monospace;font-size:0.7rem;color:#6a7848;letter-spacing:2px;text-transform:uppercase;'>Thank You &#183; STAY BRAVE</div>
+                <div style='font-size:1.6rem;margin-top:4px;'>&#127941; &#9733; &#128737;</div>
+            </div>
+        </div>
+        <div class='face back cover-skin' style='transform: rotateY(180deg);'>
+            <div class='camo-bg'></div>
+            <div class='camo-grain'></div>
+            <div class='camo-vignette'></div>
+            <div class='spine-fold'></div>
+        </div>
+    </div>
+</div>
+
+<script>
+//<![CDATA[
+var photos=[], currentSheet=0, totalSheets=0;
+var stage=document.getElementById('stage');
+var dynamicArea=document.getElementById('dynamic-area');
+var endSheet=document.getElementById('sheet-end');
+var isPortrait=window.matchMedia("(max-width: 850px) and (orientation: portrait)").matches;
+
+function loadFeed(json){
+    if(!json.feed||!json.feed.entry){useDemo();return;}
+    var entries=json.feed.entry;
+    for(var i=0;i<entries.length;i++){
+        var div=document.createElement('div');
+        div.innerHTML=entries[i].content.$t;
+        var imgs=div.getElementsByTagName('img');
+        for(var k=0;k<imgs.length;k++){
+            var src=imgs[k].src;
+            if(src.indexOf('blogspot')>-1||src.indexOf('googleusercontent')>-1){
+                src=src.replace(/\/s\d+(-c)?\//,'/s2048/').replace(/=s\d+/,'=s2048');
+            }
+            photos.push(src);
+        }
+    }
+    if(photos.length>0)buildBook();else useDemo();
+}
+
+function useDemo(){
+    var c=[['c8cc98','3b4a2f'],['d4c890','4a5e38'],['b8bc88','2e3a22'],['d8d0a0','5a6040'],['c0c488','3a4830'],['ccc880','484a30']];
+    for(var i=0;i<12;i++) photos.push("https://via.placeholder.com/1000x1000/"+c[i%6][0]+"/"+c[i%6][1]+"?text=FIELD."+String(i+1).padStart(2,'0'));
+    buildBook();
+}
+
+(function(){
+    dynamicArea.innerHTML='<div class="loader">&#9632; LOADING FILES...</div>';
+    var s=document.createElement('script');
+    s.src="/feeds/posts/default?alt=json-in-script&callback=loadFeed&max-results=50";
+    s.onerror=function(){useDemo();};
+    document.body.appendChild(s);
+})();
+
+var PAGE_PATTERN=[2,4,1,4,2,6,3];
+
+function buildBook(){
+    dynamicArea.innerHTML='';
+    var photoIdx=0, sheetCount=0, patternIdx=0, pageNum=0;
+
+    if(isPortrait){
+        sheetCount++;
+        var welcomeSheet=document.createElement('div');
+        welcomeSheet.className='sheet'; welcomeSheet.id='sheet-'+sheetCount; welcomeSheet.style.zIndex=100-sheetCount;
+        welcomeSheet.innerHTML=
+            '<div class="face front"><div style="display:flex;height:100%;align-items:center;justify-content:center;flex-direction:column;padding:36px;text-align:center;background:linear-gradient(160deg,#d8cc98,#c8ba80);gap:16px;">'
+            +'<div style="font-size:3rem;line-height:1;filter:drop-shadow(0 3px 8px rgba(0,0,0,0.3));">&#127941;</div>'
+            +'<h2 style="font-family:\'Oswald\',sans-serif;color:#3b4a2f;font-size:1.8rem;margin:0;letter-spacing:4px;text-transform:uppercase;text-shadow:1px 1px 0 rgba(255,255,255,0.3);">Get Ready, Soldier!</h2>'
+            +'<div style="display:flex;align-items:center;gap:6px;"><div style="width:40px;height:2px;background:#8a9a6a;"></div><span style="font-size:0.9rem;">&#9650;&#9650;&#9650;</span><div style="width:40px;height:2px;background:#8a9a6a;"></div></div>'
+            +'<p style="font-family:\'Share Tech Mono\',monospace;font-size:0.82rem;line-height:1.9;color:#5a6040;margin:0;letter-spacing:1px;">&quot;The best memories are carved <br/>with loyal friends.&quot;</p>'
+            +'<div style="font-size:1.8rem;margin-top:4px;">&#128737; &#9733; &#128313;</div>'
+            +'</div></div>'
+            +'<div class="face back"><div style="display:flex;height:100%;align-items:center;justify-content:center;font-size:2.5rem;">&#127941;</div></div>';
+        dynamicArea.appendChild(welcomeSheet);
+    }
+
+    while(photoIdx<photos.length){
+        sheetCount++;
+        var sheet=document.createElement('div');
+        sheet.className='sheet'; sheet.id='sheet-'+sheetCount; sheet.style.zIndex=100-sheetCount;
+        var cF=PAGE_PATTERN[patternIdx%PAGE_PATTERN.length]; patternIdx++;
+        pageNum++;
+        var frontHTML=generateGrid(photoIdx,cF,false,pageNum);
+        photoIdx+=cF;
+        var backHTML='';
+        if(isPortrait){
+            backHTML='<div class="face back"><div style="display:flex;height:100%;align-items:center;justify-content:center;font-size:2.5rem;">&#127941;</div></div>';
+        } else {
+            if(photoIdx<photos.length){
+                var cB=PAGE_PATTERN[patternIdx%PAGE_PATTERN.length]; patternIdx++;
+                pageNum++;
+                backHTML=generateGrid(photoIdx,cB,true,pageNum);
+                photoIdx+=cB;
+            } else {
+                backHTML='<div class="face back"></div>';
+            }
+        }
+        sheet.innerHTML=frontHTML+backHTML;
+        dynamicArea.appendChild(sheet);
+    }
+    totalSheets=sheetCount+1;
+    endSheet.id='sheet-'+totalSheets; endSheet.style.zIndex=1;
+    optimizeVisibility();
+}
+
+function generateGrid(startIndex,count,isBack,pageNum){
+    if(startIndex+count>photos.length) count=photos.length-startIndex;
+    if(count===0) return '<div class="face '+(isBack?'back':'front')+'"></div>';
+    var html='<div class="face '+(isBack?'back':'front')+'"><div class="grid-layout layout-'+count+'">';
+    for(var i=0;i<count;i++){
+        var idx=startIndex+i;
+        if(idx<photos.length) html+='<div class="photo-item" onclick="openLightbox('+idx+')"><img src="'+photos[idx]+'" loading="lazy"></div>';
+    }
+    html+='</div><div class="pg-num">'+pageNum+'</div></div>';
+    return html;
+}
+
+function optimizeVisibility(){
+    for(var i=0;i<=totalSheets;i++){
+        var el=document.getElementById('sheet-'+i); if(!el) continue;
+        if(i===0){el.classList.toggle('inactive',currentSheet>3);continue;}
+        el.classList.toggle('inactive',i<currentSheet-3||i>currentSheet+3);
+    }
+}
+
+function openBook(){stage.classList.remove('closed');stage.classList.add('opened');nextPage();}
+function closeBook(){
+    for(var i=totalSheets;i>=1;i--){var el=document.getElementById('sheet-'+i);if(el){el.classList.remove('flipped');el.style.zIndex=100-i;}}
+    var cover=document.getElementById('sheet-0'); cover.classList.remove('flipped'); cover.style.zIndex=1000;
+    currentSheet=0; stage.classList.remove('opened'); stage.classList.add('closed'); optimizeVisibility();
+}
+function nextPage(){
+    if(currentSheet<totalSheets){
+        var el=document.getElementById('sheet-'+currentSheet);
+        if(el){el.style.zIndex=1000;el.classList.add('flipped');setTimeout(function(){el.style.zIndex=200+currentSheet;},400);currentSheet++;optimizeVisibility();}
+    }
+}
+function prevPage(){
+    if(currentSheet>0){
+        currentSheet--;
+        var el=document.getElementById('sheet-'+currentSheet);
+        if(el){el.style.zIndex=1000;el.classList.remove('flipped');setTimeout(function(){if(currentSheet===0){el.style.zIndex=1000;closeBook();}else{el.style.zIndex=100-currentSheet;}},400);optimizeVisibility();}
+    }
+}
+
+var startX=0,endX=0,isLbOpen=false,isDragging=false;
+document.addEventListener('mousedown',function(e){if(!isLbOpen){startX=e.clientX;isDragging=true;}});
+document.addEventListener('mouseup',function(e){if(isLbOpen||!isDragging)return;isDragging=false;endX=e.clientX;processInput(e.target);});
+document.addEventListener('touchstart',function(e){if(isLbOpen){lbTouchStart(e);return;}startX=e.changedTouches[0].clientX;});
+document.addEventListener('touchend',function(e){if(isLbOpen){lbTouchEnd(e);return;}endX=e.changedTouches[0].clientX;processInput(e.target);});
+function processInput(t){
+    if(Math.abs(endX-startX)>50){if(endX<startX){if(currentSheet===0)openBook();else nextPage();}else{prevPage();}return;}
+    if(t.tagName==='IMG'||t.classList.contains('photo-item'))return;
+    if(endX>window.innerWidth/2){if(currentSheet===0)openBook();else nextPage();}else{prevPage();}
+}
+
+var lb=document.getElementById('lightbox'),lbImg=document.getElementById('lb-img'),
+    lbCounter=document.getElementById('lb-counter'),lbContainer=document.getElementById('lb-container'),
+    scale=1,currentPhotoIndex=0,pointX=0,pointY=0,pStartX=0,pStartY=0,isPanning=false,lbTxS=0,lbTxE=0;
+
+function openLightbox(idx){isLbOpen=true;currentPhotoIndex=idx;lbImg.src=photos[idx];lb.classList.add('active');updateCounter();resetZoom();if(window.event)window.event.stopPropagation();}
+function updateCounter(){var n=String(currentPhotoIndex+1).padStart(2,'0'); var t=String(photos.length).padStart(2,'0'); lbCounter.innerText=n+' / '+t;}
+function closeLightbox(){isLbOpen=false;lb.classList.remove('active');}
+lb.addEventListener('click',function(e){if(e.target===lb||e.target===lbContainer)closeLightbox();});
+function toggleZoom(){if(scale===1)maxZoom();else resetZoom();}
+function maxZoom(){scale=2.5;lbImg.classList.add('zoomed');updateTransform();}
+function resetZoom(){scale=1;pointX=0;pointY=0;lbImg.classList.remove('zoomed');updateTransform();}
+function updateTransform(){lbImg.style.transform='translate('+pointX+'px,'+pointY+'px) scale('+scale+')';}
+lbImg.addEventListener('mousedown',function(e){if(scale<=1)return;e.preventDefault();isPanning=true;pStartX=e.clientX-pointX;pStartY=e.clientY-pointY;lbImg.style.transition='none';});
+window.addEventListener('mousemove',function(e){if(!isPanning)return;e.preventDefault();pointX=e.clientX-pStartX;pointY=e.clientY-pStartY;updateTransform();});
+window.addEventListener('mouseup',function(){if(isPanning){isPanning=false;lbImg.style.transition='transform 0.3s ease';}});
+function lbTouchStart(e){if(scale>1){isPanning=true;pStartX=e.touches[0].clientX-pointX;pStartY=e.touches[0].clientY-pointY;lbImg.style.transition='none';}else{lbTxS=e.changedTouches[0].clientX;}}
+lbImg.addEventListener('touchmove',function(e){if(scale>1&&isPanning){e.preventDefault();pointX=e.touches[0].clientX-pStartX;pointY=e.touches[0].clientY-pStartY;updateTransform();}});
+function lbTouchEnd(e){if(scale>1){isPanning=false;lbImg.style.transition='transform 0.3s ease';}else{lbTxE=e.changedTouches[0].clientX;if(Math.abs(lbTxE-lbTxS)>50){if(lbTxE<lbTxS)nextPhoto();else prevPhoto();}}}
+function changePhoto(newIdx,dir){lbImg.style.transition='all 0.3s ease';lbImg.style.opacity=0;lbImg.style.transform=dir==='next'?'translateX(-30px)':'translateX(30px)';setTimeout(function(){currentPhotoIndex=newIdx;lbImg.src=photos[newIdx];updateCounter();resetZoom();lbImg.style.transition='none';lbImg.style.transform=dir==='next'?'translateX(30px)':'translateX(-30px)';void lbImg.offsetWidth;lbImg.style.transition='all 0.3s ease';lbImg.style.opacity=1;lbImg.style.transform='translate(0,0) scale(1)';},300);}
+function nextPhoto(){if(currentPhotoIndex<photos.length-1)changePhoto(currentPhotoIndex+1,'next');}
+function prevPhoto(){if(currentPhotoIndex>0)changePhoto(currentPhotoIndex-1,'prev');}
+document.addEventListener('keydown',function(e){if(isLbOpen){if(e.key==='Escape')closeLightbox();if(e.key==='ArrowRight')nextPhoto();if(e.key==='ArrowLeft')prevPhoto();return;}if(e.key==='ArrowRight')nextPage();if(e.key==='ArrowLeft')prevPage();});
+//]]>
+</script>
+
+</body>
+</html>

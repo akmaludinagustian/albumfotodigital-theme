@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html>
 <!--
-Theme Name: Royal Heirloom
-Author: Album Foto Digital
+Theme Name: Cinematic Movie Edition Photocover
+Author: Exalted Influence
 Copyright: 2026
 Version: 1.0
 -->
@@ -154,6 +154,7 @@ body {
 .photo-item img { width: 100%; height: 100%; object-fit: cover; display: block; filter: contrast(1.05) saturate(0.95); }
 
 /* Layouts */
+.layout-1 { grid-template-rows: 1fr; grid-template-columns: 1fr; }
 .layout-2 { grid-template-rows: 1fr 1fr; grid-template-columns: 1fr; }
 .layout-3 { grid-template-columns: 1.2fr 0.8fr; grid-template-rows: 1fr 1fr; }
 .layout-3 .photo-item:nth-child(1) { grid-row: span 2; }
@@ -256,23 +257,35 @@ body {
             <div class='cover-grain'/>
             
             <div class='cover-content'>
-                <div class='top-label'>KOLEKSI EKSKLUSIF</div>
-                <h1 class='main-title'>ALBUM KENANGAN</h1>
+                <div class='top-label'>EXCLUSIVE COLLECTION</div>
+                <h1 class='main-title'>MY MEMORIES</h1>
                 <div class='divider'/>
                 <div class='blog-title'><data:blog.title/></div>
             </div>
             
-            <div class='click-hint'>Geser untuk membuka &#8594;</div>
+            <div class='click-hint'>Swipe to open &#8594;</div>
         </div>
         
         <!-- Intro Page -->
         <div class='face back'>
             <div style='display:flex; height:100%; align-items:center; justify-content:center; flex-direction:column; padding:40px; text-align:center; color:#444;'>
-                <h2 style='font-family:&apos;Playfair Display&apos;; color: #222; font-size:2rem; font-weight:700; margin-bottom:15px; font-style:italic;'>Lembar Cerita</h2>
+                <h2 style='font-family:&apos;Playfair Display&apos;; color: #222; font-size:2rem; font-weight:700; margin-bottom:15px; font-style:italic;'>My Story</h2>
                 <div style='width:30px; height:1px; background:var(--gold); margin-bottom:20px;'/>
-                <p style='font-family:&apos;Playfair Display&apos;; font-size:1.2rem; line-height:1.6; color:#555;'>&quot;Harta yang paling berharga<br/>adalah keluarga.&quot;</p>
+                <p style='font-family:&apos;Playfair Display&apos;; font-size:1.2rem; line-height:1.6; color:#555;'>&quot;The most valuable asset<br/>is family.&quot;</p>
             </div>
         </div>
+    </div>
+
+    <!-- WELCOME SHEET (mobile only — separate swipe page) -->
+    <div class='sheet' id='sheet-welcome' style='z-index: 999; display: none;'>
+        <div class='face front'>
+            <div style='display:flex; height:100%; align-items:center; justify-content:center; flex-direction:column; padding:40px; text-align:center; color:#444;'>
+                <h2 style='font-family:&apos;Playfair Display&apos;; color: #222; font-size:2rem; font-weight:700; margin-bottom:15px; font-style:italic;'>My Story</h2>
+                <div style='width:30px; height:1px; background:var(--gold); margin-bottom:20px;'/>
+                <p style='font-family:&apos;Playfair Display&apos;; font-size:1.2rem; line-height:1.6; color:#555;'>&quot;The most valuable asset<br/>is family.&quot;</p>
+            </div>
+        </div>
+        <div class='face back'><div style='display:flex;height:100%;align-items:center;justify-content:center;color:#ccc;font-size:2rem;'>&#8226;</div></div>
     </div>
 
     <!-- AREA DINAMIS -->
@@ -282,7 +295,7 @@ body {
     <div class='sheet' id='sheet-end'>
         <div class='face front'>
             <div style='display:flex; height:100%; align-items:center; justify-content:center; flex-direction:column; color:#444;'>
-                <h2 style='font-family:&apos;Playfair Display&apos;; letter-spacing:2px; font-weight:700;'>Terima Kasih</h2>
+                <h2 style='font-family:&apos;Playfair Display&apos;; letter-spacing:2px; font-weight:700;'>Thank you</h2>
                 <div style='font-size:1.5rem; color:#ccc; margin-top:10px;'> &#8226; </div>
             </div>
         </div>
@@ -300,7 +313,19 @@ var totalSheets = 0;
 var stage = document.getElementById('stage');
 var dynamicArea = document.getElementById('dynamic-area');
 var endSheet = document.getElementById('sheet-end');
-var isPortrait = window.matchMedia("(max-width: 850px) and (orientation: portrait)").matches;
+var isMobile = window.matchMedia("(max-width: 850px)").matches;
+
+// Fixed photo count pattern: 2, 4, 1, 4, 2, 6, 3 — repeating
+var photoPattern = [2, 4, 1, 4, 2, 6, 3];
+
+// Mobile welcome sheet
+var welcomeSheet = document.getElementById('sheet-welcome');
+if (isMobile) {
+    welcomeSheet.style.display = '';
+} else {
+    welcomeSheet.parentNode.removeChild(welcomeSheet);
+    welcomeSheet = null;
+}
 
 function loadFeed(json) {
     if(!json.feed || !json.feed.entry) { useDemo(); return; }
@@ -336,7 +361,7 @@ function useDemo() {
 
 function buildBook() {
     dynamicArea.innerHTML = '';
-    
+
     // SET COVER IMAGE
     if(photos.length > 0) {
         document.getElementById('cover-bg').style.backgroundImage = "url('" + photos[0] + "')";
@@ -344,56 +369,89 @@ function buildBook() {
 
     var photoIdx = 0;
     var sheetCount = 0;
+    var pageNum = 0;
+    var patternIdx = 0;
 
-    while(photoIdx < photos.length) {
-        sheetCount++;
-        var sheet = document.createElement('div');
-        sheet.className = 'sheet';
-        sheet.id = 'sheet-' + sheetCount;
-        sheet.style.zIndex = 100 - sheetCount; 
-
-        var countFront = Math.floor(Math.random() * 5) + 2; 
-        var frontHTML = generateGrid(photoIdx, countFront);
-        photoIdx += countFront;
-
-        var backHTML = "";
-        if(isPortrait) {
-            backHTML = '<div class="face back"><div style="display:flex;height:100%;align-items:center;justify-content:center;color:#ccc;font-size:2rem;">&#8226;</div></div>';
-        } else {
-            if (photoIdx < photos.length) {
-                var countBack = Math.floor(Math.random() * 5) + 2;
-                backHTML = generateGrid(photoIdx, countBack, true);
-                photoIdx += countBack;
-            } else {
-                 backHTML = '<div class="face back"></div>';
-            }
+    if (isMobile) {
+        // Mobile: one page per sheet (front only visible)
+        while (photoIdx < photos.length) {
+            sheetCount++;
+            pageNum++;
+            var count = photoPattern[(patternIdx++) % photoPattern.length];
+            var sheet = document.createElement('div');
+            sheet.className = 'sheet';
+            sheet.id = 'sheet-' + sheetCount;
+            sheet.style.zIndex = 100 - sheetCount;
+            var frontHTML = generateGrid(photoIdx, count, false, pageNum);
+            photoIdx += Math.min(count, photos.length - photoIdx);
+            var backHTML = '<div class="face back"><div style="display:flex;height:100%;align-items:center;justify-content:center;color:#ccc;font-size:2rem;">&#8226;</div></div>';
+            sheet.innerHTML = frontHTML + backHTML;
+            dynamicArea.appendChild(sheet);
         }
 
-        sheet.innerHTML = frontHTML + backHTML;
-        dynamicArea.appendChild(sheet);
+        // Renumber: cover=0, welcome=1, photos=2..N+1, end=N+2
+        welcomeSheet.id = 'sheet-1';
+        welcomeSheet.style.zIndex = 99;
+        var photoSheets = dynamicArea.querySelectorAll('.sheet');
+        for (var s = 0; s < photoSheets.length; s++) {
+            photoSheets[s].id = 'sheet-' + (s + 2);
+            photoSheets[s].style.zIndex = 98 - s;
+        }
+        totalSheets = photoSheets.length + 2;
+        endSheet.id = 'sheet-' + totalSheets;
+        endSheet.style.zIndex = 1;
+
+    } else {
+        // Desktop: front + back per sheet
+        while (photoIdx < photos.length) {
+            sheetCount++;
+            var sheet = document.createElement('div');
+            sheet.className = 'sheet';
+            sheet.id = 'sheet-' + sheetCount;
+            sheet.style.zIndex = 100 - sheetCount;
+
+            pageNum++;
+            var countFront = photoPattern[(patternIdx++) % photoPattern.length];
+            var frontHTML = generateGrid(photoIdx, countFront, false, pageNum);
+            photoIdx += Math.min(countFront, photos.length - photoIdx);
+
+            var backHTML = '';
+            if (photoIdx < photos.length) {
+                pageNum++;
+                var countBack = photoPattern[(patternIdx++) % photoPattern.length];
+                backHTML = generateGrid(photoIdx, countBack, true, pageNum);
+                photoIdx += Math.min(countBack, photos.length - photoIdx);
+            } else {
+                backHTML = '<div class="face back"><div style="display:flex;height:100%;align-items:center;justify-content:center;color:#ccc;font-size:2rem;">&#8226;</div></div>';
+            }
+
+            sheet.innerHTML = frontHTML + backHTML;
+            dynamicArea.appendChild(sheet);
+        }
+        totalSheets = sheetCount + 1;
+        endSheet.id = 'sheet-' + totalSheets;
+        endSheet.style.zIndex = 1;
     }
-    
-    totalSheets = sheetCount + 1;
-    endSheet.id = 'sheet-' + totalSheets;
-    endSheet.style.zIndex = 1;
+
     optimizeVisibility();
 }
 
-function generateGrid(startIndex, count, isBack) {
-    if(startIndex + count > photos.length) count = photos.length - startIndex;
-    if(count === 0) return '<div class="face ' + (isBack ? 'back' : 'front') + '"></div>';
-    if(count < 2) count = 2; 
+function generateGrid(startIndex, count, isBack, pageNum) {
+    if (startIndex >= photos.length) return '<div class="face ' + (isBack ? 'back' : 'front') + '"></div>';
+    if (startIndex + count > photos.length) count = photos.length - startIndex;
+    if (count < 1) count = 1;
+    if (count > 6) count = 6;
 
     var html = '<div class="face ' + (isBack ? 'back' : 'front') + '"><div class="grid-layout layout-' + count + '">';
-    for(var i=0; i<count; i++) {
+    for (var i = 0; i < count; i++) {
         var currentIdx = startIndex + i;
-        if(currentIdx < photos.length) {
-            html += `<div class="photo-item" onclick="openLightbox(${currentIdx})">
-                        <img src="${photos[currentIdx]}" loading="lazy">
-                     </div>`;
+        if (currentIdx < photos.length) {
+            html += '<div class="photo-item" onclick="openLightbox(' + currentIdx + ')">' +
+                        '<img src="' + photos[currentIdx] + '" loading="lazy">' +
+                    '</div>';
         }
     }
-    html += '</div><div class="pg-num"></div></div>';
+    html += '</div><div class="pg-num">' + pageNum + '</div></div>';
     return html;
 }
 

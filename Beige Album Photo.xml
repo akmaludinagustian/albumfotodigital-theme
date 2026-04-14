@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html>
 <!--
-Theme Name: Royal Heirloom Edition
+Theme Name: Beige Album Foto
 Author: Exalted Influence
 Copyright: 2026
 Version: 1.0
--->
-<html xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
+--><html xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
 <head>
 <meta charset='UTF-8'/>
 <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'/>
 <title><data:blog.pageTitle/></title>
-<!-- FIX: URL Font menggunakan &amp; -->
 <link href='https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&amp;family=Great+Vibes&amp;family=Lato:wght@300&amp;display=swap' rel='stylesheet'/>
 
 <b:skin><![CDATA[
@@ -24,14 +22,16 @@ body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
 :root {
     --book-w: 420px;
     --book-h: 600px;
-    --navy: #1B2631;       /* Deep Royal Navy */
-    --gold: #C5A059;       /* Matte Gold */
-    --gold-bright: #E5C580;
-    --paper: #fcfcfc;
+    --navy: #5C3D2E;
+    --gold: #C8956A;
+    --gold-bright: #E8B89A;
+    --paper: #FBF6F0;
+    --cream-dark: #F0E6D8;
+    --floral: #A67C5B;
 }
 
 body {
-    background: radial-gradient(circle at center, #2c3e50 0%, #000000 100%);
+    background: radial-gradient(circle at center, #D4B896 0%, #8B6347 60%, #5C3020 100%);
     display: flex; flex-direction: column; justify-content: center; align-items: center;
     font-family: 'Cinzel', serif;
     perspective: 2500px;
@@ -39,7 +39,6 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
-/* --- STAGE --- */
 .stage {
     width: var(--book-w); height: var(--book-h);
     position: relative; 
@@ -52,7 +51,6 @@ body {
 .stage.closed { transform: translateX(0); }
 .stage.opened { transform: translateX(50%); }
 
-/* --- SHEET --- */
 .sheet {
     position: absolute; top: 0; left: 0; width: 100%; height: 100%;
     transform-origin: left center;
@@ -63,7 +61,6 @@ body {
 .sheet.flipped { transform: rotateY(-180deg); }
 .sheet.inactive { visibility: hidden; pointer-events: none; }
 
-/* --- FACE --- */
 .face {
     position: absolute; top: 0; left: 0; width: 100%; height: 100%;
     backface-visibility: hidden; -webkit-backface-visibility: hidden;
@@ -71,30 +68,31 @@ body {
     background: var(--paper);
     border-radius: 2px 8px 8px 2px;
 }
-.face.front { z-index: 2; box-shadow: inset 3px 0 10px rgba(0,0,0,0.05); border-right: 1px solid #ccc; }
+.face.front { z-index: 2; box-shadow: inset 3px 0 10px rgba(92,61,46,0.08); border-right: 1px solid #D4B896; }
 .face.back { 
-    z-index: 1; transform: rotateY(180deg); background: #f8f8f8;
-    border-radius: 8px 2px 2px 8px; border-left: 1px solid #ccc;
-    box-shadow: inset -3px 0 10px rgba(0,0,0,0.05);
+    z-index: 1; transform: rotateY(180deg); background: #F5EDE2;
+    border-radius: 8px 2px 2px 8px; border-left: 1px solid #D4B896;
+    box-shadow: inset -3px 0 10px rgba(92,61,46,0.08);
 }
 
-/* --- COVER (PREMIUM CLEAN) --- */
 .cover-skin {
-    background-color: var(--navy);
-    background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.07'/%3E%3C/svg%3E");
+    background-color: #F5EAD8;
+    background-image: 
+        url("data:image/svg+xml,%3Csvg width='400' height='600' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3C/defs%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.06'/%3E%3C/svg%3E"),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='600'%3E%3Cg stroke='%23C8956A' stroke-width='1.2' fill='none' opacity='0.5'%3E%3Cpath d='M20,40 C40,30 60,50 80,35'/%3E%3Cpath d='M30,55 C50,42 70,58 90,45'/%3E%3Cellipse cx='25' cy='38' rx='6' ry='10' transform='rotate(-30 25 38)' fill='%23C8956A' fill-opacity='0.25'/%3E%3Cellipse cx='45' cy='28' rx='6' ry='10' transform='rotate(-50 45 28)' fill='%23C8956A' fill-opacity='0.25'/%3E%3Cellipse cx='65' cy='48' rx='5' ry='9' transform='rotate(-20 65 48)' fill='%23C8956A' fill-opacity='0.25'/%3E%3Cellipse cx='82' cy='33' rx='5' ry='9' transform='rotate(-40 82 33)' fill='%23C8956A' fill-opacity='0.25'/%3E%3Cpath d='M15,30 C10,15 18,5 25,12'/%3E%3Cellipse cx='20' cy='10' rx='4' ry='7' transform='rotate(-60 20 10)' fill='%23C8956A' fill-opacity='0.25'/%3E%3Ccircle cx='15' cy='80' r='3' fill='%23C8956A' fill-opacity='0.4'/%3E%3Cpath d='M12,74 Q15,70 18,74' stroke-width='1'/%3E%3Cpath d='M9,80 Q5,80 9,77' stroke-width='1'/%3E%3Cpath d='M21,80 Q25,80 21,77' stroke-width='1'/%3E%3Cpath d='M12,86 Q15,90 18,86' stroke-width='1'/%3E%3C/g%3E%3Cg stroke='%23C8956A' stroke-width='1.2' fill='none' opacity='0.5' transform='translate(380,560) rotate(180)'%3E%3Cpath d='M20,40 C40,30 60,50 80,35'/%3E%3Cpath d='M30,55 C50,42 70,58 90,45'/%3E%3Cellipse cx='25' cy='38' rx='6' ry='10' transform='rotate(-30 25 38)' fill='%23C8956A' fill-opacity='0.25'/%3E%3Cellipse cx='45' cy='28' rx='6' ry='10' transform='rotate(-50 45 28)' fill='%23C8956A' fill-opacity='0.25'/%3E%3Cellipse cx='65' cy='48' rx='5' ry='9' transform='rotate(-20 65 48)' fill='%23C8956A' fill-opacity='0.25'/%3E%3Cellipse cx='82' cy='33' rx='5' ry='9' transform='rotate(-40 82 33)' fill='%23C8956A' fill-opacity='0.25'/%3E%3Cpath d='M15,30 C10,15 18,5 25,12'/%3E%3Cellipse cx='20' cy='10' rx='4' ry='7' transform='rotate(-60 20 10)' fill='%23C8956A' fill-opacity='0.25'/%3E%3C/g%3E%3Cg stroke='%23C8956A' stroke-width='1' fill='none' opacity='0.4' transform='translate(340,25)'%3E%3Ccircle cx='0' cy='0' r='3' fill='%23C8956A' fill-opacity='0.5'/%3E%3Cpath d='M-8,-6 Q0,-12 8,-6'/%3E%3Cpath d='M-8,6 Q0,12 8,6'/%3E%3Cpath d='M-12,0 Q-18,0 -12,-6'/%3E%3Cpath d='M12,0 Q18,0 12,-6'/%3E%3C/g%3E%3C/svg%3E");
     border: none;
-    box-shadow: inset 10px 0 30px rgba(0,0,0,0.6), 5px 5px 25px rgba(0,0,0,0.5);
+    box-shadow: inset 10px 0 30px rgba(92,61,46,0.25), 5px 5px 25px rgba(92,61,46,0.3);
     display: flex; flex-direction: column; justify-content: center; align-items: center;
     position: relative; border-radius: 2px 10px 10px 2px;
 }
 
 .spine-fold {
     position: absolute; left: 15px; top: 0; bottom: 0; width: 2px;
-    background: rgba(0,0,0,0.3); box-shadow: 1px 0 1px rgba(255,255,255,0.1);
+    background: rgba(92,61,46,0.2); box-shadow: 1px 0 1px rgba(255,240,220,0.3);
 }
 
-.gold-border-outer { position: absolute; inset: 20px; border: 2px solid var(--gold); pointer-events: none; }
-.gold-border-inner { position: absolute; inset: 5px; border: 1px solid var(--gold); opacity: 0.7; }
+.gold-border-outer { position: absolute; inset: 20px; border: 1.5px solid var(--gold); pointer-events: none; opacity: 0.7; }
+.gold-border-inner { position: absolute; inset: 5px; border: 1px solid var(--gold); opacity: 0.4; }
 
 .cover-content-center {
     text-align: center; z-index: 5;
@@ -102,46 +100,47 @@ body {
 }
 
 .gold-text {
-    background: linear-gradient(45deg, var(--gold), var(--gold-bright), var(--gold));
+    background: linear-gradient(45deg, #8B5E3C, #C8956A, #8B5E3C);
     -webkit-background-clip: text; background-clip: text;
-    color: transparent; text-shadow: 0px 1px 2px rgba(0,0,0,0.5);
+    color: transparent; text-shadow: none;
 }
 
-/* JUDUL UTAMA - CLEAN STYLE */
 .main-title {
-    font-family: 'Cinzel', serif; font-size: 3.5rem; font-weight: 700;
+    font-family: 'Cinzel', serif; font-size: 3.2rem; font-weight: 700;
     line-height: 1.1; margin: 0; letter-spacing: 3px;
     border-bottom: 1px solid var(--gold); padding-bottom: 20px;
 }
 .main-title span { 
-    display: block; font-size: 2rem; font-weight: 400; margin-top: 5px; letter-spacing: 5px;
+    display: block; font-size: 1.8rem; font-weight: 400; margin-top: 5px; letter-spacing: 5px;
 }
 
-.separator { font-size: 1.5rem; color: var(--gold); opacity: 0.8; margin: 5px 0; }
+.separator { font-size: 1.5rem; color: var(--gold); opacity: 0.7; margin: 5px 0; }
 
 .blog-title {
     font-family: 'Great Vibes', cursive; font-size: 2.8rem;
-    color: var(--gold-bright); margin-top: -10px;
-    text-shadow: 0 2px 2px rgba(0,0,0,0.5);
+    color: #8B5E3C; margin-top: -10px;
+    text-shadow: 0 1px 3px rgba(92,61,46,0.2);
 }
 
 .click-hint { 
     position: absolute; bottom: 40px; width: 100%; text-align: center; 
-    color: var(--gold); font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--floral); font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase;
     opacity: 0.6; animation: pulse 2s infinite; pointer-events: none;
 }
-@keyframes pulse { 0%,100%{opacity:0.4} 50%{opacity:0.8} }
+@keyframes pulse { 0%,100%{opacity:0.35} 50%{opacity:0.7} }
 
-/* --- GRID SYSTEM --- */
-.grid-layout { display: grid; width: 100%; height: 100%; padding: 30px; box-sizing: border-box; gap: 12px; }
-.photo-item {
-    position: relative; overflow: hidden; border-radius: 0; background: #eee;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1); cursor: zoom-in; transition: transform 0.2s; backface-visibility: hidden;
+.grid-layout { 
+    display: grid; width: 100%; height: 100%; padding: 30px; box-sizing: border-box; gap: 10px;
+    background-color: #F5EAD8;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cdefs%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3C/defs%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3Cg stroke='%23C8956A' stroke-width='0.8' fill='none' opacity='0.18'%3E%3Cpath d='M10,10 C30,5 50,20 40,35 C30,50 10,45 15,30 C20,15 35,12 40,25'/%3E%3Cellipse cx='42' cy='8' rx='5' ry='8' transform='rotate(-40 42 8)' fill='%23C8956A' fill-opacity='0.15'/%3E%3Cellipse cx='12' cy='32' rx='4' ry='7' transform='rotate(20 12 32)' fill='%23C8956A' fill-opacity='0.15'/%3E%3Cpath d='M200,50 C220,42 240,60 230,75 C220,90 200,85 205,70'/%3E%3Cellipse cx='232' cy='48' rx='5' ry='8' transform='rotate(-30 232 48)' fill='%23C8956A' fill-opacity='0.15'/%3E%3Cpath d='M80,200 C100,192 115,208 108,222 C101,236 82,231 86,217'/%3E%3Cellipse cx='110' cy='197' rx='4' ry='7' transform='rotate(-45 110 197)' fill='%23C8956A' fill-opacity='0.15'/%3E%3Cpath d='M240,240 C260,232 278,248 270,262 C262,275 243,270 247,256'/%3E%3Cellipse cx='272' cy='238' rx='5' ry='8' transform='rotate(-35 272 238)' fill='%23C8956A' fill-opacity='0.15'/%3E%3Ccircle cx='150' cy='150' r='2.5' fill='%23C8956A' fill-opacity='0.2'/%3E%3Cpath d='M147,144 Q150,140 153,144'/%3E%3Cpath d='M147,156 Q150,160 153,156'/%3E%3Cpath d='M144,150 Q140,150 144,147'/%3E%3Cpath d='M156,150 Q160,150 156,147'/%3E%3C/g%3E%3C/svg%3E");
 }
-.photo-item:hover { transform: scale(1.02); z-index: 10; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+.photo-item {
+    position: relative; overflow: hidden; border-radius: 2px; background: #E8D5C0;
+    box-shadow: 0 2px 8px rgba(92,61,46,0.15); cursor: zoom-in; transition: transform 0.2s, box-shadow 0.2s; backface-visibility: hidden;
+}
+.photo-item:hover { transform: scale(1.02); z-index: 10; box-shadow: 0 8px 20px rgba(92,61,46,0.25); }
 .photo-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-/* Layouts */
 .layout-1 { grid-template-rows: 1fr; grid-template-columns: 1fr; }
 .layout-2 { grid-template-rows: 1fr 1fr; grid-template-columns: 1fr; }
 .layout-3 { grid-template-columns: 1.2fr 0.8fr; grid-template-rows: 1fr 1fr; }
@@ -153,12 +152,11 @@ body {
 .layout-5 .photo-item:nth-child(3), .layout-5 .photo-item:nth-child(4), .layout-5 .photo-item:nth-child(5) { grid-column: span 2; }
 .layout-6 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr 1fr; }
 
-.pg-num { position: absolute; bottom: 10px; width: 100%; text-align: center; color: #999; font-size: 0.6rem; font-family: 'Lato'; letter-spacing: 1px; }
+.pg-num { position: absolute; bottom: 10px; width: 100%; text-align: center; color: #B8957A; font-size: 0.6rem; font-family: 'Lato'; letter-spacing: 1px; }
 .loader { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color: var(--gold); }
 
-/* --- LIGHTBOX --- */
 #lightbox {
-    position: fixed; inset: 0; background: rgba(10,10,10,0.95); z-index: 9999;
+    position: fixed; inset: 0; background: rgba(30,15,8,0.95); z-index: 9999;
     display: flex; justify-content: center; align-items: center; flex-direction: column;
     opacity: 0; pointer-events: none; transition: opacity 0.3s;
 }
@@ -243,8 +241,7 @@ body {
             <div class='gold-border-outer'><div class='gold-border-inner'/></div>
             
             <div class='cover-content-center'>
-                <!-- JUDUL TANPA "GALERI" -->
-                <h1 class='main-title gold-text'>MY<br/><span>MEMORIES</span></h1>
+                <h1 class='main-title gold-text'>My<br/><span>Memories</span></h1>
                 <div class='separator'>&#9830;</div>
                 <div class='blog-title gold-text'><data:blog.title/></div>
             </div>
@@ -252,26 +249,26 @@ body {
             <div class='click-hint'>Swipe to open &#8594;</div>
         </div>
         
-        <!-- Intro Page -->
+        <!-- Intro Page (desktop: shown as right page of cover flip) -->
         <div class='face back'>
-            <div style='display:flex; height:100%; align-items:center; justify-content:center; flex-direction:column; padding:40px; text-align:center; color:#444;'>
-                <h2 style='font-family:&apos;Cinzel&apos;; color: var(--navy); font-size:1.8rem; margin-bottom:10px;'>Welcome</h2>
-                <div style='width:40px; height:2px; background:var(--navy); margin-bottom:20px;'/>
-                <p style='font-family:&apos;Lato&apos;; font-style:italic; line-height:1.6;'>&quot;The most valuable asset<br/>is family.&quot;</p>
+            <div style='display:flex; height:100%; align-items:center; justify-content:center; flex-direction:column; padding:40px; text-align:center; color:#7A5030; background:#F5EAD8;'>
+                <h2 style='font-family:Cinzel; color: #5C3D2E; font-size:1.8rem; margin-bottom:10px; letter-spacing:2px;'>Welcome</h2>
+                <div style='width:40px; height:1px; background:var(--gold); margin-bottom:20px; opacity:0.6;'/>
+                <p style='font-family:Great Vibes; font-size:1.6rem; color:#8B5E3C; line-height:1.8;'>&quot;The most valuable asset<br/>is family.&quot;</p>
             </div>
         </div>
     </div>
 
-    <!-- WELCOME SHEET (mobile only — separate swipe page) -->
-    <div class='sheet' id='sheet-welcome' style='z-index: 999; display: none;'>
+    <!-- WELCOME SHEET (mobile only, separate swipe page) -->
+    <div class='sheet mobile-welcome-sheet' id='sheet-welcome' style='z-index: 999; display: none;'>
         <div class='face front'>
-            <div style='display:flex; height:100%; align-items:center; justify-content:center; flex-direction:column; padding:40px; text-align:center; color:#444;'>
-                <h2 style='font-family:&apos;Cinzel&apos;; color: var(--navy); font-size:1.8rem; margin-bottom:10px;'>Welcome</h2>
-                <div style='width:40px; height:2px; background:var(--navy); margin-bottom:20px;'/>
-                <p style='font-family:&apos;Lato&apos;; font-style:italic; line-height:1.6;'>&quot;The most valuable asset<br/>is family.&quot;</p>
+            <div style='display:flex; height:100%; align-items:center; justify-content:center; flex-direction:column; padding:40px; text-align:center; color:#7A5030; background:#F5EAD8;'>
+                <h2 style='font-family:Cinzel; color: #5C3D2E; font-size:1.8rem; margin-bottom:10px; letter-spacing:2px;'>Welcome</h2>
+                <div style='width:40px; height:1px; background:var(--gold); margin-bottom:20px; opacity:0.6;'/>
+                <p style='font-family:Great Vibes; font-size:1.6rem; color:#8B5E3C; line-height:1.8;'>&quot;The most valuable asset<br/>is family.&quot;</p>
             </div>
         </div>
-        <div class='face back'><div style='display:flex;height:100%;align-items:center;justify-content:center;color:#eee;font-size:2rem;'>&#8226;</div></div>
+        <div class='face back'><div style='display:flex;height:100%;align-items:center;justify-content:center;color:#C8956A;font-size:2rem;background:#F5EAD8;'>&#9830;</div></div>
     </div>
 
     <!-- AREA DINAMIS -->
@@ -280,9 +277,9 @@ body {
     <!-- COVER BELAKANG -->
     <div class='sheet' id='sheet-end'>
         <div class='face front'>
-            <div style='display:flex; height:100%; align-items:center; justify-content:center; flex-direction:column; color:#444;'>
-                <h2 style='font-family:&apos;Cinzel&apos;; letter-spacing:2px; color:var(--navy);'>Thank you</h2>
-                <div style='font-size:2rem; color:var(--gold);'> &#8226; </div>
+            <div style='display:flex; height:100%; align-items:center; justify-content:center; flex-direction:column; color:#7A5030; background:#F5EAD8;'>
+                <h2 style='font-family:Cinzel; letter-spacing:2px; color:#5C3D2E;'>Thank you</h2>
+                <div style='font-size:2rem; color:var(--gold); opacity:0.7;'> &#9825; </div>
             </div>
         </div>
         <div class='face back cover-skin' style='transform: rotateY(180deg);'>
@@ -301,10 +298,10 @@ var dynamicArea = document.getElementById('dynamic-area');
 var endSheet = document.getElementById('sheet-end');
 var isMobile = window.matchMedia("(max-width: 850px)").matches;
 
-// Fixed photo count pattern: 2, 4, 1, 4, 2, 6, 3 — repeating
+// Fixed photo count pattern per page: 2, 4, 1, 4, 2, 6, 3, repeating
 var photoPattern = [2, 4, 1, 4, 2, 6, 3];
 
-// Mobile welcome sheet
+// Mobile welcome sheet setup
 var welcomeSheet = document.getElementById('sheet-welcome');
 if (isMobile) {
     welcomeSheet.style.display = '';
@@ -349,11 +346,15 @@ function buildBook() {
     dynamicArea.innerHTML = '';
     var photoIdx = 0;
     var sheetCount = 0;
-    var pageNum = 0;
+    var pageNum = 0; // page number shown to user (starts at 1 from first photo page)
     var patternIdx = 0;
 
+    // On mobile each sheet shows only front face (one page at a time)
+    // On desktop each sheet has front + back (two pages per sheet flip)
+
     if (isMobile) {
-        // Mobile: one visible page per sheet
+        // Mobile: sheet-welcome is already in DOM before dynamic-area
+        // sheet-0 = cover, sheet-welcome = welcome, then photo sheets start at 1
         while (photoIdx < photos.length) {
             sheetCount++;
             pageNum++;
@@ -362,14 +363,29 @@ function buildBook() {
             sheet.className = 'sheet';
             sheet.id = 'sheet-' + sheetCount;
             sheet.style.zIndex = 100 - sheetCount;
+
             var frontHTML = generateGrid(photoIdx, count, false, pageNum);
             photoIdx += Math.min(count, photos.length - photoIdx);
-            var backHTML = '<div class="face back"><div style="display:flex;height:100%;align-items:center;justify-content:center;color:#eee;font-size:2rem;">&#8226;</div></div>';
+
+            // Back face: decorative dot (not shown on mobile)
+            var backHTML = '<div class="face back"><div style="display:flex;height:100%;align-items:center;justify-content:center;color:#C8956A;font-size:2rem;background:#F5EAD8;">&#9830;</div></div>';
+
             sheet.innerHTML = frontHTML + backHTML;
             dynamicArea.appendChild(sheet);
         }
 
-        // Renumber: cover=0, welcome=1, photos=2..N+1, end=N+2
+        // Set welcome sheet id correctly and adjust zIndex
+        welcomeSheet.id = 'sheet-welcome';
+        welcomeSheet.style.zIndex = 999;
+
+        // totalSheets = welcome(1) + photo sheets + end(1)
+        // We use a special offset: sheet-welcome is index 0.5, handled separately
+        totalSheets = sheetCount + 2; // +1 for welcome, +1 for end
+        endSheet.id = 'sheet-' + (sheetCount + 2);
+        endSheet.style.zIndex = 1;
+
+        // Rebuild IDs: on mobile, after cover(0), welcome is sheet-1, then photos 2..N+1, end is N+2
+        // Renumber sheets
         welcomeSheet.id = 'sheet-1';
         welcomeSheet.style.zIndex = 99;
         var photoSheets = dynamicArea.querySelectorAll('.sheet');
@@ -377,7 +393,7 @@ function buildBook() {
             photoSheets[s].id = 'sheet-' + (s + 2);
             photoSheets[s].style.zIndex = 98 - s;
         }
-        totalSheets = photoSheets.length + 2;
+        totalSheets = photoSheets.length + 2; // cover + welcome + photos + end
         endSheet.id = 'sheet-' + totalSheets;
         endSheet.style.zIndex = 1;
 
@@ -390,11 +406,13 @@ function buildBook() {
             sheet.id = 'sheet-' + sheetCount;
             sheet.style.zIndex = 100 - sheetCount;
 
+            // Front face
             pageNum++;
             var countFront = photoPattern[(patternIdx++) % photoPattern.length];
             var frontHTML = generateGrid(photoIdx, countFront, false, pageNum);
             photoIdx += Math.min(countFront, photos.length - photoIdx);
 
+            // Back face
             var backHTML = '';
             if (photoIdx < photos.length) {
                 pageNum++;
@@ -402,12 +420,13 @@ function buildBook() {
                 backHTML = generateGrid(photoIdx, countBack, true, pageNum);
                 photoIdx += Math.min(countBack, photos.length - photoIdx);
             } else {
-                backHTML = '<div class="face back"></div>';
+                backHTML = '<div class="face back"><div style="display:flex;height:100%;align-items:center;justify-content:center;color:#C8956A;background:#F5EAD8;">&#9830;</div></div>';
             }
 
             sheet.innerHTML = frontHTML + backHTML;
             dynamicArea.appendChild(sheet);
         }
+
         totalSheets = sheetCount + 1;
         endSheet.id = 'sheet-' + totalSheets;
         endSheet.style.zIndex = 1;
@@ -417,15 +436,16 @@ function buildBook() {
 }
 
 function generateGrid(startIndex, count, isBack, pageNum) {
-    if (startIndex >= photos.length) return '<div class="face ' + (isBack ? 'back' : 'front') + '"></div>';
-    if (startIndex + count > photos.length) count = photos.length - startIndex;
-    if (count < 1) count = 1;
-    if (count > 6) count = 6;
+    if(startIndex >= photos.length) return '<div class="face ' + (isBack ? 'back' : 'front') + '"></div>';
+    if(startIndex + count > photos.length) count = photos.length - startIndex;
+    if(count < 1) count = 1;
+    // cap at 6 for CSS support
+    if(count > 6) count = 6;
 
     var html = '<div class="face ' + (isBack ? 'back' : 'front') + '"><div class="grid-layout layout-' + count + '">';
-    for (var i = 0; i < count; i++) {
+    for(var i=0; i<count; i++) {
         var currentIdx = startIndex + i;
-        if (currentIdx < photos.length) {
+        if(currentIdx < photos.length) {
             html += '<div class="photo-item" onclick="openLightbox(' + currentIdx + ')">' +
                         '<img src="' + photos[currentIdx] + '" loading="lazy">' +
                     '</div>';

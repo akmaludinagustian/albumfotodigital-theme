@@ -1,0 +1,693 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<!--
+Theme Name: Space Adventure Dynamic Edition
+Author: Exalted Influence
+Copyright: 2026
+Version: 1.0
+-->
+<html xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
+<head>
+<meta charset='UTF-8'/>
+<meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'/>
+<title><data:blog.pageTitle/></title>
+<link href='https://fonts.googleapis.com/css2?family=Bangers&amp;family=Fredoka+One&amp;family=Nunito:wght@700;800&amp;display=swap' rel='stylesheet'/>
+
+<b:skin><![CDATA[
+body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; touch-action: none; }
+]]></b:skin>
+
+<style>
+/*<![CDATA[*/
+:root {
+    --book-w: 420px;
+    --book-h: 560px;
+    --navy: #0d1b3e;
+    --blue: #1565c0;
+    --sky: #1e88e5;
+    --cyan: #00acc1;
+    --yellow: #ffd600;
+    --orange: #ff6d00;
+    --paper: #e8f4fd;
+}
+
+/* ====== SPACE / ADVENTURE BACKGROUND ====== */
+body {
+    background: radial-gradient(ellipse at 20% 20%, #1a237e 0%, #0d1b3e 50%, #000d1a 100%);
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    font-family: 'Fredoka One', sans-serif;
+    perspective: 2500px;
+    user-select: none;
+    -webkit-font-smoothing: antialiased;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Stars in background */
+body::before {
+    content: '';
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background-image:
+        radial-gradient(1px 1px at 10% 15%, rgba(255,255,255,0.9) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 25% 35%, rgba(255,255,255,0.8) 0%, transparent 100%),
+        radial-gradient(1px 1px at 40% 10%, rgba(255,255,255,0.7) 0%, transparent 100%),
+        radial-gradient(2px 2px at 55% 28%, rgba(255,255,255,0.9) 0%, transparent 100%),
+        radial-gradient(1px 1px at 70% 8%, rgba(255,255,255,0.8) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 85% 22%, rgba(255,255,255,0.7) 0%, transparent 100%),
+        radial-gradient(1px 1px at 90% 45%, rgba(255,255,255,0.9) 0%, transparent 100%),
+        radial-gradient(1px 1px at 12% 60%, rgba(255,255,255,0.7) 0%, transparent 100%),
+        radial-gradient(2px 2px at 30% 75%, rgba(255,255,255,0.8) 0%, transparent 100%),
+        radial-gradient(1px 1px at 50% 85%, rgba(255,255,255,0.9) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 65% 65%, rgba(255,255,255,0.7) 0%, transparent 100%),
+        radial-gradient(1px 1px at 78% 80%, rgba(255,255,255,0.8) 0%, transparent 100%),
+        radial-gradient(1px 1px at 5% 90%, rgba(255,255,255,0.9) 0%, transparent 100%),
+        radial-gradient(2px 2px at 92% 90%, rgba(255,255,255,0.7) 0%, transparent 100%),
+        radial-gradient(1px 1px at 18% 45%, rgba(255,255,255,0.6) 0%, transparent 100%),
+        radial-gradient(1px 1px at 48% 55%, rgba(255,255,255,0.8) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 72% 40%, rgba(255,255,255,0.7) 0%, transparent 100%),
+        radial-gradient(1px 1px at 36% 92%, rgba(255,255,255,0.9) 0%, transparent 100%);
+}
+
+/* Floating deco items */
+.bg-deco {
+    position: fixed; pointer-events: none; z-index: 0;
+    animation: floatDrift linear infinite;
+    opacity: 0.7;
+}
+@keyframes floatDrift {
+    0%   { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+    8%   { opacity: 0.7; }
+    92%  { opacity: 0.7; }
+    100% { transform: translateY(-10vh) rotate(720deg); opacity: 0; }
+}
+
+/* Shooting star */
+.shooting-star {
+    position: fixed; pointer-events: none; z-index: 0;
+    width: 120px; height: 2px;
+    background: linear-gradient(90deg, transparent, #fff, transparent);
+    border-radius: 2px;
+    animation: shoot linear infinite;
+    opacity: 0;
+}
+@keyframes shoot {
+    0%   { opacity: 0; transform: translateX(-150px) translateY(0) rotate(-30deg); }
+    5%   { opacity: 1; }
+    30%  { opacity: 0; transform: translateX(calc(100vw + 150px)) translateY(80px) rotate(-30deg); }
+    100% { opacity: 0; transform: translateX(calc(100vw + 150px)) translateY(80px) rotate(-30deg); }
+}
+
+/* ====== STAGE ====== */
+.stage {
+    width: var(--book-w); height: var(--book-h);
+    position: relative; z-index: 1;
+    transform-style: preserve-3d;
+    transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+    cursor: grab; will-change: transform;
+    filter: drop-shadow(0 20px 40px rgba(0,0,0,0.6)) drop-shadow(0 0 30px rgba(30,136,229,0.3));
+}
+.stage:active { cursor: grabbing; }
+.stage.closed { transform: translateX(0) rotateY(-5deg); }
+.stage.opened { transform: translateX(50%); }
+
+/* ====== SHEET ====== */
+.sheet {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    transform-origin: left center;
+    transform-style: preserve-3d;
+    transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+    will-change: transform;
+}
+.sheet.flipped { transform: rotateY(-180deg); }
+.sheet.inactive { visibility: hidden; pointer-events: none; }
+
+/* ====== FACE ====== */
+.face {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    backface-visibility: hidden; -webkit-backface-visibility: hidden;
+    overflow: hidden; background: var(--paper);
+    border-radius: 4px 14px 14px 4px;
+}
+.face.front { z-index: 2; box-shadow: inset 5px 0 18px rgba(0,0,0,0.08); border-right: 2px solid #bbdefb; }
+.face.back {
+    z-index: 1; transform: rotateY(180deg); background: #e3f2fd;
+    border-radius: 14px 4px 4px 14px; border-left: 2px solid #bbdefb;
+    box-shadow: inset -5px 0 18px rgba(0,0,0,0.06);
+}
+
+/* ====== BOYS COVER - BLUE DENIM / ADVENTURE ====== */
+.cover-skin {
+    background:
+        linear-gradient(160deg, #1565c0 0%, #0d47a1 35%, #1976d2 65%, #1565c0 100%);
+    box-shadow:
+        inset 12px 0 30px rgba(0,0,0,0.25),
+        inset -2px 0 8px rgba(255,255,255,0.12),
+        inset 0 -4px 15px rgba(0,0,0,0.2),
+        inset 0 4px 15px rgba(100,181,246,0.2);
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    position: relative;
+    border-radius: 4px 14px 14px 4px;
+    overflow: hidden;
+}
+
+/* Diagonal stripes accent on cover */
+.cover-skin::before {
+    content: '';
+    position: absolute; inset: 0; pointer-events: none;
+    background-image:
+        repeating-linear-gradient(
+            -45deg,
+            transparent 0px, transparent 18px,
+            rgba(255,255,255,0.025) 18px, rgba(255,255,255,0.025) 20px
+        );
+}
+
+/* Cover glow effect */
+.cover-skin::after {
+    content: '';
+    position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(ellipse 60% 50% at 50% 42%, rgba(100,181,246,0.18) 0%, transparent 70%);
+}
+
+/* Spine */
+.spine-fold {
+    position: absolute; left: 18px; top: 0; bottom: 0; width: 4px;
+    background: linear-gradient(to right, rgba(0,0,0,0.3), rgba(0,0,0,0.08), transparent);
+    box-shadow: 1px 0 3px rgba(255,255,255,0.1);
+}
+
+/* ====== STICKERS ====== */
+.stickers-layer {
+    position: absolute; inset: 0; pointer-events: none; overflow: hidden;
+}
+.stk {
+    position: absolute; line-height: 1;
+    filter: drop-shadow(1px 2px 4px rgba(0,0,0,0.4));
+}
+
+/* ====== TITLE ====== */
+.cover-center {
+    text-align: center; z-index: 10;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 8px;
+}
+.title-my { display: flex; gap: 5px; align-items: center; margin-bottom: 4px; }
+.title-memories { display: flex; gap: 4px; align-items: center; }
+.ltr {
+    display: inline-flex; align-items: center; justify-content: center;
+    font-weight: 800; line-height: 1;
+    transform-origin: center;
+    border-radius: 5px;
+    box-shadow: 2px 4px 8px rgba(0,0,0,0.4), 0 1px 0 rgba(255,255,255,0.15) inset;
+}
+
+/* Zigzag divider */
+.zap-bar {
+    display: flex; gap: 2px; align-items: center;
+    margin: 2px 0;
+}
+.zap-bar span {
+    font-size: 1rem;
+    animation: zapPulse 1.5s ease-in-out infinite;
+}
+.zap-bar span:nth-child(2) { animation-delay: 0.2s; }
+.zap-bar span:nth-child(3) { animation-delay: 0.4s; }
+.zap-bar span:nth-child(4) { animation-delay: 0.6s; }
+.zap-bar span:nth-child(5) { animation-delay: 0.8s; }
+@keyframes zapPulse { 0%,100%{opacity:0.6; transform:scale(0.9);} 50%{opacity:1; transform:scale(1.15);} }
+
+/* Site title */
+.site-title-cover {
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.7rem;
+    color: rgba(200, 230, 255, 0.9);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 8px;
+    background: rgba(255,255,255,0.1);
+    padding: 3px 16px 4px;
+    border-radius: 30px;
+    border: 1px solid rgba(100,181,246,0.4);
+    backdrop-filter: blur(4px);
+}
+
+.click-hint {
+    position: absolute; bottom: 20px; width: 100%; text-align: center;
+    color: rgba(144, 202, 249, 0.8); font-family: 'Nunito', sans-serif;
+    font-size: 0.6rem; letter-spacing: 2.5px; text-transform: uppercase;
+    animation: pulse 2s infinite; pointer-events: none;
+}
+@keyframes pulse { 0%,100%{opacity:0.4} 50%{opacity:1} }
+
+/* ====== PHOTO GRID ====== */
+.grid-layout {
+    display: grid; width: 100%; height: 100%;
+    padding: 26px; box-sizing: border-box; gap: 10px;
+    background: linear-gradient(160deg, #e8f4fd 0%, #e3f2fd 100%);
+}
+.photo-item {
+    position: relative; overflow: hidden; border-radius: 6px;
+    background: #bbdefb;
+    box-shadow: 0 3px 10px rgba(13,71,161,0.15), 0 0 0 2px rgba(30,136,229,0.15);
+    cursor: zoom-in; transition: transform 0.2s; backface-visibility: hidden;
+}
+.photo-item:hover { transform: scale(1.04) rotate(-1deg); z-index: 10; box-shadow: 0 12px 28px rgba(13,71,161,0.25); }
+.photo-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* Blue tape effect */
+.photo-item::before {
+    content: '';
+    position: absolute; top: -4px; left: 50%; transform: translateX(-50%);
+    width: 30px; height: 10px;
+    background: rgba(100,181,246,0.55);
+    border-radius: 2px; z-index: 5;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+}
+
+.layout-1 { grid-template-rows: 1fr; grid-template-columns: 1fr; }
+.layout-2 { grid-template-rows: 1fr 1fr; grid-template-columns: 1fr; }
+.layout-3 { grid-template-columns: 1.2fr 0.8fr; grid-template-rows: 1fr 1fr; }
+.layout-3 .photo-item:nth-child(1) { grid-row: span 2; }
+.layout-4 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
+.layout-5 { grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr; grid-template-rows: 1.2fr 1fr; }
+.layout-5 .photo-item:nth-child(1) { grid-column: span 3; }
+.layout-5 .photo-item:nth-child(2) { grid-column: span 3; }
+.layout-5 .photo-item:nth-child(3), .layout-5 .photo-item:nth-child(4), .layout-5 .photo-item:nth-child(5) { grid-column: span 2; }
+.layout-6 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr 1fr; }
+
+.pg-num { position: absolute; bottom: 8px; width: 100%; text-align: center; color: #90caf9; font-size: 0.6rem; font-family: 'Nunito'; letter-spacing: 1px; }
+.loader { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color: #64b5f6; font-family:'Nunito'; font-size:0.85rem; letter-spacing:2px; }
+
+/* ====== LIGHTBOX ====== */
+#lightbox {
+    position: fixed; inset: 0; background: rgba(5,5,20,0.96); z-index: 9999;
+    display: flex; justify-content: center; align-items: center; flex-direction: column;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s;
+}
+#lightbox.active { opacity: 1; pointer-events: auto; }
+#lb-container { width: 100%; height: 80vh; display: flex; justify-content: center; align-items: center; overflow: hidden; position: relative; flex-grow: 1; }
+#lb-img { max-width: 90%; max-height: 100%; box-shadow: 0 0 60px rgba(30,136,229,0.4); border: 3px solid #1e88e5; border-radius: 8px; transform-origin: center center; transition: transform 0.3s cubic-bezier(0.25,0.46,0.45,0.94), opacity 0.3s ease; cursor: zoom-in; }
+#lb-img.zoomed { cursor: grab; }
+.lb-nav { position: absolute; top: 50%; transform: translateY(-50%); background: transparent; color: #64b5f6; border: 2px solid #1e88e5; width: 50px; height: 50px; border-radius: 50%; font-size: 24px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; z-index: 10002; }
+.lb-nav:hover { background: #1e88e5; color: #fff; }
+.lb-prev { left: 20px; } .lb-next { right: 20px; }
+.lb-counter { position: absolute; bottom: 30px; color: #64b5f6; font-family: 'Bangers'; font-size: 1rem; letter-spacing: 3px; z-index: 10002; pointer-events: none; }
+.lb-close { position: absolute; top: 20px; right: 20px; color: #64b5f6; font-size: 40px; cursor: pointer; transition: 0.3s; z-index: 10003; }
+.lb-close:hover { color: #fff; transform: rotate(90deg) scale(1.2); }
+
+@media (max-width: 850px) {
+    :root { --book-w: 88vw; --book-h: 60vh; }
+    .stage.closed { transform: translateX(0) rotateY(-3deg); }
+    .stage.opened { transform: translateX(0); }
+    .lb-nav { display: none !important; }
+    .ltr { font-size: 0.82em !important; }
+}
+/*]]>*/
+</style>
+</head>
+<body>
+
+<!-- Shooting stars -->
+<div class='shooting-star' style='top:15%; animation-duration:4s; animation-delay:0s;'></div>
+<div class='shooting-star' style='top:35%; animation-duration:6s; animation-delay:2.5s;'></div>
+<div class='shooting-star' style='top:60%; animation-duration:5s; animation-delay:4s;'></div>
+<div class='shooting-star' style='top:80%; animation-duration:7s; animation-delay:1s;'></div>
+
+<!-- Floating background decorations - adventure/boy theme -->
+<div class='bg-deco' style='left:4%;  animation-duration:11s; animation-delay:0s;   font-size:26px;'>&#128640;</div><!-- rocket -->
+<div class='bg-deco' style='left:14%; animation-duration:9s;  animation-delay:1.8s; font-size:22px;'>&#11088;</div><!-- star -->
+<div class='bg-deco' style='left:23%; animation-duration:13s; animation-delay:3.2s; font-size:28px;'>&#129430;</div><!-- dino -->
+<div class='bg-deco' style='left:34%; animation-duration:8s;  animation-delay:0.6s; font-size:20px;'>&#9889;</div><!-- lightning -->
+<div class='bg-deco' style='left:46%; animation-duration:12s; animation-delay:2s;   font-size:24px;'>&#128663;</div><!-- car -->
+<div class='bg-deco' style='left:57%; animation-duration:10s; animation-delay:4.5s; font-size:22px;'>&#127939;</div><!-- runner -->
+<div class='bg-deco' style='left:67%; animation-duration:9s;  animation-delay:1.2s; font-size:26px;'>&#9971;</div><!-- soccer ball -->
+<div class='bg-deco' style='left:77%; animation-duration:14s; animation-delay:2.8s; font-size:20px;'>&#128737;</div><!-- shield -->
+<div class='bg-deco' style='left:88%; animation-duration:8s;  animation-delay:3.8s; font-size:24px;'>&#128296;</div><!-- wrench/tools -->
+<div class='bg-deco' style='left:10%; animation-duration:15s; animation-delay:5.5s; font-size:18px;'>&#127775;</div><!-- glowing star -->
+<div class='bg-deco' style='left:50%; animation-duration:7s;  animation-delay:6.2s; font-size:20px;'>&#128170;</div><!-- muscle -->
+<div class='bg-deco' style='left:72%; animation-duration:11s; animation-delay:0.4s; font-size:22px;'>&#127944;</div><!-- football -->
+
+<b:section id='main' showaddelement='no'/>
+
+<!-- LIGHTBOX -->
+<div id='lightbox'>
+    <div class='lb-close' onclick='closeLightbox()'>&#215;</div>
+    <div id='lb-container'>
+        <div class='lb-nav lb-prev' onclick='prevPhoto()'>&#8592;</div>
+        <img alt='Preview' id='lb-img' onclick='toggleZoom()' src=''/>
+        <div class='lb-nav lb-next' onclick='nextPhoto()'>&#8594;</div>
+    </div>
+    <div class='lb-counter' id='lb-counter'>1 / 100</div>
+</div>
+
+<!-- STAGE -->
+<div class='stage closed' id='stage'>
+
+    <!-- COVER DEPAN -->
+    <div class='sheet' id='sheet-0' style='z-index: 1000;'>
+        <div class='face front cover-skin'>
+            <div class='spine-fold'/>
+
+            <div class='stickers-layer'>
+
+                <!-- TOP LEFT cluster -->
+                <div class='stk' style='left:30px; top:20px; font-size:26px; transform:rotate(-20deg);'>&#128640;</div><!-- rocket -->
+                <div class='stk' style='left:62px; top:14px; font-size:13px;'>&#11088;</div>
+                <div class='stk' style='left:50px; top:52px;'>
+                    <!-- yellow star SVG -->
+                    <svg width='16' height='16'><polygon points='8,0 10,6 16,6 11.5,9.5 13.5,16 8,12.5 2.5,16 4.5,9.5 0,6 6,6' fill='#ffd600' stroke='#e5a000' stroke-width='0.5'/></svg>
+                </div>
+
+                <!-- TOP CENTER -->
+                <div class='stk' style='left:50%; top:10px; transform:translateX(-50%); font-size:20px;'>&#9889;</div><!-- lightning -->
+                <div class='stk' style='left:38%; top:22px; font-size:14px;'>&#127775;</div>
+
+                <!-- TOP RIGHT cluster -->
+                <div class='stk' style='right:32px; top:18px; font-size:24px; transform:rotate(15deg);'>&#129430;</div><!-- dino -->
+                <div class='stk' style='right:62px; top:46px; font-size:14px;'>&#11088;</div>
+                <div class='stk' style='right:22px; top:50px;'>
+                    <svg width='12' height='12'><circle cx='6' cy='6' r='5.5' fill='#ff6d00'/></svg>
+                </div>
+
+                <!-- LEFT SIDE -->
+                <div class='stk' style='left:16px; top:128px; font-size:22px; transform:rotate(-12deg);'>&#9971;</div><!-- soccer -->
+                <div class='stk' style='left:24px; top:190px;'>
+                    <svg width='16' height='16'><polygon points='8,0 10,6 16,6 11.5,9.5 13.5,16 8,12.5 2.5,16 4.5,9.5 0,6 6,6' fill='#00e5ff' stroke='#00acc1' stroke-width='0.5'/></svg>
+                </div>
+                <div class='stk' style='left:18px; top:268px; font-size:22px; transform:rotate(8deg);'>&#128663;</div><!-- car -->
+                <div class='stk' style='left:20px; top:345px;'>
+                    <svg width='12' height='12'><polygon points='6,0 12,4.5 10,12 2,12 0,4.5' fill='#ffd600' stroke='#e5a000' stroke-width='0.5'/></svg>
+                </div>
+                <div class='stk' style='left:22px; top:415px; font-size:24px; transform:rotate(-6deg);'>&#128737;</div><!-- shield -->
+                <div class='stk' style='left:14px; top:488px; font-size:11px;'>
+                    <svg width='11' height='11'><circle cx='5.5' cy='5.5' r='5' fill='#1e88e5'/></svg>
+                </div>
+
+                <!-- RIGHT SIDE -->
+                <div class='stk' style='right:28px; top:120px; font-size:22px; transform:rotate(12deg);'>&#127939;</div><!-- runner -->
+                <div class='stk' style='right:20px; top:188px; font-size:20px; transform:rotate(-8deg);'>&#128296;</div><!-- tool -->
+                <div class='stk' style='right:26px; top:262px;'>
+                    <svg width='22' height='22'><polygon points='11,0 14,8 22,8 16,13 18,21 11,17 4,21 6,13 0,8 8,8' fill='#ffd600' stroke='#e5a000' stroke-width='1'/></svg>
+                </div><!-- big star -->
+                <div class='stk' style='right:18px; top:350px; font-size:22px; transform:rotate(7deg);'>&#9889;</div><!-- lightning -->
+                <div class='stk' style='right:26px; top:420px; font-size:22px; transform:rotate(-10deg);'>&#127944;</div><!-- football -->
+                <div class='stk' style='right:16px; bottom:68px; font-size:20px;'>&#128640;</div><!-- rocket -->
+
+                <!-- CENTER / AROUND TITLE -->
+                <div class='stk' style='left:68px; top:166px; font-size:18px; transform:rotate(-10deg);'>&#128170;</div><!-- muscle -->
+                <div class='stk' style='right:68px; top:174px; font-size:14px;'>&#9889;</div>
+                <div class='stk' style='left:62%; top:162px; font-size:16px; transform:rotate(14deg);'>&#11088;</div>
+
+                <!-- BELOW TITLE -->
+                <div class='stk' style='left:88px; top:316px; font-size:18px; transform:rotate(6deg);'>&#9971;</div>
+                <div class='stk' style='right:76px; top:325px; font-size:20px; transform:rotate(-8deg);'>&#128663;</div>
+                <div class='stk' style='right:112px; top:382px;'>
+                    <svg width='13' height='13'><circle cx='6.5' cy='6.5' r='6' fill='#ff6d00'/></svg>
+                </div>
+                <div class='stk' style='left:54%; top:398px; font-size:12px;'>
+                    <svg width='13' height='13'><polygon points='6.5,0 8.5,5 13,5 9.5,8 11,13 6.5,10 2,13 3.5,8 0,5 4.5,5' fill='#00e5ff' stroke='#00acc1' stroke-width='0.5'/></svg>
+                </div>
+
+                <!-- BOTTOM -->
+                <div class='stk' style='left:50%; bottom:92px; transform:translateX(-58%) rotate(-5deg); font-size:26px;'>&#129430;</div><!-- dino -->
+                <div class='stk' style='right:80px; bottom:76px;'>
+                    <svg width='22' height='22'><circle cx='11' cy='11' r='10' fill='#ffd600' stroke='#e5a000' stroke-width='1.5'/><circle cx='7' cy='7' r='3' fill='rgba(255,255,200,0.5)'/></svg>
+                </div>
+
+                <!-- SCATTERED -->
+                <div class='stk' style='left:108px; top:68px; font-size:12px;'>&#128640;</div>
+                <div class='stk' style='right:108px; top:84px; font-size:11px;'>&#127775;</div>
+                <div class='stk' style='left:37%; bottom:128px; font-size:12px;'>&#9889;</div>
+                <div class='stk' style='right:37%; bottom:116px; font-size:13px;'>&#11088;</div>
+            </div>
+
+            <!-- TITLE CENTER -->
+            <div class='cover-center'>
+
+                <!-- "MY" -->
+                <div class='title-my'>
+                    <div class='ltr' style='background:#ff6d00; color:white; font-family:"Bangers",cursive; font-size:1.6rem; padding:4px 10px; letter-spacing:2px; transform:rotate(-4deg);'>M</div>
+                    <div class='ltr' style='background:#ffd600; color:#1a237e; font-family:"Bangers",cursive; font-size:1.6rem; padding:4px 10px; letter-spacing:2px; transform:rotate(5deg);'>Y</div>
+                </div>
+
+                <!-- Zap bar -->
+                <div class='zap-bar'>
+                    <span>&#9889;</span><span>&#11088;</span><span>&#9889;</span><span>&#11088;</span><span>&#9889;</span>
+                </div>
+
+                <!-- "MEMORIES" -->
+                <div class='title-memories'>
+                    <div class='ltr' style='background:#1e88e5; color:white; font-family:"Bangers",cursive; font-size:1.85rem; padding:5px 10px; letter-spacing:1px; transform:rotate(-3deg);'>M</div>
+                    <div class='ltr' style='background:#ffd600; color:#1a237e; font-family:"Fredoka One",sans-serif; font-size:1.85rem; padding:5px 9px; transform:rotate(4deg);'>e</div>
+                    <div class='ltr' style='background:#00acc1; color:white; font-family:"Bangers",cursive; font-size:1.85rem; padding:5px 9px; letter-spacing:1px; transform:rotate(-5deg);'>m</div>
+                    <div class='ltr' style='background:#ff6d00; color:white; font-family:"Fredoka One",sans-serif; font-size:1.85rem; padding:5px 8px; transform:rotate(3deg);'>O</div>
+                    <div class='ltr' style='background:white; color:#0d47a1; font-family:"Bangers",cursive; font-size:1.85rem; padding:5px 9px; letter-spacing:1px; transform:rotate(-2deg);'>R</div>
+                    <div class='ltr' style='background:#43a047; color:white; font-family:"Fredoka One",sans-serif; font-size:1.85rem; padding:5px 7px; transform:rotate(6deg);'>I</div>
+                    <div class='ltr' style='background:#7b1fa2; color:white; font-family:"Bangers",cursive; font-size:1.85rem; padding:5px 9px; letter-spacing:1px; transform:rotate(-3deg);'>E</div>
+                    <div class='ltr' style='background:#1a237e; color:#ffd600; font-family:"Fredoka One",sans-serif; font-size:1.85rem; padding:5px 8px; transform:rotate(3deg);'>S</div>
+                </div>
+
+                <!-- Blog/site title -->
+                <div class='site-title-cover'>&#128640; <data:blog.title/> &#128640;</div>
+            </div>
+
+            <div class='click-hint'>&#9889; Swipe to open &#9889;</div>
+        </div>
+
+        <!-- Intro Page -->
+        <div class='face back'>
+            <div style='display:flex; height:100%; align-items:center; justify-content:center; flex-direction:column; padding:36px; text-align:center; background:linear-gradient(160deg,#e8f4fd,#e3f2fd); gap:14px;'>
+                <div style='font-size:3.2rem; line-height:1; filter:drop-shadow(0 3px 6px rgba(0,0,0,0.15));'>&#128640;</div>
+                <h2 style='font-family:"Bangers",cursive; color:#1565c0; font-size:2rem; margin:0; letter-spacing:3px; text-shadow:2px 2px 0 rgba(0,0,0,0.08);'>HELLO!</h2>
+                <div style='display:flex; gap:6px; font-size:1.2rem;'>&#9889;&#11088;&#9889;&#11088;&#9889;</div>
+                <p style='font-family:"Nunito",sans-serif; font-size:0.95rem; line-height:1.8; color:#777; margin:0;'>
+                    &quot;Every day is<br/>a new adventure! &#128640;&quot;
+                </p>
+                <div style='font-size:2rem; margin-top:4px;'>&#129430; &#9971; &#128663;</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- WELCOME SHEET (mobile only — separate swipe page) -->
+    <div class='sheet' id='sheet-welcome' style='z-index: 999; display: none;'>
+        <div class='face front'>
+            <div style='display:flex; height:100%; align-items:center; justify-content:center; flex-direction:column; padding:36px; text-align:center; background:linear-gradient(160deg,#e8f4fd,#e3f2fd); gap:14px;'>
+                <div style='font-size:3.2rem; line-height:1; filter:drop-shadow(0 3px 6px rgba(0,0,0,0.15));'>&#128640;</div>
+                <h2 style='font-family:"Bangers",cursive; color:#1565c0; font-size:2rem; margin:0; letter-spacing:3px; text-shadow:2px 2px 0 rgba(0,0,0,0.08);'>HELLO!</h2>
+                <div style='display:flex; gap:6px; font-size:1.2rem;'>&#9889;&#11088;&#9889;&#11088;&#9889;</div>
+                <p style='font-family:"Nunito",sans-serif; font-size:0.95rem; line-height:1.8; color:#777; margin:0;'>
+                    &quot;Every day is<br/>a new adventure! &#128640;&quot;
+                </p>
+                <div style='font-size:2rem; margin-top:4px;'>&#129430; &#9971; &#128663;</div>
+            </div>
+        </div>
+        <div class='face back'><div style='display:flex;height:100%;align-items:center;justify-content:center;font-size:2.5rem;background:linear-gradient(160deg,#e8f4fd,#e3f2fd);'>&#128640;</div></div>
+    </div>
+
+    <div id='dynamic-area'/>
+
+    <!-- BACK COVER -->
+    <div class='sheet' id='sheet-end'>
+        <div class='face front'>
+            <div style='display:flex; height:100%; align-items:center; justify-content:center; flex-direction:column; background:linear-gradient(160deg,#e8f4fd,#e3f2fd); gap:14px;'>
+                <div style='font-size:3rem;'>&#127881;</div>
+                <h2 style='font-family:"Bangers",cursive; letter-spacing:3px; color:#1565c0; font-size:1.8rem; margin:0; text-shadow:2px 2px 0 rgba(0,0,0,0.08);'>VERY COOL!</h2>
+                <div style='display:flex; gap:6px; font-size:1.1rem;'>&#9889;&#11088;&#9889;&#11088;&#9889;</div>
+                <div style='font-size:1.6rem;'>&#128640; &#129430; &#9971;</div>
+            </div>
+        </div>
+        <div class='face back cover-skin' style='transform: rotateY(180deg);'>
+            <div class='spine-fold'/>
+        </div>
+    </div>
+</div>
+
+<script>
+//<![CDATA[
+var photos=[], currentSheet=0, totalSheets=0;
+var stage=document.getElementById('stage');
+var dynamicArea=document.getElementById('dynamic-area');
+var endSheet=document.getElementById('sheet-end');
+var isMobile=window.matchMedia("(max-width: 850px)").matches;
+
+// Fixed photo count pattern: 2, 4, 1, 4, 2, 6, 3 — repeating
+var photoPattern=[2,4,1,4,2,6,3];
+
+// Mobile welcome sheet
+var welcomeSheet=document.getElementById('sheet-welcome');
+if(isMobile){
+    welcomeSheet.style.display='';
+} else {
+    welcomeSheet.parentNode.removeChild(welcomeSheet);
+    welcomeSheet=null;
+}
+
+function loadFeed(json){
+    if(!json.feed||!json.feed.entry){useDemo();return;}
+    var entries=json.feed.entry;
+    for(var i=0;i<entries.length;i++){
+        var div=document.createElement('div');
+        div.innerHTML=entries[i].content.$t;
+        var imgs=div.getElementsByTagName('img');
+        for(var k=0;k<imgs.length;k++){
+            var src=imgs[k].src;
+            if(src.indexOf('blogspot')>-1||src.indexOf('googleusercontent')>-1){
+                src=src.replace(/\/s\d+(-c)?\//,'/s2048/').replace(/=s\d+/,'=s2048');
+            }
+            photos.push(src);
+        }
+    }
+    if(photos.length>0)buildBook();else useDemo();
+}
+
+function useDemo(){
+    var c=[['BBDEFB','1565c0'],['B3E5FC','0277bd'],['B2EBF2','00838f'],['C8E6C9','2e7d32'],['FFF9C4','f57f17'],['FFE0B2','e65100']];
+    for(var i=0;i<12;i++) photos.push("https://via.placeholder.com/1000x1000/"+c[i%6][0]+"/"+c[i%6][1]+"?text=Memory+"+(i+1));
+    buildBook();
+}
+
+(function(){
+    dynamicArea.innerHTML='<div class="loader">&#128640; Loading...</div>';
+    var s=document.createElement('script');
+    s.src="/feeds/posts/default?alt=json-in-script&callback=loadFeed&max-results=50";
+    s.onerror=function(){useDemo();};
+    document.body.appendChild(s);
+})();
+
+function buildBook(){
+    dynamicArea.innerHTML='';
+    var photoIdx=0, sheetCount=0, pageNum=0, patternIdx=0;
+
+    if(isMobile){
+        // Mobile: one visible page per sheet
+        while(photoIdx<photos.length){
+            sheetCount++;
+            pageNum++;
+            var count=photoPattern[(patternIdx++)%photoPattern.length];
+            var sheet=document.createElement('div');
+            sheet.className='sheet'; sheet.id='sheet-'+sheetCount; sheet.style.zIndex=100-sheetCount;
+            var frontHTML=generateGrid(photoIdx,count,false,pageNum);
+            photoIdx+=Math.min(count,photos.length-photoIdx);
+            var backHTML='<div class="face back"><div style="display:flex;height:100%;align-items:center;justify-content:center;font-size:2.5rem;background:linear-gradient(160deg,#e8f4fd,#e3f2fd);">&#128640;</div></div>';
+            sheet.innerHTML=frontHTML+backHTML;
+            dynamicArea.appendChild(sheet);
+        }
+        // Renumber: cover=0, welcome=1, photos=2..N+1, end=N+2
+        welcomeSheet.id='sheet-1';
+        welcomeSheet.style.zIndex=99;
+        var photoSheets=dynamicArea.querySelectorAll('.sheet');
+        for(var s=0;s<photoSheets.length;s++){
+            photoSheets[s].id='sheet-'+(s+2);
+            photoSheets[s].style.zIndex=98-s;
+        }
+        totalSheets=photoSheets.length+2;
+        endSheet.id='sheet-'+totalSheets; endSheet.style.zIndex=1;
+
+    } else {
+        // Desktop: front + back per sheet
+        while(photoIdx<photos.length){
+            sheetCount++;
+            var sheet=document.createElement('div');
+            sheet.className='sheet'; sheet.id='sheet-'+sheetCount; sheet.style.zIndex=100-sheetCount;
+            pageNum++;
+            var countFront=photoPattern[(patternIdx++)%photoPattern.length];
+            var frontHTML=generateGrid(photoIdx,countFront,false,pageNum);
+            photoIdx+=Math.min(countFront,photos.length-photoIdx);
+            var backHTML='';
+            if(photoIdx<photos.length){
+                pageNum++;
+                var countBack=photoPattern[(patternIdx++)%photoPattern.length];
+                backHTML=generateGrid(photoIdx,countBack,true,pageNum);
+                photoIdx+=Math.min(countBack,photos.length-photoIdx);
+            } else {
+                backHTML='<div class="face back"><div style="display:flex;height:100%;align-items:center;justify-content:center;font-size:2.5rem;background:linear-gradient(160deg,#e8f4fd,#e3f2fd);">&#128640;</div></div>';
+            }
+            sheet.innerHTML=frontHTML+backHTML;
+            dynamicArea.appendChild(sheet);
+        }
+        totalSheets=sheetCount+1;
+        endSheet.id='sheet-'+totalSheets; endSheet.style.zIndex=1;
+    }
+
+    optimizeVisibility();
+}
+
+function generateGrid(startIndex,count,isBack,pageNum){
+    if(startIndex>=photos.length) return '<div class="face '+(isBack?'back':'front')+'"></div>';
+    if(startIndex+count>photos.length) count=photos.length-startIndex;
+    if(count<1) count=1;
+    if(count>6) count=6;
+    var html='<div class="face '+(isBack?'back':'front')+'"><div class="grid-layout layout-'+count+'">';
+    for(var i=0;i<count;i++){
+        var idx=startIndex+i;
+        if(idx<photos.length) html+='<div class="photo-item" onclick="openLightbox('+idx+')"><img src="'+photos[idx]+'" loading="lazy"></div>';
+    }
+    html+='</div><div class="pg-num">'+pageNum+'</div></div>';
+    return html;
+}
+
+function optimizeVisibility(){
+    for(var i=0;i<=totalSheets;i++){
+        var el=document.getElementById('sheet-'+i); if(!el) continue;
+        if(i===0){el.classList.toggle('inactive',currentSheet>3);continue;}
+        el.classList.toggle('inactive',i<currentSheet-3||i>currentSheet+3);
+    }
+}
+
+function openBook(){stage.classList.remove('closed');stage.classList.add('opened');nextPage();}
+function closeBook(){
+    for(var i=totalSheets;i>=1;i--){var el=document.getElementById('sheet-'+i);if(el){el.classList.remove('flipped');el.style.zIndex=100-i;}}
+    var cover=document.getElementById('sheet-0'); cover.classList.remove('flipped'); cover.style.zIndex=1000;
+    currentSheet=0; stage.classList.remove('opened'); stage.classList.add('closed'); optimizeVisibility();
+}
+function nextPage(){
+    if(currentSheet<totalSheets){
+        var el=document.getElementById('sheet-'+currentSheet);
+        if(el){el.style.zIndex=1000;el.classList.add('flipped');setTimeout(function(){el.style.zIndex=200+currentSheet;},400);currentSheet++;optimizeVisibility();}
+    }
+}
+function prevPage(){
+    if(currentSheet>0){
+        currentSheet--;
+        var el=document.getElementById('sheet-'+currentSheet);
+        if(el){el.style.zIndex=1000;el.classList.remove('flipped');setTimeout(function(){if(currentSheet===0){el.style.zIndex=1000;closeBook();}else{el.style.zIndex=100-currentSheet;}},400);optimizeVisibility();}
+    }
+}
+
+var startX=0,endX=0,isLbOpen=false,isDragging=false;
+document.addEventListener('mousedown',function(e){if(!isLbOpen){startX=e.clientX;isDragging=true;}});
+document.addEventListener('mouseup',function(e){if(isLbOpen||!isDragging)return;isDragging=false;endX=e.clientX;processInput(e.target);});
+document.addEventListener('touchstart',function(e){if(isLbOpen){lbTouchStart(e);return;}startX=e.changedTouches[0].clientX;});
+document.addEventListener('touchend',function(e){if(isLbOpen){lbTouchEnd(e);return;}endX=e.changedTouches[0].clientX;processInput(e.target);});
+function processInput(t){
+    if(Math.abs(endX-startX)>50){if(endX<startX){if(currentSheet===0)openBook();else nextPage();}else{prevPage();}return;}
+    if(t.tagName==='IMG'||t.classList.contains('photo-item'))return;
+    if(endX>window.innerWidth/2){if(currentSheet===0)openBook();else nextPage();}else{prevPage();}
+}
+
+var lb=document.getElementById('lightbox'),lbImg=document.getElementById('lb-img'),
+    lbCounter=document.getElementById('lb-counter'),lbContainer=document.getElementById('lb-container'),
+    scale=1,currentPhotoIndex=0,pointX=0,pointY=0,pStartX=0,pStartY=0,isPanning=false,lbTxS=0,lbTxE=0;
+
+function openLightbox(idx){isLbOpen=true;currentPhotoIndex=idx;lbImg.src=photos[idx];lb.classList.add('active');updateCounter();resetZoom();if(window.event)window.event.stopPropagation();}
+function updateCounter(){lbCounter.innerText=(currentPhotoIndex+1)+' / '+photos.length;}
+function closeLightbox(){isLbOpen=false;lb.classList.remove('active');}
+lb.addEventListener('click',function(e){if(e.target===lb||e.target===lbContainer)closeLightbox();});
+function toggleZoom(){if(scale===1)maxZoom();else resetZoom();}
+function maxZoom(){scale=2.5;lbImg.classList.add('zoomed');updateTransform();}
+function resetZoom(){scale=1;pointX=0;pointY=0;lbImg.classList.remove('zoomed');updateTransform();}
+function updateTransform(){lbImg.style.transform='translate('+pointX+'px,'+pointY+'px) scale('+scale+')';}
+lbImg.addEventListener('mousedown',function(e){if(scale<=1)return;e.preventDefault();isPanning=true;pStartX=e.clientX-pointX;pStartY=e.clientY-pointY;lbImg.style.transition='none';});
+window.addEventListener('mousemove',function(e){if(!isPanning)return;e.preventDefault();pointX=e.clientX-pStartX;pointY=e.clientY-pStartY;updateTransform();});
+window.addEventListener('mouseup',function(){if(isPanning){isPanning=false;lbImg.style.transition='transform 0.3s ease';}});
+function lbTouchStart(e){if(scale>1){isPanning=true;pStartX=e.touches[0].clientX-pointX;pStartY=e.touches[0].clientY-pointY;lbImg.style.transition='none';}else{lbTxS=e.changedTouches[0].clientX;}}
+lbImg.addEventListener('touchmove',function(e){if(scale>1&&isPanning){e.preventDefault();pointX=e.touches[0].clientX-pStartX;pointY=e.touches[0].clientY-pStartY;updateTransform();}});
+function lbTouchEnd(e){if(scale>1){isPanning=false;lbImg.style.transition='transform 0.3s ease';}else{lbTxE=e.changedTouches[0].clientX;if(Math.abs(lbTxE-lbTxS)>50){if(lbTxE<lbTxS)nextPhoto();else prevPhoto();}}}
+function changePhoto(newIdx,dir){lbImg.style.transition='all 0.3s ease';lbImg.style.opacity=0;lbImg.style.transform=dir==='next'?'translateX(-30px)':'translateX(30px)';setTimeout(function(){currentPhotoIndex=newIdx;lbImg.src=photos[newIdx];updateCounter();resetZoom();lbImg.style.transition='none';lbImg.style.transform=dir==='next'?'translateX(30px)':'translateX(-30px)';void lbImg.offsetWidth;lbImg.style.transition='all 0.3s ease';lbImg.style.opacity=1;lbImg.style.transform='translate(0,0) scale(1)';},300);}
+function nextPhoto(){if(currentPhotoIndex<photos.length-1)changePhoto(currentPhotoIndex+1,'next');}
+function prevPhoto(){if(currentPhotoIndex>0)changePhoto(currentPhotoIndex-1,'prev');}
+document.addEventListener('keydown',function(e){if(isLbOpen){if(e.key==='Escape')closeLightbox();if(e.key==='ArrowRight')nextPhoto();if(e.key==='ArrowLeft')prevPhoto();return;}if(e.key==='ArrowRight')nextPage();if(e.key==='ArrowLeft')prevPage();});
+//]]>
+</script>
+
+</body>
+</html>

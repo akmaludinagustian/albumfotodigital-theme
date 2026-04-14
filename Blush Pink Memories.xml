@@ -1,0 +1,766 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<!--
+Theme Name: Blush Pink Memories
+Author: Exalted Influece
+Copyright: 2026
+Version: 1.0
+-->
+<html xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
+<head>
+<meta charset='UTF-8'/>
+<meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'/>
+<title><data:blog.pageTitle/></title>
+<link href='https://fonts.googleapis.com/css2?family=Fredoka+One&amp;family=Patrick+Hand&amp;family=Lato:wght@300&amp;display=swap' rel='stylesheet'/>
+
+<b:skin><![CDATA[
+body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #f0ece8; touch-action: none; }
+]]></b:skin>
+
+<style>
+/*<![CDATA[*/
+:root {
+    --book-w: 420px;
+    --book-h: 560px;
+    --pink: #F2B8B0;
+    --pink-dark: #e8a09a;
+    --paper: #fcfcfc;
+}
+
+body {
+    /* Background: white wrinkled fabric / bedsheet look */
+    background-color: #f8f4f0;
+    background-image:
+        radial-gradient(ellipse 700px 400px at 20% 30%, rgba(255,255,255,0.9) 0%, transparent 70%),
+        radial-gradient(ellipse 500px 600px at 80% 70%, rgba(230,220,215,0.7) 0%, transparent 60%),
+        radial-gradient(ellipse 600px 300px at 50% 80%, rgba(245,238,232,0.8) 0%, transparent 60%),
+        linear-gradient(135deg, #ffffff 0%, #f0e8e2 30%, #ede3dc 55%, #f5ede8 75%, #ffffff 100%);
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    font-family: 'Fredoka One', sans-serif;
+    perspective: 2500px;
+    user-select: none;
+    -webkit-font-smoothing: antialiased;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Fabric wrinkle lines */
+body::before {
+    content: '';
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background-image:
+        repeating-linear-gradient(12deg, transparent, transparent 80px, rgba(200,185,175,0.08) 80px, rgba(200,185,175,0.08) 82px),
+        repeating-linear-gradient(-8deg, transparent, transparent 120px, rgba(200,185,175,0.06) 120px, rgba(200,185,175,0.06) 121px),
+        repeating-linear-gradient(85deg, transparent, transparent 60px, rgba(200,185,175,0.05) 60px, rgba(200,185,175,0.05) 62px);
+}
+
+/* STAGE */
+.stage {
+    width: var(--book-w); height: var(--book-h);
+    position: relative; z-index: 1;
+    transform-style: preserve-3d;
+    transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+    cursor: grab;
+    will-change: transform;
+    /* Book shadow on fabric */
+    filter: drop-shadow(8px 15px 30px rgba(0,0,0,0.35)) drop-shadow(0 5px 10px rgba(0,0,0,0.2));
+}
+.stage:active { cursor: grabbing; }
+.stage.closed { transform: translateX(0) rotateY(-5deg); }
+.stage.opened { transform: translateX(50%); }
+
+/* SHEET */
+.sheet {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    transform-origin: left center;
+    transform-style: preserve-3d;
+    transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+    will-change: transform;
+}
+.sheet.flipped { transform: rotateY(-180deg); }
+.sheet.inactive { visibility: hidden; pointer-events: none; }
+
+/* FACE */
+.face {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    backface-visibility: hidden; -webkit-backface-visibility: hidden;
+    overflow: hidden;
+    background: var(--paper);
+    border-radius: 3px 10px 10px 3px;
+}
+.face.front { z-index: 2; box-shadow: inset 4px 0 12px rgba(0,0,0,0.06); border-right: 1px solid #ddd; }
+.face.back {
+    z-index: 1; transform: rotateY(180deg); background: #f8f5f3;
+    border-radius: 10px 3px 3px 10px; border-left: 1px solid #ddd;
+    box-shadow: inset -4px 0 12px rgba(0,0,0,0.06);
+}
+
+/* ===== PINK COVER - IDENTICAL TO IMAGE ===== */
+.cover-skin {
+    background-color: #F2B4AC;
+    background-image:
+        /* Subtle canvas/cardboard texture */
+        url("data:image/svg+xml,%3Csvg width='300' height='300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    border: none;
+    box-shadow:
+        inset 8px 0 20px rgba(0,0,0,0.15),
+        inset -2px 0 8px rgba(255,255,255,0.3),
+        inset 0 -3px 10px rgba(0,0,0,0.08);
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    position: relative;
+    border-radius: 3px 10px 10px 3px;
+}
+
+/* Spine fold shadow */
+.spine-fold {
+    position: absolute; left: 18px; top: 0; bottom: 0; width: 3px;
+    background: linear-gradient(to right, rgba(0,0,0,0.15), rgba(0,0,0,0.05), transparent);
+    box-shadow: 1px 0 2px rgba(255,255,255,0.2);
+}
+
+/* Cover right edge highlight */
+.cover-skin::after {
+    content: '';
+    position: absolute; right: 0; top: 0; bottom: 0; width: 6px;
+    background: linear-gradient(to left, rgba(255,255,255,0.25), transparent);
+    border-radius: 0 10px 10px 0;
+    pointer-events: none;
+}
+
+/* ===== STICKERS CONTAINER ===== */
+.stickers-layer {
+    position: absolute; inset: 0; pointer-events: none; overflow: hidden;
+}
+
+/* Individual sticker */
+.stk {
+    position: absolute;
+    font-size: 14px;
+    line-height: 1;
+    filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.2));
+    transform-origin: center;
+}
+
+/* ===== RANSOM NOTE TITLE ===== */
+.cover-center {
+    text-align: center; z-index: 10;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 8px;
+}
+
+/* "MY" - smaller, above MEMORIES */
+.title-my {
+    display: flex; gap: 4px; align-items: center;
+    margin-bottom: 2px;
+}
+
+.title-memories {
+    display: flex; gap: 3px; align-items: center;
+}
+
+/* Each letter block - ransom note style */
+.ltr {
+    display: inline-flex; align-items: center; justify-content: center;
+    font-weight: 700; line-height: 1;
+    transform-origin: center;
+    box-shadow: 1px 2px 4px rgba(0,0,0,0.25);
+}
+
+/* ===== BLOG TITLE / WEBSITE ===== */
+.site-title-cover {
+    font-family: 'Patrick Hand', cursive;
+    font-size: 1rem;
+    color: rgba(120, 60, 70, 0.75);
+    letter-spacing: 1.5px;
+    text-transform: lowercase;
+    margin-top: 6px;
+    background: rgba(255,255,255,0.45);
+    padding: 3px 14px;
+    border-radius: 20px;
+    border: 1px solid rgba(200,120,130,0.3);
+}
+
+/* Hint text */
+.click-hint {
+    position: absolute; bottom: 22px; width: 100%; text-align: center;
+    color: rgba(140, 70, 80, 0.6); font-size: 0.6rem;
+    letter-spacing: 2px; text-transform: uppercase;
+    font-family: 'Lato', sans-serif;
+    animation: pulse 2s infinite; pointer-events: none;
+}
+@keyframes pulse { 0%,100%{opacity:0.4} 50%{opacity:0.8} }
+
+/* ===== GRID SYSTEM ===== */
+.grid-layout { display: grid; width: 100%; height: 100%; padding: 28px; box-sizing: border-box; gap: 10px; }
+.photo-item {
+    position: relative; overflow: hidden; border-radius: 2px; background: #e8e0da;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1); cursor: zoom-in; transition: transform 0.2s; backface-visibility: hidden;
+}
+.photo-item:hover { transform: scale(1.02); z-index: 10; box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+.photo-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.layout-1 { grid-template-rows: 1fr; grid-template-columns: 1fr; }
+.layout-2 { grid-template-rows: 1fr 1fr; grid-template-columns: 1fr; }
+.layout-3 { grid-template-columns: 1.2fr 0.8fr; grid-template-rows: 1fr 1fr; }
+.layout-3 .photo-item:nth-child(1) { grid-row: span 2; }
+.layout-4 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
+.layout-5 { grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr; grid-template-rows: 1.2fr 1fr; }
+.layout-5 .photo-item:nth-child(1) { grid-column: span 3; }
+.layout-5 .photo-item:nth-child(2) { grid-column: span 3; }
+.layout-5 .photo-item:nth-child(3), .layout-5 .photo-item:nth-child(4), .layout-5 .photo-item:nth-child(5) { grid-column: span 2; }
+.layout-6 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr 1fr; }
+
+.pg-num { position: absolute; bottom: 8px; width: 100%; text-align: center; color: #bbb; font-size: 0.55rem; font-family: 'Lato'; letter-spacing: 1px; }
+.loader { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color: #c47a80; font-family:'Lato'; font-size:0.8rem; letter-spacing:2px; }
+
+/* LIGHTBOX */
+#lightbox {
+    position: fixed; inset: 0; background: rgba(10,8,8,0.94); z-index: 9999;
+    display: flex; justify-content: center; align-items: center; flex-direction: column;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s;
+}
+#lightbox.active { opacity: 1; pointer-events: auto; }
+#lb-container { width: 100%; height: 80vh; display: flex; justify-content: center; align-items: center; overflow: hidden; position: relative; flex-grow: 1; }
+#lb-img { max-width: 90%; max-height: 100%; box-shadow: 0 0 50px rgba(0,0,0,0.8); border: 1px solid #333; transform-origin: center center; transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.3s ease; cursor: zoom-in; image-rendering: -webkit-optimize-contrast; }
+#lb-img.zoomed { cursor: grab; }
+#lb-img.zoomed:active { cursor: grabbing; }
+.slide-in-right { animation: slideRight 0.4s forwards; }
+.slide-in-left { animation: slideLeft 0.4s forwards; }
+@keyframes slideRight { from { transform: translateX(40px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+@keyframes slideLeft { from { transform: translateX(-40px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+.lb-nav { position: absolute; top: 50%; transform: translateY(-50%); background: transparent; color: #fff; border: 1px solid #555; width: 50px; height: 50px; border-radius: 50%; font-size: 24px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; z-index: 10002; }
+.lb-nav:hover { background: #fff; color: #000; }
+.lb-prev { left: 20px; } .lb-next { right: 20px; }
+.lb-counter { position: absolute; bottom: 30px; color: #888; font-family: 'Lato', sans-serif; font-size: 0.8rem; letter-spacing: 2px; z-index: 10002; pointer-events: none; }
+.lb-close { position: absolute; top: 20px; right: 20px; color: #888; font-size: 40px; cursor: pointer; font-family: sans-serif; transition: 0.3s; z-index: 10003; }
+.lb-close:hover { color: #fff; transform: rotate(90deg); }
+
+@media (max-width: 850px) {
+    :root { --book-w: 88vw; --book-h: 62vh; }
+    .stage.closed { transform: translateX(0) rotateY(-3deg); }
+    .stage.opened { transform: translateX(0); }
+    .lb-nav { display: none !important; }
+    .ltr { font-size: 0.85em !important; }
+}
+/*]]>*/
+</style>
+</head>
+<body>
+
+<b:section id='main' showaddelement='no'/>
+
+<!-- LIGHTBOX -->
+<div id='lightbox'>
+    <div class='lb-close' onclick='closeLightbox()'>&#215;</div>
+    <div id='lb-container'>
+        <div class='lb-nav lb-prev' onclick='prevPhoto()'>&#8592;</div>
+        <img alt='Preview' id='lb-img' onclick='toggleZoom()' src=''/>
+        <div class='lb-nav lb-next' onclick='nextPhoto()'>&#8594;</div>
+    </div>
+    <div class='lb-counter' id='lb-counter'>1 / 100</div>
+</div>
+
+<!-- STAGE (BOOK) -->
+<div class='stage closed' id='stage'>
+
+    <!-- ===== COVER DEPAN ===== -->
+    <div class='sheet' id='sheet-0' style='z-index: 1000;'>
+        <div class='face front cover-skin'>
+            <div class='spine-fold'/>
+
+            <!-- STICKER DECORATIONS - identical positions to image -->
+            <div class='stickers-layer'>
+
+                <!-- TOP AREA stickers -->
+                <!-- Purple heart top-left corner -->
+                <div class='stk' style='left:38px; top:28px; font-size:11px; transform:rotate(-15deg);'>
+                    <svg width='18' height='16' viewBox='0 0 20 18'><path d='M10 16s-8-5.5-8-10a4 4 0 0 1 8 0 4 4 0 0 1 8 0c0 4.5-8 10-8 10z' fill='#9c5cbf' stroke='#7a3fa0' stroke-width='1'/></svg>
+                </div>
+                <!-- Small red dot top-left -->
+                <div class='stk' style='left:60px; top:44px; width:7px; height:7px; background:#e03030; border-radius:50%; box-shadow:1px 1px 2px rgba(0,0,0,0.3);'></div>
+                <!-- Teal gem top area -->
+                <div class='stk' style='left:145px; top:22px;'>
+                    <svg width='14' height='14' viewBox='0 0 14 14'><polygon points='7,0 14,5 12,14 2,14 0,5' fill='#2dc7c7' stroke='#1aa0a0' stroke-width='0.5'/></svg>
+                </div>
+                <!-- Small pink sparkle top -->
+                <div class='stk' style='left:195px; top:18px; font-size:10px;'>
+                    <svg width='12' height='12' viewBox='0 0 12 12'><path d='M6 0 L7 5 L12 6 L7 7 L6 12 L5 7 L0 6 L5 5 Z' fill='#f0a0b0' stroke='none'/></svg>
+                </div>
+                <!-- Red heart top-right area -->
+                <div class='stk' style='right:70px; top:25px; font-size:13px; transform:rotate(10deg);'>
+                    <svg width='20' height='18' viewBox='0 0 20 18'><path d='M10 16s-8-5.5-8-10a4 4 0 0 1 8 0 4 4 0 0 1 8 0c0 4.5-8 10-8 10z' fill='#e03030' stroke='#b01010' stroke-width='1'/></svg>
+                </div>
+                <!-- Silver/white sparkle top-right -->
+                <div class='stk' style='right:42px; top:38px;'>
+                    <svg width='14' height='14' viewBox='0 0 14 14'><path d='M7 0 L8 6 L14 7 L8 8 L7 14 L6 8 L0 7 L6 6 Z' fill='#e0e0e0' stroke='#bbb' stroke-width='0.5'/></svg>
+                </div>
+                <!-- Orange diamond top-right far -->
+                <div class='stk' style='right:30px; top:18px;'>
+                    <svg width='10' height='10' viewBox='0 0 10 10'><polygon points='5,0 10,5 5,10 0,5' fill='#e87030' stroke='#c05020' stroke-width='0.5'/></svg>
+                </div>
+
+                <!-- LEFT SIDE stickers -->
+                <!-- Pink patterned heart left -->
+                <div class='stk' style='left:22px; top:145px; transform:rotate(-8deg);'>
+                    <svg width='32' height='28' viewBox='0 0 32 28'><path d='M16 25s-13-8.5-13-16a6.5 6.5 0 0 1 13 0 6.5 6.5 0 0 1 13 0c0 7.5-13 16-13 16z' fill='#e85090' stroke='#c03070' stroke-width='1'/><path d='M16 25s-13-8.5-13-16a6.5 6.5 0 0 1 13 0 6.5 6.5 0 0 1 13 0c0 7.5-13 16-13 16z' fill='none' stroke='#f080b0' stroke-width='1.5' stroke-dasharray='3,2'/></svg>
+                </div>
+                <!-- Pink gem left middle -->
+                <div class='stk' style='left:30px; top:210px;'>
+                    <svg width='13' height='13' viewBox='0 0 13 13'><polygon points='6.5,0 13,5 11,13 2,13 0,5' fill='#f090b0' stroke='#d06090' stroke-width='0.5'/></svg>
+                </div>
+                <!-- Blue gem left lower -->
+                <div class='stk' style='left:18px; top:340px;'>
+                    <svg width='11' height='11' viewBox='0 0 11 11'><polygon points='5.5,0 11,4 9,11 2,11 0,4' fill='#4090e0' stroke='#2060b0' stroke-width='0.5'/></svg>
+                </div>
+                <!-- Big bright pink heart lower-left -->
+                <div class='stk' style='left:28px; top:390px; transform:rotate(5deg);'>
+                    <svg width='38' height='34' viewBox='0 0 38 34'><path d='M19 30s-16-10-16-19.5a8 8 0 0 1 16 0 8 8 0 0 1 16 0C35 20 19 30 19 30z' fill='#f0508c' stroke='#c03060' stroke-width='1.5'/></svg>
+                </div>
+                <!-- Small red dot lower left -->
+                <div class='stk' style='left:70px; top:470px; width:6px; height:6px; background:#d02020; border-radius:50%;'></div>
+
+                <!-- RIGHT SIDE stickers -->
+                <!-- Orange heart right -->
+                <div class='stk' style='right:40px; top:130px; transform:rotate(12deg);'>
+                    <svg width='22' height='19' viewBox='0 0 22 19'><path d='M11 17s-9-6-9-11a4.5 4.5 0 0 1 9 0 4.5 4.5 0 0 1 9 0c0 5-9 11-9 11z' fill='#e87020' stroke='#c05010' stroke-width='1'/></svg>
+                </div>
+                <!-- Flower/purple cluster right -->
+                <div class='stk' style='right:30px; top:205px; transform:rotate(-5deg);'>
+                    <svg width='28' height='24' viewBox='0 0 28 24'><circle cx='14' cy='10' r='4' fill='#b060d0'/><circle cx='8' cy='7' r='3.5' fill='#9040b0'/><circle cx='20' cy='7' r='3.5' fill='#c080e0'/><circle cx='6' cy='14' r='3' fill='#a050c0'/><circle cx='22' cy='14' r='3' fill='#b070d0'/><circle cx='14' cy='20' r='3.5' fill='#8030a0'/></svg>
+                </div>
+                <!-- Small silver sparkle right mid -->
+                <div class='stk' style='right:18px; top:300px;'>
+                    <svg width='13' height='13' viewBox='0 0 13 13'><path d='M6.5 0 L7.5 5.5 L13 6.5 L7.5 7.5 L6.5 13 L5.5 7.5 L0 6.5 L5.5 5.5 Z' fill='#d0d0d0' stroke='#aaa' stroke-width='0.3'/></svg>
+                </div>
+                <!-- Red gem right lower -->
+                <div class='stk' style='right:22px; top:420px;'>
+                    <svg width='14' height='14' viewBox='0 0 14 14'><circle cx='7' cy='7' r='6' fill='#e02020' stroke='#a00000' stroke-width='1'/><circle cx='5' cy='5' r='2' fill='rgba(255,180,180,0.6)'/></svg>
+                </div>
+                <!-- Pink dotted star right corner bottom -->
+                <div class='stk' style='right:32px; bottom:65px; transform:rotate(15deg);'>
+                    <svg width='22' height='22' viewBox='0 0 22 22'><polygon points='11,1 13.5,8 21,8 15,13 17.5,20 11,16 4.5,20 7,13 1,8 8.5,8' fill='#e04090' stroke='#b02060' stroke-width='1'/></svg>
+                </div>
+
+                <!-- CENTER AREA stickers (above/around the title) -->
+                <!-- Small white heart above MY -->
+                <div class='stk' style='left:80px; top:175px; transform:rotate(-8deg);'>
+                    <svg width='22' height='19' viewBox='0 0 22 19'><path d='M11 17s-9-6-9-11a4.5 4.5 0 0 1 9 0 4.5 4.5 0 0 1 9 0c0 5-9 11-9 11z' fill='#f0c0c0' stroke='#d09090' stroke-width='1'/></svg>
+                </div>
+                <!-- Orange gem center top -->
+                <div class='stk' style='left:50%; top:165px; transform:translateX(-50%);'>
+                    <svg width='12' height='12' viewBox='0 0 12 12'><polygon points='6,0 12,4.5 10,12 2,12 0,4.5' fill='#e8a030' stroke='#c07010' stroke-width='0.5'/></svg>
+                </div>
+                <!-- Pink sparkle gem center right of title -->
+                <div class='stk' style='right:80px; top:188px;'>
+                    <svg width='14' height='14' viewBox='0 0 14 14'><path d='M7 0 L8.5 5.5 L14 7 L8.5 8.5 L7 14 L5.5 8.5 L0 7 L5.5 5.5 Z' fill='#f080a0' stroke='#d05070' stroke-width='0.3'/></svg>
+                </div>
+
+                <!-- BELOW TITLE area -->
+                <!-- White/gray dotted heart -->
+                <div class='stk' style='left:100px; top:320px; transform:rotate(6deg);'>
+                    <svg width='26' height='22' viewBox='0 0 26 22'><path d='M13 20s-10-6.5-10-13a5 5 0 0 1 10 0 5 5 0 0 1 10 0c0 6.5-10 13-10 13z' fill='#e0d0d0' stroke='#c0b0b0' stroke-width='1'/><path d='M13 20s-10-6.5-10-13a5 5 0 0 1 10 0 5 5 0 0 1 10 0c0 6.5-10 13-10 13z' fill='none' stroke='#d0c0c0' stroke-width='1.5' stroke-dasharray='2,2'/></svg>
+                </div>
+                <!-- Pink dotted heart center-right below title -->
+                <div class='stk' style='right:85px; top:330px; transform:rotate(-5deg);'>
+                    <svg width='30' height='26' viewBox='0 0 30 26'><path d='M15 23s-12-8-12-15a6 6 0 0 1 12 0 6 6 0 0 1 12 0c0 7-12 15-12 15z' fill='#f0a0b5' stroke='#d07090' stroke-width='1'/><path d='M15 23s-12-8-12-15a6 6 0 0 1 12 0 6 6 0 0 1 12 0c0 7-12 15-12 15z' fill='none' stroke='#ffd0e0' stroke-width='2' stroke-dasharray='3,2.5'/></svg>
+                </div>
+                <!-- Small red dot below title area -->
+                <div class='stk' style='right:115px; top:380px; width:8px; height:8px; background:#cc2020; border-radius:50%; box-shadow:1px 1px 3px rgba(0,0,0,0.3);'></div>
+                <!-- Blue teal gem lower center -->
+                <div class='stk' style='left:55%; top:400px;'>
+                    <svg width='12' height='12' viewBox='0 0 12 12'><circle cx='6' cy='6' r='5.5' fill='#20b0c0' stroke='#1080a0' stroke-width='0.5'/><circle cx='4' cy='4' r='1.5' fill='rgba(200,255,255,0.6)'/></svg>
+                </div>
+                <!-- "fore you" heart sticker bottom center -->
+                <div class='stk' style='left:50%; bottom:100px; transform:translateX(-50%) rotate(-3deg);'>
+                    <svg width='36' height='32' viewBox='0 0 36 32'><path d='M18 28s-14-9-14-17.5a7 7 0 0 1 14 0 7 7 0 0 1 14 0C32 19 18 28 18 28z' fill='#30a040' stroke='#207030' stroke-width='1.5'/><text x='18' y='18' text-anchor='middle' font-family='sans-serif' font-size='5' fill='white'>fore</text><text x='18' y='24' text-anchor='middle' font-family='sans-serif' font-size='5' fill='white'>you</text></svg>
+                </div>
+                <!-- Big red round gem bottom -->
+                <div class='stk' style='right:90px; bottom:80px;'>
+                    <svg width='20' height='20' viewBox='0 0 20 20'><circle cx='10' cy='10' r='9' fill='#d01010' stroke='#900000' stroke-width='1'/><circle cx='7' cy='7' r='3' fill='rgba(255,150,150,0.5)'/></svg>
+                </div>
+                <!-- Pink sequin/gem center left above sticker -->
+                <div class='stk' style='left:85px; top:245px;'>
+                    <svg width='16' height='16' viewBox='0 0 16 16'><circle cx='8' cy='8' r='7' fill='#f060a0' stroke='#c03070' stroke-width='1'/><ellipse cx='5' cy='5' rx='2.5' ry='1.5' fill='rgba(255,200,230,0.6)'/></svg>
+                </div>
+            </div>
+
+            <!-- COVER TITLE CENTER -->
+            <div class='cover-center'>
+
+                <!-- "MY" in ransom-note style -->
+                <div class='title-my'>
+                    <!-- M - pink bg -->
+                    <div class='ltr' style='background:#e8709a; color:white; font-family:"Fredoka One",sans-serif; font-size:1.35rem; padding:3px 7px; border-radius:3px; transform:rotate(-3deg);'>M</div>
+                    <!-- Y - white bg, dark text -->
+                    <div class='ltr' style='background:white; color:#333; font-family:"Patrick Hand",cursive; font-size:1.35rem; font-weight:700; padding:3px 7px; border-radius:3px; transform:rotate(4deg);'>Y</div>
+                </div>
+
+                <!-- "MEMORIES" in ransom-note style -->
+                <div class='title-memories'>
+                    <!-- M - green bg -->
+                    <div class='ltr' style='background:#50b850; color:white; font-family:"Fredoka One",sans-serif; font-size:1.7rem; padding:4px 9px; border-radius:3px; transform:rotate(-2deg);'>M</div>
+                    <!-- e - white/light bg -->
+                    <div class='ltr' style='background:#f0e8f8; color:#6040a0; font-family:"Patrick Hand",cursive; font-size:1.7rem; font-weight:700; padding:4px 8px; border-radius:3px; transform:rotate(3deg);'>e</div>
+                    <!-- m - blue bg -->
+                    <div class='ltr' style='background:#5090e0; color:white; font-family:"Fredoka One",sans-serif; font-size:1.7rem; padding:4px 8px; border-radius:3px; transform:rotate(-4deg);'>m</div>
+                    <!-- O - yellow/cream bg pink text -->
+                    <div class='ltr' style='background:#f8f0d8; color:#d06020; font-family:"Patrick Hand",cursive; font-size:1.7rem; font-weight:700; padding:4px 7px; border-radius:3px; transform:rotate(2deg);'>O</div>
+                    <!-- R - white bg black text -->
+                    <div class='ltr' style='background:white; color:#222; font-family:"Fredoka One",sans-serif; font-size:1.7rem; padding:4px 8px; border-radius:3px; transform:rotate(-2deg);'>R</div>
+                    <!-- I - pink bg -->
+                    <div class='ltr' style='background:#f080b0; color:white; font-family:"Patrick Hand",cursive; font-size:1.7rem; font-weight:700; padding:4px 6px; border-radius:3px; transform:rotate(5deg);'>I</div>
+                    <!-- E - gray/blue bg white text -->
+                    <div class='ltr' style='background:#7090b0; color:white; font-family:"Fredoka One",sans-serif; font-size:1.7rem; padding:4px 8px; border-radius:3px; transform:rotate(-3deg);'>E</div>
+                    <!-- S - black bg white text -->
+                    <div class='ltr' style='background:#222; color:white; font-family:"Patrick Hand",cursive; font-size:1.7rem; font-weight:700; padding:4px 7px; border-radius:3px; transform:rotate(2deg);'>S</div>
+                </div>
+
+                <!-- Blog/website title -->
+                <div class='site-title-cover'><data:blog.title/></div>
+
+            </div>
+
+            <div class='click-hint'>Swipe to open &#8594;</div>
+        </div>
+
+        <!-- Intro Page (back of cover) -->
+        <div class='face back'>
+            <div style='display:flex; height:100%; align-items:center; justify-content:center; flex-direction:column; padding:40px; text-align:center; color:#555; background:#fef8f8;'>
+                <div style='font-size:2rem; margin-bottom:15px;'>🌸</div>
+                <h2 style='font-family:"Fredoka One",sans-serif; color:#d06080; font-size:1.6rem; margin-bottom:10px; letter-spacing:1px;'>Welcome</h2>
+                <div style='width:40px; height:2px; background:#f09090; margin-bottom:20px; border-radius:2px;'/>
+                <p style='font-family:"Patrick Hand",cursive; font-style:italic; line-height:1.8; font-size:1rem; color:#888;'>&quot;Beautiful memories are<br/>priceless treasures.&quot;</p>
+                <div style='margin-top:20px; font-size:1.5rem;'>💗</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- WELCOME SHEET (mobile only — separate swipe page) -->
+    <div class='sheet' id='sheet-welcome' style='z-index: 999; display: none;'>
+        <div class='face front'>
+            <div style='display:flex; height:100%; align-items:center; justify-content:center; flex-direction:column; padding:40px; text-align:center; color:#555; background:#fef8f8;'>
+                <div style='font-size:2rem; margin-bottom:15px;'>🌸</div>
+                <h2 style='font-family:"Fredoka One",sans-serif; color:#d06080; font-size:1.6rem; margin-bottom:10px; letter-spacing:1px;'>Welcome</h2>
+                <div style='width:40px; height:2px; background:#f09090; margin-bottom:20px; border-radius:2px;'/>
+                <p style='font-family:"Patrick Hand",cursive; font-style:italic; line-height:1.8; font-size:1rem; color:#888;'>&quot;Beautiful memories are<br/>priceless treasures.&quot;</p>
+                <div style='margin-top:20px; font-size:1.5rem;'>💗</div>
+            </div>
+        </div>
+        <div class='face back'><div style='display:flex;height:100%;align-items:center;justify-content:center;color:#f0a0b0;font-size:2rem;background:#fef8f8;'>&#9829;</div></div>
+    </div>
+
+    <!-- DYNAMIC AREA -->
+    <div id='dynamic-area'/>
+
+    <!-- BACK COVER -->
+    <div class='sheet' id='sheet-end'>
+        <div class='face front'>
+            <div style='display:flex; height:100%; align-items:center; justify-content:center; flex-direction:column; color:#999; background:#fef8f8;'>
+                <div style='font-size:2rem; margin-bottom:10px;'>💝</div>
+                <h2 style='font-family:"Fredoka One",sans-serif; letter-spacing:2px; color:#d06080; font-size:1.4rem;'>Thank you</h2>
+                <div style='margin-top:10px; font-size:1.2rem; color:#f0a0b0;'> &#9829; </div>
+            </div>
+        </div>
+        <div class='face back cover-skin' style='transform: rotateY(180deg);'>
+            <div class='spine-fold'/>
+        </div>
+    </div>
+</div>
+
+<script>
+//<![CDATA[
+var photos = [];
+var currentSheet = 0;
+var totalSheets = 0;
+var stage = document.getElementById('stage');
+var dynamicArea = document.getElementById('dynamic-area');
+var endSheet = document.getElementById('sheet-end');
+var isMobile = window.matchMedia("(max-width: 850px)").matches;
+
+// Fixed photo count pattern: 2, 4, 1, 4, 2, 6, 3 — repeating
+var photoPattern = [2, 4, 1, 4, 2, 6, 3];
+
+// Mobile welcome sheet
+var welcomeSheet = document.getElementById('sheet-welcome');
+if (isMobile) {
+    welcomeSheet.style.display = '';
+} else {
+    welcomeSheet.parentNode.removeChild(welcomeSheet);
+    welcomeSheet = null;
+}
+
+function loadFeed(json) {
+    if(!json.feed || !json.feed.entry) { useDemo(); return; }
+    var entries = json.feed.entry;
+    for(var i=0; i<entries.length; i++) {
+        var div = document.createElement('div');
+        div.innerHTML = entries[i].content.$t;
+        var imgs = div.getElementsByTagName('img');
+        for(var k=0; k<imgs.length; k++) {
+            var src = imgs[k].src;
+            if(src.indexOf('blogspot') > -1 || src.indexOf('googleusercontent') > -1) {
+                 src = src.replace(/\/s\d+(-c)?\//, '/s2048/').replace(/=s\d+/, '=s2048');
+            }
+            photos.push(src);
+        }
+    }
+    if(photos.length > 0) buildBook(); else useDemo();
+}
+
+function useDemo() {
+    var pinkColors = ['f8d0d8','f0b0c0','e890a8','f5c0d0','fce0e8'];
+    for(var i=0; i<12; i++) {
+        var c = pinkColors[i % pinkColors.length];
+        photos.push("https://via.placeholder.com/1000x1000/" + c + "/c05070?text=Memory+" + (i+1));
+    }
+    buildBook();
+}
+
+(function(){
+    dynamicArea.innerHTML = '<div class="loader">Memuat kenangan...</div>';
+    var script = document.createElement('script');
+    var url = "/feeds/posts/default?alt=json-in-script&callback=loadFeed&max-results=50";
+    script.src = url;
+    script.onerror = function() { useDemo(); };
+    document.body.appendChild(script);
+})();
+
+function buildBook() {
+    dynamicArea.innerHTML = '';
+    var photoIdx = 0;
+    var sheetCount = 0;
+    var pageNum = 0;
+    var patternIdx = 0;
+
+    if (isMobile) {
+        // Mobile: each sheet shows one page (front only)
+        while (photoIdx < photos.length) {
+            sheetCount++;
+            pageNum++;
+            var count = photoPattern[(patternIdx++) % photoPattern.length];
+            var sheet = document.createElement('div');
+            sheet.className = 'sheet';
+            sheet.id = 'sheet-' + sheetCount;
+            sheet.style.zIndex = 100 - sheetCount;
+            var frontHTML = generateGrid(photoIdx, count, false, pageNum);
+            photoIdx += Math.min(count, photos.length - photoIdx);
+            var backHTML = '<div class="face back"><div style="display:flex;height:100%;align-items:center;justify-content:center;color:#f0a0b0;font-size:2rem;background:#fef8f8;">&#9829;</div></div>';
+            sheet.innerHTML = frontHTML + backHTML;
+            dynamicArea.appendChild(sheet);
+        }
+
+        // Renumber: cover=sheet-0, welcome=sheet-1, photos=sheet-2..N+1, end=sheet-N+2
+        welcomeSheet.id = 'sheet-1';
+        welcomeSheet.style.zIndex = 99;
+        var photoSheets = dynamicArea.querySelectorAll('.sheet');
+        for (var s = 0; s < photoSheets.length; s++) {
+            photoSheets[s].id = 'sheet-' + (s + 2);
+            photoSheets[s].style.zIndex = 98 - s;
+        }
+        totalSheets = photoSheets.length + 2;
+        endSheet.id = 'sheet-' + totalSheets;
+        endSheet.style.zIndex = 1;
+
+    } else {
+        // Desktop: front + back per sheet
+        while (photoIdx < photos.length) {
+            sheetCount++;
+            var sheet = document.createElement('div');
+            sheet.className = 'sheet';
+            sheet.id = 'sheet-' + sheetCount;
+            sheet.style.zIndex = 100 - sheetCount;
+
+            pageNum++;
+            var countFront = photoPattern[(patternIdx++) % photoPattern.length];
+            var frontHTML = generateGrid(photoIdx, countFront, false, pageNum);
+            photoIdx += Math.min(countFront, photos.length - photoIdx);
+
+            var backHTML = '';
+            if (photoIdx < photos.length) {
+                pageNum++;
+                var countBack = photoPattern[(patternIdx++) % photoPattern.length];
+                backHTML = generateGrid(photoIdx, countBack, true, pageNum);
+                photoIdx += Math.min(countBack, photos.length - photoIdx);
+            } else {
+                backHTML = '<div class="face back"></div>';
+            }
+
+            sheet.innerHTML = frontHTML + backHTML;
+            dynamicArea.appendChild(sheet);
+        }
+        totalSheets = sheetCount + 1;
+        endSheet.id = 'sheet-' + totalSheets;
+        endSheet.style.zIndex = 1;
+    }
+
+    optimizeVisibility();
+}
+
+function generateGrid(startIndex, count, isBack, pageNum) {
+    if (startIndex >= photos.length) return '<div class="face ' + (isBack ? 'back' : 'front') + '"></div>';
+    if (startIndex + count > photos.length) count = photos.length - startIndex;
+    if (count < 1) count = 1;
+    if (count > 6) count = 6;
+
+    var html = '<div class="face ' + (isBack ? 'back' : 'front') + '"><div class="grid-layout layout-' + count + '">';
+    for (var i = 0; i < count; i++) {
+        var currentIdx = startIndex + i;
+        if (currentIdx < photos.length) {
+            html += '<div class="photo-item" onclick="openLightbox(' + currentIdx + ')">' +
+                        '<img src="' + photos[currentIdx] + '" loading="lazy">' +
+                    '</div>';
+        }
+    }
+    html += '</div><div class="pg-num">' + pageNum + '</div></div>';
+    return html;
+}
+
+function optimizeVisibility() {
+    for(var i=0; i<=totalSheets; i++) {
+        var el = document.getElementById('sheet-'+i);
+        if(!el) continue;
+        if(i === 0) {
+            if(currentSheet <= 3) el.classList.remove('inactive');
+            else el.classList.add('inactive');
+            continue;
+        }
+        if(i >= currentSheet - 3 && i <= currentSheet + 3) {
+            el.classList.remove('inactive');
+        } else {
+            el.classList.add('inactive');
+        }
+    }
+}
+
+function openBook() {
+    stage.classList.remove('closed');
+    stage.classList.add('opened');
+    nextPage();
+}
+
+function closeBook() {
+    for(var i=totalSheets; i>=1; i--) {
+        var el = document.getElementById('sheet-'+i);
+        if(el) { el.classList.remove('flipped'); el.style.zIndex = (100 - i); }
+    }
+    var cover = document.getElementById('sheet-0');
+    cover.classList.remove('flipped'); cover.style.zIndex = 1000;
+    currentSheet = 0;
+    stage.classList.remove('opened'); stage.classList.add('closed');
+    optimizeVisibility();
+}
+
+function nextPage() {
+    if(currentSheet < totalSheets) {
+        var el = document.getElementById('sheet-' + currentSheet);
+        if(el) {
+            el.style.zIndex = 1000;
+            el.classList.add('flipped');
+            setTimeout(function() { el.style.zIndex = 200 + currentSheet; }, 400);
+            currentSheet++;
+            optimizeVisibility();
+        }
+    }
+}
+
+function prevPage() {
+    if(currentSheet > 0) {
+        currentSheet--;
+        var el = document.getElementById('sheet-' + currentSheet);
+        if(el) {
+            el.style.zIndex = 1000;
+            el.classList.remove('flipped');
+            setTimeout(function() {
+                if(currentSheet === 0) { el.style.zIndex = 1000; closeBook(); }
+                else { el.style.zIndex = (100 - currentSheet); }
+            }, 400);
+            optimizeVisibility();
+        }
+    }
+}
+
+var startX = 0, endX = 0, isLbOpen = false, isDragging = false;
+document.addEventListener('mousedown', function(e) { if(isLbOpen) return; startX = e.clientX; isDragging = true; });
+document.addEventListener('mouseup', function(e) { if(isLbOpen || !isDragging) return; isDragging = false; endX = e.clientX; processInput(e.target); });
+document.addEventListener('touchstart', function(e) { if(isLbOpen) { lbTouchStart(e); return; } startX = e.changedTouches[0].clientX; });
+document.addEventListener('touchend', function(e) { if(isLbOpen) { lbTouchEnd(e); return; } endX = e.changedTouches[0].clientX; processInput(e.target); });
+
+function processInput(target) {
+    if (Math.abs(endX - startX) > 50) {
+        if (endX < startX) { if(currentSheet === 0) openBook(); else nextPage(); } else { prevPage(); }
+        return;
+    }
+    if (target.tagName === 'IMG' || target.classList.contains('photo-item')) return;
+    if (endX > window.innerWidth / 2) { if(currentSheet === 0) openBook(); else nextPage(); } else { prevPage(); }
+}
+
+var lb = document.getElementById('lightbox');
+var lbImg = document.getElementById('lb-img');
+var lbCounter = document.getElementById('lb-counter');
+var lbContainer = document.getElementById('lb-container');
+var scale = 1, currentPhotoIndex = 0;
+var pointX = 0, pointY = 0, pStartX = 0, pStartY = 0, isPanning = false, lbTxS = 0, lbTxE = 0;
+
+function openLightbox(idx) {
+    isLbOpen = true;
+    currentPhotoIndex = idx;
+    lbImg.src = photos[currentPhotoIndex];
+    lb.classList.add('active');
+    updateCounter();
+    resetZoom();
+    if(window.event) window.event.stopPropagation();
+}
+
+function updateCounter() { lbCounter.innerText = (currentPhotoIndex + 1) + " / " + photos.length; }
+function closeLightbox() { isLbOpen = false; lb.classList.remove('active'); }
+lb.addEventListener('click', function(e) { if (e.target === lb || e.target === lbContainer) closeLightbox(); });
+
+function toggleZoom() { if(scale === 1) maxZoom(); else resetZoom(); }
+function maxZoom() { scale = 2.5; lbImg.classList.add('zoomed'); updateTransform(); }
+function resetZoom() { scale = 1; pointX = 0; pointY = 0; lbImg.classList.remove('zoomed'); updateTransform(); }
+function updateTransform() { lbImg.style.transform = 'translate(' + pointX + 'px, ' + pointY + 'px) scale(' + scale + ')'; }
+
+lbImg.addEventListener('mousedown', function(e) { if(scale <= 1) return; e.preventDefault(); isPanning = true; pStartX = e.clientX - pointX; pStartY = e.clientY - pointY; lbImg.style.transition = "none"; });
+window.addEventListener('mousemove', function(e) { if(!isPanning) return; e.preventDefault(); pointX = e.clientX - pStartX; pointY = e.clientY - pStartY; updateTransform(); });
+window.addEventListener('mouseup', function() { if(isPanning) { isPanning = false; lbImg.style.transition = "transform 0.3s ease"; } });
+
+function lbTouchStart(e) { if(scale > 1) { isPanning = true; pStartX = e.touches[0].clientX - pointX; pStartY = e.touches[0].clientY - pointY; lbImg.style.transition = "none"; } else { lbTxS = e.changedTouches[0].clientX; } }
+lbImg.addEventListener('touchmove', function(e) { if(scale > 1 && isPanning) { e.preventDefault(); pointX = e.touches[0].clientX - pStartX; pointY = e.touches[0].clientY - pStartY; updateTransform(); } });
+function lbTouchEnd(e) { if(scale > 1) { isPanning = false; lbImg.style.transition = "transform 0.3s ease"; } else { lbTxE = e.changedTouches[0].clientX; if(Math.abs(lbTxE - lbTxS) > 50) { if(lbTxE < lbTxS) nextPhoto(); else prevPhoto(); } } }
+
+function changePhoto(newIdx, direction) {
+    lbImg.style.transition = "all 0.3s ease";
+    lbImg.style.opacity = 0;
+    lbImg.style.transform = direction === 'next' ? "translateX(-30px)" : "translateX(30px)";
+    setTimeout(function() {
+        currentPhotoIndex = newIdx;
+        lbImg.src = photos[currentPhotoIndex];
+        updateCounter();
+        resetZoom();
+        lbImg.style.transition = "none";
+        lbImg.style.transform = direction === 'next' ? "translateX(30px)" : "translateX(-30px)";
+        void lbImg.offsetWidth;
+        lbImg.style.transition = "all 0.3s ease";
+        lbImg.style.opacity = 1;
+        lbImg.style.transform = "translate(0,0) scale(1)";
+    }, 300);
+}
+
+function nextPhoto() { if(currentPhotoIndex < photos.length - 1) changePhoto(currentPhotoIndex + 1, 'next'); }
+function prevPhoto() { if(currentPhotoIndex > 0) changePhoto(currentPhotoIndex - 1, 'prev'); }
+
+document.addEventListener('keydown', function(e){
+    if(isLbOpen) {
+        if(e.key === "Escape") closeLightbox();
+        if(e.key === "ArrowRight") nextPhoto();
+        if(e.key === "ArrowLeft") prevPhoto();
+        return;
+    }
+    if(e.key === "ArrowRight") nextPage();
+    if(e.key === "ArrowLeft") prevPage();
+});
+//]]>
+</script>
+
+</body>
+</html>

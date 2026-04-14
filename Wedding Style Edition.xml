@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html>
 <!--
-Theme Name: Royal Heirloom
-Author: Album Foto Digital
+Theme Name: Wedding Style Edition Photocover
+Author: Exalted Influence
 Copyright: 2026
 Version: 1.0
--->
-<html xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
+--><html xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
 <head>
 <meta charset='UTF-8'/>
 <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'/>
@@ -157,6 +156,67 @@ body {
 }
 @keyframes pulse { 0%,100%{opacity:0.4} 50%{opacity:0.8} }
 
+/* --- PAGE VARIATIONS --- */
+/* Variasi 1: Warm Cream */
+.page-warm {
+    background: linear-gradient(135deg, #fdf6ee 0%, #f5ede0 100%);
+}
+.page-warm .photo-item img { filter: contrast(1.03) brightness(1.02); }
+
+/* Variasi 2: Dusty Rose */
+.page-rose {
+    background: linear-gradient(135deg, #fdf0f0 0%, #f7e8e8 50%, #f0e0e0 100%);
+}
+
+/* Variasi 3: Sage Green */
+.page-sage {
+    background: linear-gradient(135deg, #f0f4f0 0%, #e8f0e8 100%);
+}
+
+/* Variasi 4: Slate Blue */
+.page-slate {
+    background: linear-gradient(135deg, #f0f2f7 0%, #e8ecf5 100%);
+}
+
+/* Variasi 5: Champagne Gold */
+.page-gold {
+    background: linear-gradient(135deg, #fdf8ee 0%, #f5eedb 100%);
+}
+
+/* Variasi 6: Linen */
+.page-linen {
+    background-color: #faf8f4;
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c8b89a' fill-opacity='0.07'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* Variasi 7: Marble-ish (subtle) */
+.page-marble {
+    background-color: #fafafa;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+}
+
+/* Tambahan aksen corner decoration */
+.page-with-corner::before {
+    content: '';
+    position: absolute;
+    top: 12px; left: 12px;
+    width: 20px; height: 20px;
+    border-top: 1px solid rgba(180,160,130,0.35);
+    border-left: 1px solid rgba(180,160,130,0.35);
+    pointer-events: none;
+    z-index: 5;
+}
+.page-with-corner::after {
+    content: '';
+    position: absolute;
+    bottom: 12px; right: 12px;
+    width: 20px; height: 20px;
+    border-bottom: 1px solid rgba(180,160,130,0.35);
+    border-right: 1px solid rgba(180,160,130,0.35);
+    pointer-events: none;
+    z-index: 5;
+}
+
 /* --- GRID SYSTEM --- */
 .grid-layout { display: grid; width: 100%; height: 100%; padding: 30px; box-sizing: border-box; gap: 10px; }
 .photo-item {
@@ -167,15 +227,12 @@ body {
 .photo-item img { width: 100%; height: 100%; object-fit: cover; display: block; filter: contrast(1.05); }
 
 /* Layouts */
+.layout-1 { grid-template-rows: 1fr; grid-template-columns: 1fr; }
 .layout-2 { grid-template-rows: 1fr 1fr; grid-template-columns: 1fr; }
 .layout-3 { grid-template-columns: 1.2fr 0.8fr; grid-template-rows: 1fr 1fr; }
 .layout-3 .photo-item:nth-child(1) { grid-row: span 2; }
 .layout-4 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
-.layout-5 { grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr; grid-template-rows: 1.2fr 1fr; }
-.layout-5 .photo-item:nth-child(1) { grid-column: span 3; }
-.layout-5 .photo-item:nth-child(2) { grid-column: span 3; }
-.layout-5 .photo-item:nth-child(3), .layout-5 .photo-item:nth-child(4), .layout-5 .photo-item:nth-child(5) { grid-column: span 2; }
-.layout-6 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr 1fr; }
+.layout-6 { grid-template-columns: 1fr 1fr 1fr; grid-template-rows: 1fr 1fr; }
 
 .pg-num { position: absolute; bottom: 10px; width: 100%; text-align: center; color: #ccc; font-size: 0.6rem; letter-spacing: 2px; }
 .loader { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color: #888; font-family: 'Montserrat'; letter-spacing: 2px; font-size: 0.8rem; }
@@ -231,15 +288,338 @@ body {
 }
 .lb-close:hover { transform: rotate(90deg); color: #000; }
 
+/* --- COVER DECORATION --- */
+
+/* Ornamen sudut di area kanan (sisi putih) */
+.cover-right::before {
+    content: '';
+    position: absolute;
+    top: 16px; left: 16px;
+    width: 22px; height: 22px;
+    border-top: 1.5px solid rgba(160,130,100,0.45);
+    border-left: 1.5px solid rgba(160,130,100,0.45);
+    pointer-events: none;
+    z-index: 10;
+}
+.cover-right::after {
+    content: '';
+    position: absolute;
+    bottom: 16px; right: 16px;
+    width: 22px; height: 22px;
+    border-bottom: 1.5px solid rgba(160,130,100,0.45);
+    border-right: 1.5px solid rgba(160,130,100,0.45);
+    pointer-events: none;
+    z-index: 10;
+}
+
+/* SVG ornamen floral di cover-right - injected via pseudo absolute */
+.cover-deco-top-right {
+    position: absolute;
+    top: 14px; right: 14px;
+    opacity: 0.38;
+    pointer-events: none;
+    z-index: 10;
+    width: 38px; height: 38px;
+}
+.cover-deco-bot-left {
+    position: absolute;
+    bottom: 14px; left: 14px;
+    opacity: 0.38;
+    pointer-events: none;
+    z-index: 10;
+    width: 38px; height: 38px;
+    transform: rotate(180deg);
+}
+
+/* Garis tipis vertikal di tepi kiri area kanan (pembatas hias) */
+.cover-right-edge {
+    position: absolute;
+    top: 10%; left: 0;
+    width: 1px; height: 80%;
+    background: linear-gradient(to bottom, transparent, rgba(180,150,110,0.3) 30%, rgba(180,150,110,0.3) 70%, transparent);
+    pointer-events: none;
+    z-index: 10;
+}
+
+/* Dot aksen kecil di pojok kiri atas area kanan */
+.cover-dot-tl {
+    position: absolute;
+    top: 16px; left: 16px;
+    width: 3px; height: 3px;
+    border-radius: 50%;
+    background: rgba(180,150,110,0.5);
+    pointer-events: none;
+    z-index: 11;
+}
+.cover-dot-br {
+    position: absolute;
+    bottom: 16px; right: 16px;
+    width: 3px; height: 3px;
+    border-radius: 50%;
+    background: rgba(180,150,110,0.5);
+    pointer-events: none;
+    z-index: 11;
+}
+
+/* Thin horizontal accent line atas & bawah teks di kanan */
+.cover-line-top {
+    position: absolute;
+    top: 42px; left: 50%;
+    transform: translateX(-50%);
+    width: 40%; height: 1px;
+    background: linear-gradient(to right, transparent, rgba(180,150,110,0.35), transparent);
+    pointer-events: none;
+    z-index: 10;
+}
+.cover-line-bot {
+    position: absolute;
+    bottom: 42px; left: 50%;
+    transform: translateX(-50%);
+    width: 40%; height: 1px;
+    background: linear-gradient(to right, transparent, rgba(180,150,110,0.35), transparent);
+    pointer-events: none;
+    z-index: 10;
+}
+
+/* Tiny floral spray di sudut kiri atas cover keseluruhan - di atas garis pembatas */
+.cover-floral-tl {
+    position: absolute;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 20;
+    opacity: 0.22;
+}
+/* Tiny floral spray di sudut kanan bawah cover-right */
+.cover-floral-br {
+    position: absolute;
+    bottom: 0; right: 0;
+    pointer-events: none;
+    z-index: 20;
+    opacity: 0.22;
+    transform: rotate(180deg);
+}
+
+/* --- WELCOME PAGE --- */
+.welcome-face {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    color: #555;
+    box-sizing: border-box;
+    padding: 28px 24px;
+    position: relative;
+    background: linear-gradient(160deg, #fdf8f3 0%, #faf4ee 60%, #f5ede2 100%);
+    overflow: hidden;
+}
+
+/* Corner ornament lines */
+.welcome-face::before {
+    content: '';
+    position: absolute;
+    top: 14px; left: 14px;
+    width: 28px; height: 28px;
+    border-top: 1.5px solid rgba(180,150,110,0.5);
+    border-left: 1.5px solid rgba(180,150,110,0.5);
+    pointer-events: none;
+}
+.welcome-face::after {
+    content: '';
+    position: absolute;
+    bottom: 14px; right: 14px;
+    width: 28px; height: 28px;
+    border-bottom: 1.5px solid rgba(180,150,110,0.5);
+    border-right: 1.5px solid rgba(180,150,110,0.5);
+    pointer-events: none;
+}
+
+.welcome-deco-top {
+    margin-bottom: 14px;
+    opacity: 0.55;
+    flex-shrink: 0;
+}
+.welcome-deco-bottom {
+    margin-top: 14px;
+    opacity: 0.55;
+    flex-shrink: 0;
+    transform: rotate(180deg);
+}
+
+.welcome-title {
+    font-family: 'Playfair Display', serif;
+    color: #3a3028;
+    font-size: clamp(1.4rem, 4.5vw, 2rem);
+    font-weight: 400;
+    margin: 0 0 8px 0;
+    letter-spacing: 2px;
+    line-height: 1.2;
+}
+
+.welcome-divider {
+    width: 40px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #b4967a, transparent);
+    margin: 0 auto 16px auto;
+    flex-shrink: 0;
+}
+
+.welcome-quote {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    font-size: clamp(0.65rem, 2.2vw, 0.85rem);
+    line-height: 1.9;
+    letter-spacing: 1.5px;
+    color: #7a6a5a;
+    margin: 0;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+    box-sizing: border-box;
+    text-transform: uppercase;
+    padding: 0 4px;
+}
+
+.welcome-small-heart {
+    margin-top: 16px;
+    color: #c9a882;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+    letter-spacing: 6px;
+    opacity: 0.7;
+}
+
 /* --- RESPONSIVE MOBILE --- */
 @media (max-width: 850px) {
     :root { --book-w: 90vw; --book-h: 65vh; }
     .stage.closed { transform: translateX(0); }
     .stage.opened { transform: translateX(0); }
     .lb-nav { display: none !important; }
-    /* Mobile font adjustment */
-    .main-title { font-size: 2rem; }
+    /* Mobile font adjustment - prevent overflow in 45% container */
+    .main-title { 
+        font-size: 0.85rem; 
+        letter-spacing: 1px;
+        word-break: break-word;
+        white-space: normal;
+        max-width: 100%;
+        overflow-wrap: break-word;
+        hyphens: auto;
+    }
+    .cover-content { width: 90%; padding-bottom: 0; padding-top: 160%; gap: 8px; }
+    .year-label { font-size: 0.6rem; letter-spacing: 2px; }
+    .cover-right { justify-content: center; }
+    .click-hint { bottom: 12px; right: 12px; font-size: 0.5rem; }
 }
+/* --- THANK YOU PAGE --- */
+.thankyou-face {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 28px 26px;
+    position: relative;
+    /* Deep dusty rose/mauve - kontras hangat vs welcome cream terang */
+    background: linear-gradient(160deg, #fdf8f3 0%, #faf4ee 60%, #f5ede2 100%);
+    overflow: hidden;
+}
+
+/* Subtle noise texture overlay */
+.thankyou-face::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='80' height='80' filter='url(%23n)' opacity='0.055'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Corner ornaments */
+.ty-corner {
+    position: absolute;
+    width: 24px; height: 24px;
+    pointer-events: none;
+    z-index: 5;
+}
+.ty-corner-tl { top: 16px; left: 16px; border-top: 1.5px solid rgba(160,110,90,0.35); border-left: 1.5px solid rgba(160,110,90,0.35); }
+.ty-corner-tr { top: 16px; right: 16px; border-top: 1.5px solid rgba(160,110,90,0.35); border-right: 1.5px solid rgba(160,110,90,0.35); }
+.ty-corner-bl { bottom: 16px; left: 16px; border-bottom: 1.5px solid rgba(160,110,90,0.35); border-left: 1.5px solid rgba(160,110,90,0.35); }
+.ty-corner-br { bottom: 16px; right: 16px; border-bottom: 1.5px solid rgba(160,110,90,0.35); border-right: 1.5px solid rgba(160,110,90,0.35); }
+
+/* Floral SVG top */
+.ty-floral-top {
+    flex-shrink: 0;
+    margin-bottom: 16px;
+    opacity: 0.65;
+    position: relative; z-index: 2;
+}
+.ty-floral-bottom {
+    flex-shrink: 0;
+    margin-top: 16px;
+    opacity: 0.65;
+    transform: rotate(180deg);
+    position: relative; z-index: 2;
+}
+
+/* Content */
+.ty-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative; z-index: 2;
+}
+
+.ty-small-label {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    font-size: clamp(0.5rem, 1.8vw, 0.62rem);
+    letter-spacing: 3px;
+    color: rgba(140,90,70,0.7);
+    text-transform: uppercase;
+    margin: 0 0 10px 0;
+}
+
+.ty-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 400;
+    font-size: clamp(1.5rem, 4.5vw, 2.1rem);
+    color: #6b3d30;
+    margin: 0 0 12px 0;
+    letter-spacing: 2px;
+    line-height: 1.1;
+}
+
+.ty-divider {
+    width: 44px; height: 1px;
+    background: linear-gradient(to right, transparent, rgba(180,120,100,0.45), transparent);
+    margin: 0 auto 14px auto;
+}
+
+.ty-quote {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    font-size: clamp(0.58rem, 2vw, 0.75rem);
+    line-height: 1.9;
+    letter-spacing: 1px;
+    color: rgba(120,70,55,0.75);
+    margin: 0;
+    word-break: break-word;
+    box-sizing: border-box;
+    padding: 0 4px;
+}
+
+.ty-hearts {
+    font-size: 0.8rem;
+    color: rgba(180,110,90,0.6);
+    letter-spacing: 6px;
+    margin-top: 14px;
+    position: relative; z-index: 2;
+    flex-shrink: 0;
+}
+
 /*]]>*/
 </style>
 </head>
@@ -274,6 +654,61 @@ body {
             <div class='cover-right'>
                 <!-- BG Kanan (Foto kedua pudar) -->
                 <div class='cover-bg-right' id='cover-bg-right'/>
+
+                <!-- Garis tepi kiri area kanan -->
+                <div class='cover-right-edge'/>
+
+                <!-- Dot pojok -->
+                <div class='cover-dot-tl'/>
+                <div class='cover-dot-br'/>
+
+                <!-- Garis horizontal aksen atas & bawah -->
+                <div class='cover-line-top'/>
+                <div class='cover-line-bot'/>
+
+                <!-- Floral kecil sudut kanan atas -->
+                <svg class='cover-deco-top-right' fill='none' viewBox='0 0 38 38' xmlns='http://www.w3.org/2000/svg'>
+                    <path d='M2 36 C10 24, 20 16, 36 2' fill='none' stroke='#b4967a' stroke-width='1.2'/>
+                    <path d='M2 36 C4 22, 8 12, 14 2' fill='none' stroke='#b4967a' stroke-width='0.8'/>
+                    <path d='M2 36 C16 32, 26 28, 36 18' fill='none' stroke='#b4967a' stroke-width='0.8'/>
+                    <ellipse cx='35' cy='3' fill='#c9a882' opacity='0.7' rx='3' ry='5.5' transform='rotate(45 35 3)'/>
+                    <ellipse cx='14' cy='3' fill='#c9a882' opacity='0.6' rx='2.5' ry='5' transform='rotate(15 14 3)'/>
+                    <ellipse cx='36' cy='18' fill='#c9a882' opacity='0.6' rx='2.5' ry='5' transform='rotate(70 36 18)'/>
+                    <circle cx='2' cy='36' fill='#b4967a' opacity='0.8' r='1.5'/>
+                </svg>
+
+                <!-- Floral kecil sudut kiri bawah -->
+                <svg class='cover-deco-bot-left' fill='none' viewBox='0 0 38 38' xmlns='http://www.w3.org/2000/svg'>
+                    <path d='M2 36 C10 24, 20 16, 36 2' fill='none' stroke='#b4967a' stroke-width='1.2'/>
+                    <path d='M2 36 C4 22, 8 12, 14 2' fill='none' stroke='#b4967a' stroke-width='0.8'/>
+                    <path d='M2 36 C16 32, 26 28, 36 18' fill='none' stroke='#b4967a' stroke-width='0.8'/>
+                    <ellipse cx='35' cy='3' fill='#c9a882' opacity='0.7' rx='3' ry='5.5' transform='rotate(45 35 3)'/>
+                    <ellipse cx='14' cy='3' fill='#c9a882' opacity='0.6' rx='2.5' ry='5' transform='rotate(15 14 3)'/>
+                    <ellipse cx='36' cy='18' fill='#c9a882' opacity='0.6' rx='2.5' ry='5' transform='rotate(70 36 18)'/>
+                    <circle cx='2' cy='36' fill='#b4967a' opacity='0.8' r='1.5'/>
+                </svg>
+
+                <!-- Floral spray cover keseluruhan pojok kiri atas (sangat tipis, di atas garis pembatas) -->
+                <svg class='cover-floral-tl' fill='none' height='48' viewBox='0 0 48 48' width='48' xmlns='http://www.w3.org/2000/svg'>
+                    <path d='M1 47 C12 30, 28 18, 47 1' fill='none' stroke='#8a7060' stroke-width='1.2'/>
+                    <path d='M1 47 C6 28, 12 14, 20 1' fill='none' stroke='#8a7060' stroke-width='0.8'/>
+                    <path d='M1 47 C20 40, 32 34, 47 22' fill='none' stroke='#8a7060' stroke-width='0.8'/>
+                    <ellipse cx='46' cy='2' fill='#8a7060' opacity='0.8' rx='3.5' ry='6' transform='rotate(45 46 2)'/>
+                    <ellipse cx='20' cy='2' fill='#8a7060' opacity='0.7' rx='3' ry='5.5' transform='rotate(15 20 2)'/>
+                    <ellipse cx='47' cy='22' fill='#8a7060' opacity='0.7' rx='3' ry='5.5' transform='rotate(65 47 22)'/>
+                    <circle cx='1' cy='47' fill='#8a7060' opacity='0.9' r='2'/>
+                </svg>
+
+                <!-- Floral spray pojok kanan bawah -->
+                <svg class='cover-floral-br' fill='none' height='48' viewBox='0 0 48 48' width='48' xmlns='http://www.w3.org/2000/svg'>
+                    <path d='M1 47 C12 30, 28 18, 47 1' fill='none' stroke='#8a7060' stroke-width='1.2'/>
+                    <path d='M1 47 C6 28, 12 14, 20 1' fill='none' stroke='#8a7060' stroke-width='0.8'/>
+                    <path d='M1 47 C20 40, 32 34, 47 22' fill='none' stroke='#8a7060' stroke-width='0.8'/>
+                    <ellipse cx='46' cy='2' fill='#8a7060' opacity='0.8' rx='3.5' ry='6' transform='rotate(45 46 2)'/>
+                    <ellipse cx='20' cy='2' fill='#8a7060' opacity='0.7' rx='3' ry='5.5' transform='rotate(15 20 2)'/>
+                    <ellipse cx='47' cy='22' fill='#8a7060' opacity='0.7' rx='3' ry='5.5' transform='rotate(65 47 22)'/>
+                    <circle cx='1' cy='47' fill='#8a7060' opacity='0.9' r='2'/>
+                </svg>
                 
                 <div class='cover-content'>
                     <!-- JUDUL BLOG -->
@@ -283,20 +718,57 @@ body {
                     <div class='title-divider'/>
                     
                     <!-- TAHUN -->
-                    <div class='year-label'>EST. 2026</div>
+                    <div class='year-label'>January 2026</div>
                 </div>
                 
-                <div class='click-hint'>GESER</div>
+                <div class='click-hint'>SWIPE TO OPEN</div>
             </div>
 
         </div>
         
-        <!-- Intro Page (Modern Clean) -->
+        <!-- Welcome Page -->
         <div class='face back'>
-            <div style='display:flex; height:100%; align-items:center; justify-content:center; flex-direction:column; padding:40px; text-align:center; color:#555;'>
-                <h2 style='font-family:&apos;Playfair Display&apos;; color: #333; font-size:2rem; font-weight:400; margin-bottom:10px;'>Kata Pengantar</h2>
-                <div style='width:30px; height:1px; background:#ccc; margin-bottom:20px;'/>
-                <p style='font-family:&apos;Montserrat&apos;; font-weight:300; font-size:0.9rem; line-height:1.8; letter-spacing:1px;'>&quot;MENGABADIKAN SETIAP MOMEN<br/>DALAM LEMBARAN ABADI.&quot;</p>
+            <div class='welcome-face'>
+                <!-- SVG Floral Top -->
+                <svg class='welcome-deco-top' fill='none' height='44' viewBox='0 0 110 44' width='110' xmlns='http://www.w3.org/2000/svg'>
+                    <path d='M55 42 C40 32, 10 28, 2 14' fill='none' stroke='#b4967a' stroke-width='1'/>
+                    <path d='M55 42 C70 32, 100 28, 108 14' fill='none' stroke='#b4967a' stroke-width='1'/>
+                    <path d='M55 42 C55 25, 55 12, 55 4' fill='none' stroke='#b4967a' stroke-width='1'/>
+                    <path d='M55 42 C45 28, 30 20, 18 20' fill='none' stroke='#b4967a' stroke-width='0.8'/>
+                    <path d='M55 42 C65 28, 80 20, 92 20' fill='none' stroke='#b4967a' stroke-width='0.8'/>
+                    <!-- Small leaves -->
+                    <ellipse cx='2' cy='12' fill='#c9a882' opacity='0.5' rx='4' ry='7' transform='rotate(-30 2 12)'/>
+                    <ellipse cx='108' cy='12' fill='#c9a882' opacity='0.5' rx='4' ry='7' transform='rotate(30 108 12)'/>
+                    <ellipse cx='55' cy='3' fill='#c9a882' opacity='0.5' rx='3.5' ry='6'/>
+                    <ellipse cx='18' cy='18' fill='#c9a882' opacity='0.4' rx='3.5' ry='6' transform='rotate(-50 18 18)'/>
+                    <ellipse cx='92' cy='18' fill='#c9a882' opacity='0.4' rx='3.5' ry='6' transform='rotate(50 92 18)'/>
+                    <!-- Tiny dots -->
+                    <circle cx='55' cy='43' fill='#b4967a' opacity='0.6' r='2'/>
+                    <circle cx='30' cy='36' fill='#b4967a' opacity='0.4' r='1.2'/>
+                    <circle cx='80' cy='36' fill='#b4967a' opacity='0.4' r='1.2'/>
+                </svg>
+
+                <h2 class='welcome-title'>Welcome</h2>
+                <div class='welcome-divider'/>
+                <p class='welcome-quote'>&#8220;Immortalize Every Moment<br/>in an Eternal Sheet.&#8221;</p>
+                <div class='welcome-small-heart'>&#9825; &#160; &#9825; &#160; &#9825;</div>
+
+                <!-- SVG Floral Bottom (mirrored) -->
+                <svg class='welcome-deco-bottom' fill='none' height='44' viewBox='0 0 110 44' width='110' xmlns='http://www.w3.org/2000/svg'>
+                    <path d='M55 42 C40 32, 10 28, 2 14' fill='none' stroke='#b4967a' stroke-width='1'/>
+                    <path d='M55 42 C70 32, 100 28, 108 14' fill='none' stroke='#b4967a' stroke-width='1'/>
+                    <path d='M55 42 C55 25, 55 12, 55 4' fill='none' stroke='#b4967a' stroke-width='1'/>
+                    <path d='M55 42 C45 28, 30 20, 18 20' fill='none' stroke='#b4967a' stroke-width='0.8'/>
+                    <path d='M55 42 C65 28, 80 20, 92 20' fill='none' stroke='#b4967a' stroke-width='0.8'/>
+                    <ellipse cx='2' cy='12' fill='#c9a882' opacity='0.5' rx='4' ry='7' transform='rotate(-30 2 12)'/>
+                    <ellipse cx='108' cy='12' fill='#c9a882' opacity='0.5' rx='4' ry='7' transform='rotate(30 108 12)'/>
+                    <ellipse cx='55' cy='3' fill='#c9a882' opacity='0.5' rx='3.5' ry='6'/>
+                    <ellipse cx='18' cy='18' fill='#c9a882' opacity='0.4' rx='3.5' ry='6' transform='rotate(-50 18 18)'/>
+                    <ellipse cx='92' cy='18' fill='#c9a882' opacity='0.4' rx='3.5' ry='6' transform='rotate(50 92 18)'/>
+                    <circle cx='55' cy='43' fill='#b4967a' opacity='0.6' r='2'/>
+                    <circle cx='30' cy='36' fill='#b4967a' opacity='0.4' r='1.2'/>
+                    <circle cx='80' cy='36' fill='#b4967a' opacity='0.4' r='1.2'/>
+                </svg>
             </div>
         </div>
     </div>
@@ -306,11 +778,59 @@ body {
 
     <!-- COVER BELAKANG -->
     <div class='sheet' id='sheet-end'>
-        <div class='face front'>
-            <div style='display:flex; height:100%; align-items:center; justify-content:center; flex-direction:column; color:#444;'>
-                <h2 style='font-family:&apos;Playfair Display&apos;; letter-spacing:1px; font-weight:400;'>Terima Kasih</h2>
-                <div style='font-size:1rem; color:#ccc; margin-top:10px;'> &#9825; </div>
+        <div class='face front thankyou-face'>
+
+            <!-- Corner ornaments -->
+            <div class='ty-corner ty-corner-tl'/>
+            <div class='ty-corner ty-corner-tr'/>
+            <div class='ty-corner ty-corner-bl'/>
+            <div class='ty-corner ty-corner-br'/>
+
+            <!-- Floral top center -->
+            <svg class='ty-floral-top' fill='none' height='52' viewBox='0 0 130 52' width='130' xmlns='http://www.w3.org/2000/svg'>
+                <path d='M65 50 C48 38, 14 32, 2 14' fill='none' stroke='#b4967a' stroke-width='1.2'/>
+                <path d='M65 50 C82 38, 116 32, 128 14' fill='none' stroke='#b4967a' stroke-width='1.2'/>
+                <path d='M65 50 C65 30, 65 16, 65 4' fill='none' stroke='#b4967a' stroke-width='1.2'/>
+                <path d='M65 50 C50 32, 32 22, 16 22' fill='none' stroke='#b4967a' stroke-width='0.9'/>
+                <path d='M65 50 C80 32, 98 22, 114 22' fill='none' stroke='#b4967a' stroke-width='0.9'/>
+                <ellipse cx='2' cy='12' fill='#c9a882' opacity='0.7' rx='4.5' ry='8' transform='rotate(-35 2 12)'/>
+                <ellipse cx='128' cy='12' fill='#c9a882' opacity='0.7' rx='4.5' ry='8' transform='rotate(35 128 12)'/>
+                <ellipse cx='65' cy='3' fill='#c9a882' opacity='0.7' rx='4' ry='7'/>
+                <ellipse cx='16' cy='20' fill='#c9a882' opacity='0.55' rx='3.5' ry='6.5' transform='rotate(-55 16 20)'/>
+                <ellipse cx='114' cy='20' fill='#c9a882' opacity='0.55' rx='3.5' ry='6.5' transform='rotate(55 114 20)'/>
+                <circle cx='65' cy='50' fill='#b4967a' opacity='0.8' r='2.5'/>
+                <circle cx='38' cy='42' fill='#b4967a' opacity='0.5' r='1.5'/>
+                <circle cx='92' cy='42' fill='#b4967a' opacity='0.5' r='1.5'/>
+            </svg>
+
+            <!-- Main text -->
+            <div class='ty-content'>
+                <p class='ty-small-label'>With Love &amp; Gratitude</p>
+                <h2 class='ty-title'>Thank You</h2>
+                <div class='ty-divider'/>
+                <p class='ty-quote'>&#8220;Every frame holds a story,<br/>every story holds a heart.&#8221;</p>
             </div>
+
+            <!-- Heart row -->
+            <div class='ty-hearts'>&#9825; &#160; &#9825; &#160; &#9825;</div>
+
+            <!-- Floral bottom (mirrored) -->
+            <svg class='ty-floral-bottom' fill='none' height='52' viewBox='0 0 130 52' width='130' xmlns='http://www.w3.org/2000/svg'>
+                <path d='M65 50 C48 38, 14 32, 2 14' fill='none' stroke='#b4967a' stroke-width='1.2'/>
+                <path d='M65 50 C82 38, 116 32, 128 14' fill='none' stroke='#b4967a' stroke-width='1.2'/>
+                <path d='M65 50 C65 30, 65 16, 65 4' fill='none' stroke='#b4967a' stroke-width='1.2'/>
+                <path d='M65 50 C50 32, 32 22, 16 22' fill='none' stroke='#b4967a' stroke-width='0.9'/>
+                <path d='M65 50 C80 32, 98 22, 114 22' fill='none' stroke='#b4967a' stroke-width='0.9'/>
+                <ellipse cx='2' cy='12' fill='#c9a882' opacity='0.7' rx='4.5' ry='8' transform='rotate(-35 2 12)'/>
+                <ellipse cx='128' cy='12' fill='#c9a882' opacity='0.7' rx='4.5' ry='8' transform='rotate(35 128 12)'/>
+                <ellipse cx='65' cy='3' fill='#c9a882' opacity='0.7' rx='4' ry='7'/>
+                <ellipse cx='16' cy='20' fill='#c9a882' opacity='0.55' rx='3.5' ry='6.5' transform='rotate(-55 16 20)'/>
+                <ellipse cx='114' cy='20' fill='#c9a882' opacity='0.55' rx='3.5' ry='6.5' transform='rotate(55 114 20)'/>
+                <circle cx='65' cy='50' fill='#b4967a' opacity='0.8' r='2.5'/>
+                <circle cx='38' cy='42' fill='#b4967a' opacity='0.5' r='1.5'/>
+                <circle cx='92' cy='42' fill='#b4967a' opacity='0.5' r='1.5'/>
+            </svg>
+
         </div>
         <div class='face back cover-skin' style='background:#fff;'>
             <!-- Back Cover Polos -->
@@ -326,7 +846,6 @@ var totalSheets = 0;
 var stage = document.getElementById('stage');
 var dynamicArea = document.getElementById('dynamic-area');
 var endSheet = document.getElementById('sheet-end');
-var isPortrait = window.matchMedia("(max-width: 850px) and (orientation: portrait)").matches;
 
 function loadFeed(json) {
     if(!json.feed || !json.feed.entry) { useDemo(); return; }
@@ -365,42 +884,89 @@ function buildBook() {
     
     // SET COVER PHOTOS (SPLIT)
     if(photos.length > 0) {
-        document.getElementById('cover-img-main').src = photos[0]; // Foto Kiri
-        
-        // Foto Kanan (Background Pudar) - Gunakan foto ke-2 jika ada, atau foto ke-1
+        document.getElementById('cover-img-main').src = photos[0];
         var bgRight = (photos.length > 1) ? photos[1] : photos[0];
         document.getElementById('cover-bg-right').style.backgroundImage = "url('" + bgRight + "')";
     }
 
+    // Urutan foto tetap per halaman: 2, 4, 1, 4, 2, 6, 3, dst (berulang)
+    var photoPattern = [2, 4, 1, 4, 2, 6, 3];
+    var isMobile = window.innerWidth <= 850;
+
     var photoIdx = 0;
     var sheetCount = 0;
+    var pageNumber = 0;
+    var patternIdx = 0;
 
-    while(photoIdx < photos.length) {
+    if(isMobile) {
+        // Mobile: tambah welcome sheet dulu sebelum foto
         sheetCount++;
-        var sheet = document.createElement('div');
-        sheet.className = 'sheet';
-        sheet.id = 'sheet-' + sheetCount;
-        sheet.style.zIndex = 100 - sheetCount; 
+        var welcomeSheet = document.createElement('div');
+        welcomeSheet.className = 'sheet';
+        welcomeSheet.id = 'sheet-' + sheetCount;
+        welcomeSheet.style.zIndex = 100 - sheetCount;
+        var floralSVG = '<svg width="110" height="44" viewBox="0 0 110 44" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M55 42 C40 32, 10 28, 2 14" stroke="#b4967a" stroke-width="1" fill="none"/><path d="M55 42 C70 32, 100 28, 108 14" stroke="#b4967a" stroke-width="1" fill="none"/><path d="M55 42 C55 25, 55 12, 55 4" stroke="#b4967a" stroke-width="1" fill="none"/><ellipse cx="2" cy="12" rx="4" ry="7" fill="#c9a882" opacity="0.5" transform="rotate(-30 2 12)"/><ellipse cx="108" cy="12" rx="4" ry="7" fill="#c9a882" opacity="0.5" transform="rotate(30 108 12)"/><ellipse cx="55" cy="3" rx="3.5" ry="6" fill="#c9a882" opacity="0.5"/><circle cx="55" cy="43" r="2" fill="#b4967a" opacity="0.6"/></svg>';
+        var floralSVGBottom = '<svg style="transform:rotate(180deg)" width="110" height="44" viewBox="0 0 110 44" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M55 42 C40 32, 10 28, 2 14" stroke="#b4967a" stroke-width="1" fill="none"/><path d="M55 42 C70 32, 100 28, 108 14" stroke="#b4967a" stroke-width="1" fill="none"/><path d="M55 42 C55 25, 55 12, 55 4" stroke="#b4967a" stroke-width="1" fill="none"/><ellipse cx="2" cy="12" rx="4" ry="7" fill="#c9a882" opacity="0.5" transform="rotate(-30 2 12)"/><ellipse cx="108" cy="12" rx="4" ry="7" fill="#c9a882" opacity="0.5" transform="rotate(30 108 12)"/><ellipse cx="55" cy="3" rx="3.5" ry="6" fill="#c9a882" opacity="0.5"/><circle cx="55" cy="43" r="2" fill="#b4967a" opacity="0.6"/></svg>';
+        welcomeSheet.innerHTML = '<div class="face front">' +
+            '<div class="welcome-face">' +
+            '<div class="welcome-deco-top">' + floralSVG + '</div>' +
+            '<h2 class="welcome-title">Welcome</h2>' +
+            '<div class="welcome-divider"></div>' +
+            '<p class="welcome-quote">&#8220;Immortalize Every Moment<br/>in an Eternal Sheet.&#8221;</p>' +
+            '<div class="welcome-small-heart">&#9825; &#160; &#9825; &#160; &#9825;</div>' +
+            '<div style="margin-top:14px;opacity:0.55;flex-shrink:0;">' + floralSVGBottom + '</div>' +
+            '</div></div>' +
+            '<div class="face back"></div>';
+        dynamicArea.appendChild(welcomeSheet);
 
-        var countFront = Math.floor(Math.random() * 5) + 2; 
-        var frontHTML = generateGrid(photoIdx, countFront);
-        photoIdx += countFront;
+        // Mobile: setiap halaman = 1 sheet tersendiri (front only, back kosong)
+        // agar tidak ada halaman yang terlewat saat swipe
+        while(photoIdx < photos.length) {
+            sheetCount++;
+            var sheet = document.createElement('div');
+            sheet.className = 'sheet';
+            sheet.id = 'sheet-' + sheetCount;
+            sheet.style.zIndex = 100 - sheetCount;
 
-        var backHTML = "";
-        if(isPortrait) {
-            backHTML = '<div class="face back"><div style="display:flex;height:100%;align-items:center;justify-content:center;color:#eee;font-size:2rem;">&#9830;</div></div>';
-        } else {
-            if (photoIdx < photos.length) {
-                var countBack = Math.floor(Math.random() * 5) + 2;
-                backHTML = generateGrid(photoIdx, countBack, true);
+            var count = photoPattern[patternIdx % photoPattern.length];
+            patternIdx++;
+            pageNumber++;
+            var frontHTML = generateGrid(photoIdx, count, false, pageNumber);
+            photoIdx += count;
+            var backHTML = '<div class="face back"></div>';
+
+            sheet.innerHTML = frontHTML + backHTML;
+            dynamicArea.appendChild(sheet);
+        }
+    } else {
+        // Desktop: front dan back per sheet (tampil berdampingan)
+        while(photoIdx < photos.length) {
+            sheetCount++;
+            var sheet = document.createElement('div');
+            sheet.className = 'sheet';
+            sheet.id = 'sheet-' + sheetCount;
+            sheet.style.zIndex = 100 - sheetCount;
+
+            var countFront = photoPattern[patternIdx % photoPattern.length];
+            patternIdx++;
+            pageNumber++;
+            var frontHTML = generateGrid(photoIdx, countFront, false, pageNumber);
+            photoIdx += countFront;
+
+            var backHTML = "";
+            if(photoIdx < photos.length) {
+                var countBack = photoPattern[patternIdx % photoPattern.length];
+                patternIdx++;
+                pageNumber++;
+                backHTML = generateGrid(photoIdx, countBack, true, pageNumber);
                 photoIdx += countBack;
             } else {
-                 backHTML = '<div class="face back"></div>';
+                backHTML = '<div class="face back"></div>';
             }
-        }
 
-        sheet.innerHTML = frontHTML + backHTML;
-        dynamicArea.appendChild(sheet);
+            sheet.innerHTML = frontHTML + backHTML;
+            dynamicArea.appendChild(sheet);
+        }
     }
     
     totalSheets = sheetCount + 1;
@@ -409,12 +975,15 @@ function buildBook() {
     optimizeVisibility();
 }
 
-function generateGrid(startIndex, count, isBack) {
+function generateGrid(startIndex, count, isBack, pageNumber) {
     if(startIndex + count > photos.length) count = photos.length - startIndex;
     if(count === 0) return '<div class="face ' + (isBack ? 'back' : 'front') + '"></div>';
-    if(count < 2) count = 2; 
 
-    var html = '<div class="face ' + (isBack ? 'back' : 'front') + '"><div class="grid-layout layout-' + count + '">';
+    // Variasi halaman berdasarkan nomor halaman
+    var pageVariants = ['page-warm', 'page-linen', 'page-rose', 'page-marble', 'page-sage', 'page-gold', 'page-slate'];
+    var variantClass = pageVariants[(pageNumber - 1) % pageVariants.length];
+
+    var html = '<div class="face ' + (isBack ? 'back' : 'front') + ' ' + variantClass + ' page-with-corner"><div class="grid-layout layout-' + count + '">';
     for(var i=0; i<count; i++) {
         var currentIdx = startIndex + i;
         if(currentIdx < photos.length) {
@@ -423,7 +992,7 @@ function generateGrid(startIndex, count, isBack) {
                      </div>`;
         }
     }
-    html += '</div><div class="pg-num"></div></div>';
+    html += '</div><div class="pg-num">' + (pageNumber || '') + '</div></div>';
     return html;
 }
 
@@ -525,7 +1094,7 @@ function openLightbox(idx) {
     if(window.event) window.event.stopPropagation();
 }
 
-function updateCounter() { lbCounter.innerText = "FOTO " + (currentPhotoIndex + 1) + " / " + photos.length; }
+function updateCounter() { lbCounter.innerText = (currentPhotoIndex + 1) + " / " + photos.length; }
 function closeLightbox() { isLbOpen = false; lb.classList.remove('active'); }
 lb.addEventListener('click', function(e) { if (e.target === lb || e.target === lbContainer) closeLightbox(); });
 

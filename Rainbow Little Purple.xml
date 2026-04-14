@@ -1,0 +1,727 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<!--
+Theme Name: Rainbow Little Purple Dynamic
+Author: Exalted Influence
+Copyright: 2026
+Version: 1.0
+-->
+<html xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
+<head>
+<meta charset='UTF-8'/>
+<meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'/>
+<title><data:blog.pageTitle/></title>
+<link href='https://fonts.googleapis.com/css2?family=Gmarket+Sans&amp;family=Noto+Sans+KR:wght@400;700;900&amp;family=DM+Serif+Display:ital@0;1&amp;family=Quicksand:wght@500;700&amp;display=swap' rel='stylesheet'/>
+
+<b:skin><![CDATA[
+body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; touch-action: none; }
+]]></b:skin>
+
+<style>
+/*<![CDATA[*/
+:root {
+    --book-w: 420px;
+    --book-h: 560px;
+    --lav: #c9aee5;
+    --lav-light: #e8d8f8;
+    --lav-deep: #9c6cc8;
+    --rose: #f7b8cc;
+    --rose-deep: #e8739a;
+    --mint: #b8eed8;
+    --yellow: #fff0a0;
+    --white: #fefcff;
+    --idol-pink: #ff85b3;
+    --idol-purple: #b06ad4;
+}
+
+/* ====== BACKGROUND: dreamy idol room ====== */
+body {
+    background: linear-gradient(135deg, #1a0a2e 0%, #2d1050 30%, #1e0840 60%, #0d0520 100%);
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    font-family: 'Quicksand', sans-serif;
+    perspective: 2500px;
+    user-select: none;
+    -webkit-font-smoothing: antialiased;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Purple starfield bg */
+body::before {
+    content: '';
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background-image:
+        radial-gradient(1.5px 1.5px at  8% 12%, rgba(255,200,255,0.9) 0%, transparent 100%),
+        radial-gradient(1px   1px   at 22% 28%, rgba(200,180,255,0.8) 0%, transparent 100%),
+        radial-gradient(2px   2px   at 37%  5%, rgba(255,220,240,0.9) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 51% 18%, rgba(180,160,255,0.8) 0%, transparent 100%),
+        radial-gradient(1px   1px   at 65%  9%, rgba(255,200,220,0.7) 0%, transparent 100%),
+        radial-gradient(2px   2px   at 78% 24%, rgba(200,180,255,0.9) 0%, transparent 100%),
+        radial-gradient(1px   1px   at 91% 14%, rgba(255,220,240,0.8) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 14% 55%, rgba(200,160,255,0.7) 0%, transparent 100%),
+        radial-gradient(1px   1px   at 30% 72%, rgba(255,200,230,0.8) 0%, transparent 100%),
+        radial-gradient(2px   2px   at 46% 88%, rgba(180,160,255,0.9) 0%, transparent 100%),
+        radial-gradient(1px   1px   at 60% 68%, rgba(255,220,200,0.7) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 75% 82%, rgba(200,180,255,0.8) 0%, transparent 100%),
+        radial-gradient(1px   1px   at 88% 60%, rgba(255,200,240,0.9) 0%, transparent 100%),
+        radial-gradient(2px   2px   at  5% 88%, rgba(200,160,255,0.8) 0%, transparent 100%),
+        radial-gradient(1px   1px   at 42% 45%, rgba(255,220,240,0.6) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 55% 38%, rgba(180,200,255,0.7) 0%, transparent 100%),
+        radial-gradient(1px   1px   at 83% 42%, rgba(255,200,220,0.8) 0%, transparent 100%),
+        radial-gradient(2px   2px   at 18% 38%, rgba(200,180,255,0.9) 0%, transparent 100%);
+}
+
+/* Glitter floating particles */
+.glitter {
+    position: fixed; pointer-events: none; z-index: 0;
+    border-radius: 50%;
+    animation: glitterFloat linear infinite;
+    opacity: 0;
+}
+@keyframes glitterFloat {
+    0%   { transform: translateY(110vh) rotate(0deg) scale(0); opacity: 0; }
+    8%   { opacity: 1; transform: translateY(90vh) rotate(90deg) scale(1); }
+    92%  { opacity: 0.7; }
+    100% { transform: translateY(-10vh) rotate(720deg) scale(0.5); opacity: 0; }
+}
+
+/* Emoji floating bg */
+.bg-deco {
+    position: fixed; pointer-events: none; z-index: 0;
+    animation: idolFloat linear infinite;
+    opacity: 0;
+}
+@keyframes idolFloat {
+    0%   { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+    8%   { opacity: 0.65; }
+    92%  { opacity: 0.65; }
+    100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+}
+
+/* Neon aurora sweep */
+.aurora {
+    position: fixed; pointer-events: none; z-index: 0;
+    border-radius: 50%;
+    filter: blur(80px);
+    animation: auroraDrift ease-in-out infinite alternate;
+}
+@keyframes auroraDrift {
+    0%   { transform: translateX(-30px) translateY(-20px); opacity: 0.35; }
+    100% { transform: translateX(30px)  translateY(20px);  opacity: 0.55; }
+}
+
+/* ====== STAGE ====== */
+.stage {
+    width: var(--book-w); height: var(--book-h);
+    position: relative; z-index: 2;
+    transform-style: preserve-3d;
+    transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+    cursor: grab; will-change: transform;
+    filter:
+        drop-shadow(0 20px 50px rgba(180,80,220,0.5))
+        drop-shadow(0 0 40px rgba(255,120,180,0.3))
+        drop-shadow(4px 6px 16px rgba(0,0,0,0.5));
+}
+.stage:active { cursor: grabbing; }
+.stage.closed { transform: translateX(0) rotateY(-5deg); }
+.stage.opened { transform: translateX(50%); }
+
+/* ====== SHEET ====== */
+.sheet {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    transform-origin: left center;
+    transform-style: preserve-3d;
+    transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+    will-change: transform;
+}
+.sheet.flipped { transform: rotateY(-180deg); }
+.sheet.inactive { visibility: hidden; pointer-events: none; }
+
+/* ====== FACE ====== */
+.face {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    backface-visibility: hidden; -webkit-backface-visibility: hidden;
+    overflow: hidden; background: #fdf6ff;
+    border-radius: 4px 16px 16px 4px;
+}
+.face.front { z-index: 2; box-shadow: inset 5px 0 18px rgba(160,80,200,0.06); border-right: 2px solid #e8c8f5; }
+.face.back {
+    z-index: 1; transform: rotateY(180deg); background: #fef0fa;
+    border-radius: 16px 4px 4px 16px; border-left: 2px solid #e8c8f5;
+    box-shadow: inset -5px 0 18px rgba(160,80,200,0.05);
+}
+
+/* ====== K-POP COVER ====== */
+.cover-skin {
+    /* Holographic pastel gradient */
+    background: linear-gradient(
+        135deg,
+        #f5c6e8 0%,
+        #e8b8f8 18%,
+        #c8a8f0 36%,
+        #b8d0f8 52%,
+        #c8f0e8 68%,
+        #f0d8b8 82%,
+        #f8c0d8 100%
+    );
+    background-size: 300% 300%;
+    animation: holoCover 6s ease infinite;
+    box-shadow:
+        inset 12px 0 30px rgba(0,0,0,0.08),
+        inset -2px 0 10px rgba(255,255,255,0.6),
+        inset 0 -4px 15px rgba(180,100,220,0.1),
+        inset 0 4px 15px rgba(255,180,220,0.2);
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    position: relative;
+    border-radius: 4px 16px 16px 4px;
+    overflow: hidden;
+}
+@keyframes holoCover {
+    0%   { background-position: 0% 50%;   filter: brightness(1)   hue-rotate(0deg);   }
+    25%  { background-position: 50% 0%;   filter: brightness(1.05) hue-rotate(8deg);   }
+    50%  { background-position: 100% 50%; filter: brightness(1.08) hue-rotate(15deg);  }
+    75%  { background-position: 50% 100%; filter: brightness(1.04) hue-rotate(8deg);   }
+    100% { background-position: 0% 50%;   filter: brightness(1)   hue-rotate(0deg);   }
+}
+
+/* Iridescent gloss sheen */
+.cover-skin::before {
+    content: '';
+    position: absolute; inset: 0; pointer-events: none;
+    background:
+        linear-gradient(115deg, rgba(255,255,255,0.55) 0%, transparent 45%),
+        radial-gradient(ellipse 80% 60% at 30% 30%, rgba(255,255,255,0.3) 0%, transparent 60%);
+}
+
+/* Polkadot subtle overlay */
+.cover-skin::after {
+    content: '';
+    position: absolute; inset: 0; pointer-events: none;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.2) 1.5px, transparent 1.5px);
+    background-size: 20px 20px;
+}
+
+/* Spine */
+.spine-fold {
+    position: absolute; left: 18px; top: 0; bottom: 0; width: 4px;
+    background: linear-gradient(to right, rgba(0,0,0,0.1), rgba(0,0,0,0.03), transparent);
+    box-shadow: 1px 0 3px rgba(255,255,255,0.4);
+}
+
+/* ====== STICKERS ====== */
+.stickers-layer {
+    position: absolute; inset: 0; pointer-events: none; overflow: hidden;
+}
+.stk {
+    position: absolute; line-height: 1;
+    filter: drop-shadow(0px 2px 4px rgba(140,60,180,0.25));
+}
+
+/* ====== TITLE ====== */
+.cover-center {
+    text-align: center; z-index: 10;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 7px;
+}
+.title-my   { display: flex; gap: 5px; align-items: center; margin-bottom: 3px; }
+.title-memories { display: flex; gap: 4px; align-items: center; }
+
+.ltr {
+    display: inline-flex; align-items: center; justify-content: center;
+    font-weight: 800; line-height: 1;
+    transform-origin: center;
+    border-radius: 6px;
+    box-shadow: 2px 3px 8px rgba(160,80,200,0.25), 0 1px 0 rgba(255,255,255,0.7) inset;
+}
+
+/* Idol star divider */
+.star-row {
+    display: flex; gap: 4px; align-items: center;
+    margin: 1px 0;
+}
+.star-row .s {
+    font-size: 0.85rem;
+    animation: starBlink 2s ease-in-out infinite;
+}
+.star-row .s:nth-child(1) { animation-delay: 0s; }
+.star-row .s:nth-child(2) { animation-delay: 0.25s; }
+.star-row .s:nth-child(3) { animation-delay: 0.5s; }
+.star-row .s:nth-child(4) { animation-delay: 0.75s; }
+.star-row .s:nth-child(5) { animation-delay: 1s; }
+.star-row .s:nth-child(6) { animation-delay: 1.25s; }
+.star-row .s:nth-child(7) { animation-delay: 1.5s; }
+@keyframes starBlink { 0%,100%{opacity:0.5;transform:scale(0.85);} 50%{opacity:1;transform:scale(1.2);} }
+
+/* Hangul subtitle */
+.hangul-sub {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 1rem; font-weight: 400;
+    color: rgba(140, 70, 180, 0.75);
+    letter-spacing: 3px;
+    margin-top: 2px;
+}
+
+/* Site title */
+.site-title-cover {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 0.9rem; font-weight: 700;
+    color: rgba(130, 60, 170, 0.85);
+    letter-spacing: 1.8px;
+    margin-top: 6px;
+    background: rgba(255,255,255,0.5);
+    padding: 3px 18px 4px;
+    border-radius: 30px;
+    border: 1.5px solid rgba(200,130,240,0.4);
+    backdrop-filter: blur(6px);
+}
+
+.click-hint {
+    position: absolute; bottom: 20px; width: 100%; text-align: center;
+    color: rgba(160, 80, 200, 0.7); font-family: 'Quicksand', sans-serif;
+    font-size: 0.6rem; letter-spacing: 2.5px; text-transform: uppercase;
+    animation: pulse 2.5s infinite; pointer-events: none;
+}
+@keyframes pulse { 0%,100%{opacity:0.4} 50%{opacity:1} }
+
+/* ====== PHOTO GRID ====== */
+.grid-layout {
+    display: grid; width: 100%; height: 100%;
+    padding: 26px; box-sizing: border-box; gap: 10px;
+    background: linear-gradient(160deg, #fdf6ff 0%, #fef0fa 100%);
+}
+.photo-item {
+    position: relative; overflow: hidden; border-radius: 8px;
+    background: #f0d8f8;
+    box-shadow: 0 3px 10px rgba(160,80,200,0.12), 0 0 0 2px rgba(200,130,240,0.15);
+    cursor: zoom-in; transition: transform 0.25s; backface-visibility: hidden;
+}
+.photo-item:hover { transform: scale(1.04) rotate(0.8deg); z-index: 10; box-shadow: 0 12px 30px rgba(160,80,200,0.22); }
+.photo-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* Cute pastel tape */
+.photo-item::before {
+    content: '';
+    position: absolute; top: -4px; left: 50%; transform: translateX(-50%);
+    width: 34px; height: 11px;
+    background: rgba(220,170,250,0.6);
+    border-radius: 3px; z-index: 5;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.layout-1 { grid-template-rows: 1fr; grid-template-columns: 1fr; }
+.layout-2 { grid-template-rows: 1fr 1fr; grid-template-columns: 1fr; }
+.layout-3 { grid-template-columns: 1.2fr 0.8fr; grid-template-rows: 1fr 1fr; }
+.layout-3 .photo-item:nth-child(1) { grid-row: span 2; }
+.layout-4 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
+.layout-5 { grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr; grid-template-rows: 1.2fr 1fr; }
+.layout-5 .photo-item:nth-child(1) { grid-column: span 3; }
+.layout-5 .photo-item:nth-child(2) { grid-column: span 3; }
+.layout-5 .photo-item:nth-child(3), .layout-5 .photo-item:nth-child(4), .layout-5 .photo-item:nth-child(5) { grid-column: span 2; }
+.layout-6 { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr 1fr; }
+
+.pg-num { position: absolute; bottom: 8px; width: 100%; text-align: center; color: #d4a0e8; font-size: 0.58rem; font-family: 'Quicksand'; letter-spacing: 2px; }
+.loader { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color: #c080e0; font-family:'Quicksand'; font-size:0.85rem; letter-spacing:2px; }
+
+/* ====== LIGHTBOX ====== */
+#lightbox {
+    position: fixed; inset: 0;
+    background: rgba(15,5,30,0.96);
+    z-index: 9999;
+    display: flex; justify-content: center; align-items: center; flex-direction: column;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s;
+}
+#lightbox.active { opacity: 1; pointer-events: auto; }
+#lb-container { width: 100%; height: 80vh; display: flex; justify-content: center; align-items: center; overflow: hidden; position: relative; flex-grow: 1; }
+#lb-img { max-width: 90%; max-height: 100%; box-shadow: 0 0 60px rgba(200,100,255,0.45); border: 3px solid var(--idol-pink); border-radius: 10px; transform-origin: center center; transition: transform 0.3s cubic-bezier(0.25,0.46,0.45,0.94), opacity 0.3s ease; cursor: zoom-in; }
+#lb-img.zoomed { cursor: grab; }
+.lb-nav { position: absolute; top: 50%; transform: translateY(-50%); background: transparent; color: var(--rose); border: 2px solid var(--idol-pink); width: 50px; height: 50px; border-radius: 50%; font-size: 22px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; z-index: 10002; }
+.lb-nav:hover { background: var(--idol-pink); color: #fff; }
+.lb-prev { left: 20px; } .lb-next { right: 20px; }
+.lb-counter { position: absolute; bottom: 30px; color: var(--lav); font-family: 'Quicksand'; font-weight: 700; font-size: 0.85rem; letter-spacing: 3px; z-index: 10002; pointer-events: none; }
+.lb-close { position: absolute; top: 20px; right: 20px; color: var(--lav); font-size: 38px; cursor: pointer; transition: 0.3s; z-index: 10003; }
+.lb-close:hover { color: #fff; transform: rotate(90deg) scale(1.2); }
+
+@media (max-width: 850px) {
+    :root { --book-w: 88vw; --book-h: 60vh; }
+    .stage.closed { transform: translateX(0) rotateY(-3deg); }
+    .stage.opened { transform: translateX(0); }
+    .lb-nav { display: none !important; }
+    .ltr { font-size: 0.82em !important; }
+}
+/*]]>*/
+</style>
+</head>
+<body>
+
+<!-- Aurora glow blobs in background -->
+<div class='aurora' style='width:400px;height:300px;background:radial-gradient(circle,rgba(200,100,255,0.4),transparent);top:10%;left:5%;animation-duration:7s;animation-delay:0s;'></div>
+<div class='aurora' style='width:350px;height:280px;background:radial-gradient(circle,rgba(255,100,180,0.3),transparent);top:50%;right:5%;animation-duration:9s;animation-delay:2s;'></div>
+<div class='aurora' style='width:300px;height:250px;background:radial-gradient(circle,rgba(100,180,255,0.25),transparent);bottom:10%;left:30%;animation-duration:8s;animation-delay:1s;'></div>
+
+<!-- Glitter particles -->
+<div class='glitter' style='left:8%;  animation-duration:8s;  animation-delay:0s;   width:4px;height:4px;background:#ff85b3;'></div>
+<div class='glitter' style='left:18%; animation-duration:11s; animation-delay:1.2s; width:3px;height:3px;background:#c9aee5;'></div>
+<div class='glitter' style='left:29%; animation-duration:9s;  animation-delay:2.5s; width:5px;height:5px;background:#ffd700;'></div>
+<div class='glitter' style='left:42%; animation-duration:7s;  animation-delay:0.8s; width:3px;height:3px;background:#b8eed8;'></div>
+<div class='glitter' style='left:55%; animation-duration:12s; animation-delay:3.1s; width:4px;height:4px;background:#ff85b3;'></div>
+<div class='glitter' style='left:66%; animation-duration:8s;  animation-delay:1.8s; width:6px;height:6px;background:#c9aee5;'></div>
+<div class='glitter' style='left:78%; animation-duration:10s; animation-delay:4s;   width:3px;height:3px;background:#ffd700;'></div>
+<div class='glitter' style='left:88%; animation-duration:9s;  animation-delay:0.4s; width:5px;height:5px;background:#ff85b3;'></div>
+<div class='glitter' style='left:34%; animation-duration:13s; animation-delay:5.5s; width:4px;height:4px;background:#b06ad4;'></div>
+<div class='glitter' style='left:72%; animation-duration:6s;  animation-delay:2s;   width:3px;height:3px;background:#b8eed8;'></div>
+
+<!-- Floating K-pop themed emoji -->
+<div class='bg-deco' style='left:5%;  animation-duration:10s; animation-delay:0s;   font-size:22px;'>&#11088;</div><!-- star -->
+<div class='bg-deco' style='left:15%; animation-duration:13s; animation-delay:1.6s; font-size:20px;'>&#128142;</div><!-- gem -->
+<div class='bg-deco' style='left:24%; animation-duration:9s;  animation-delay:3s;   font-size:24px;'>&#127801;</div><!-- bouquet -->
+<div class='bg-deco' style='left:36%; animation-duration:11s; animation-delay:0.4s; font-size:18px;'>&#128081;</div><!-- crown -->
+<div class='bg-deco' style='left:47%; animation-duration:8s;  animation-delay:2.2s; font-size:22px;'>&#10024;</div><!-- sparkle -->
+<div class='bg-deco' style='left:58%; animation-duration:12s; animation-delay:4.4s; font-size:20px;'>&#127775;</div><!-- glowing star -->
+<div class='bg-deco' style='left:68%; animation-duration:10s; animation-delay:1s;   font-size:24px;'>&#128140;</div><!-- love letter -->
+<div class='bg-deco' style='left:78%; animation-duration:14s; animation-delay:2.6s; font-size:18px;'>&#127890;</div><!-- ribbon -->
+<div class='bg-deco' style='left:88%; animation-duration:9s;  animation-delay:3.8s; font-size:22px;'>&#128247;</div><!-- camera -->
+<div class='bg-deco' style='left:11%; animation-duration:15s; animation-delay:5.5s; font-size:19px;'>&#128150;</div><!-- heart ribbon -->
+<div class='bg-deco' style='left:51%; animation-duration:7s;  animation-delay:6.2s; font-size:18px;'>&#127800;</div><!-- rose -->
+<div class='bg-deco' style='left:73%; animation-duration:11s; animation-delay:0.6s; font-size:20px;'>&#128141;</div><!-- reminder ribbon -->
+
+<b:section id='main' showaddelement='no'/>
+
+<!-- LIGHTBOX -->
+<div id='lightbox'>
+    <div class='lb-close' onclick='closeLightbox()'>&#215;</div>
+    <div id='lb-container'>
+        <div class='lb-nav lb-prev' onclick='prevPhoto()'>&#8592;</div>
+        <img alt='Preview' id='lb-img' onclick='toggleZoom()' src=''/>
+        <div class='lb-nav lb-next' onclick='nextPhoto()'>&#8594;</div>
+    </div>
+    <div class='lb-counter' id='lb-counter'>1 / 100</div>
+</div>
+
+<!-- STAGE -->
+<div class='stage closed' id='stage'>
+
+    <!-- COVER DEPAN -->
+    <div class='sheet' id='sheet-0' style='z-index: 1000;'>
+        <div class='face front cover-skin'>
+            <div class='spine-fold'/>
+
+            <div class='stickers-layer'>
+
+                <!-- TOP LEFT -->
+                <div class='stk' style='left:28px; top:18px; font-size:24px; transform:rotate(-18deg);'>&#128081;</div><!-- crown -->
+                <div class='stk' style='left:60px; top:14px; font-size:12px;'>&#11088;</div>
+                <div class='stk' style='left:46px; top:50px;'>
+                    <!-- pink heart SVG -->
+                    <svg width='18' height='16'><path d='M9 14s-7-4.5-7-9a3.5 3.5 0 0 1 7 0 3.5 3.5 0 0 1 7 0c0 4.5-7 9-7 9z' fill='#f48fb1' stroke='#e06090' stroke-width='1'/></svg>
+                </div>
+
+                <!-- TOP CENTER -->
+                <div class='stk' style='left:39%; top:10px; font-size:20px;'>&#127775;</div>
+                <div class='stk' style='left:52%; top:8px; font-size:14px;'>&#10024;</div>
+
+                <!-- TOP RIGHT -->
+                <div class='stk' style='right:28px; top:16px; font-size:22px; transform:rotate(14deg);'>&#127801;</div><!-- bouquet -->
+                <div class='stk' style='right:56px; top:44px; font-size:14px;'>&#128142;</div><!-- gem -->
+                <div class='stk' style='right:24px; top:50px;'>
+                    <svg width='14' height='14'><circle cx='7' cy='7' r='6.5' fill='#b39ddb' stroke='#9575cd' stroke-width='0.8'/><circle cx='4.5' cy='4.5' r='2' fill='rgba(240,220,255,0.6)'/></svg>
+                </div>
+
+                <!-- LEFT SIDE -->
+                <div class='stk' style='left:16px; top:125px; font-size:22px; transform:rotate(-12deg);'>&#128140;</div><!-- love letter -->
+                <div class='stk' style='left:22px; top:192px;'>
+                    <!-- star gem -->
+                    <svg width='16' height='16'><polygon points='8,0 10,6 16,6 11.5,9.5 13.5,16 8,12.5 2.5,16 4.5,9.5 0,6 6,6' fill='#f06292' stroke='#c2185b' stroke-width='0.5'/></svg>
+                </div>
+                <div class='stk' style='left:16px; top:268px; font-size:22px; transform:rotate(8deg);'>&#127800;</div><!-- rose -->
+                <div class='stk' style='left:20px; top:345px;'>
+                    <svg width='13' height='13'><polygon points='6.5,0 8.5,5 13,5 9.5,8 11,13 6.5,10 2,13 3.5,8 0,5 4.5,5' fill='#ce93d8' stroke='#9c27b0' stroke-width='0.5'/></svg>
+                </div>
+                <div class='stk' style='left:18px; top:412px; font-size:22px; transform:rotate(-6deg);'>&#128141;</div><!-- ribbon -->
+                <div class='stk' style='left:14px; top:486px; font-size:11px;'>
+                    <svg width='12' height='12'><circle cx='6' cy='6' r='5.5' fill='#e91e8c'/></svg>
+                </div>
+
+                <!-- RIGHT SIDE -->
+                <div class='stk' style='right:26px; top:118px; font-size:20px; transform:rotate(12deg);'>&#10024;</div>
+                <div class='stk' style='right:18px; top:184px; font-size:22px; transform:rotate(-8deg);'>&#128247;</div><!-- camera -->
+                <div class='stk' style='right:24px; top:260px;'>
+                    <!-- large pastel star -->
+                    <svg width='24' height='24'><polygon points='12,0 15,9 24,9 17,14.5 19.5,23.5 12,18.5 4.5,23.5 7,14.5 0,9 9,9' fill='#ffd700' stroke='#e5a000' stroke-width='0.8'/></svg>
+                </div>
+                <div class='stk' style='right:16px; top:348px; font-size:22px; transform:rotate(7deg);'>&#128081;</div><!-- crown -->
+                <div class='stk' style='right:24px; top:418px; font-size:20px; transform:rotate(-10deg);'>&#127890;</div><!-- ribbon -->
+                <div class='stk' style='right:14px; bottom:66px; font-size:20px;'>&#127775;</div><!-- star -->
+
+                <!-- AROUND TITLE -->
+                <div class='stk' style='left:64px; top:162px; font-size:18px; transform:rotate(-12deg);'>&#128150;</div>
+                <div class='stk' style='right:62px; top:170px; font-size:14px;'>&#128142;</div>
+                <div class='stk' style='left:61%; top:158px; font-size:15px; transform:rotate(15deg);'>&#11088;</div>
+
+                <!-- BELOW TITLE -->
+                <div class='stk' style='left:84px; top:315px; font-size:18px; transform:rotate(6deg);'>&#127800;</div>
+                <div class='stk' style='right:74px; top:324px; font-size:20px; transform:rotate(-8deg);'>&#128081;</div>
+                <div class='stk' style='right:110px; top:380px;'>
+                    <svg width='12' height='12'><circle cx='6' cy='6' r='5.5' fill='#e91e8c'/></svg>
+                </div>
+                <div class='stk' style='left:55%; top:396px; font-size:12px;'>
+                    <svg width='14' height='14'><polygon points='7,0 9,5 14,5 10.5,8.5 12,13.5 7,10.5 2,13.5 3.5,8.5 0,5 5,5' fill='#b8eed8' stroke='#4caf50' stroke-width='0.5'/></svg>
+                </div>
+
+                <!-- BOTTOM LARGE STICKER -->
+                <div class='stk' style='left:50%; bottom:90px; transform:translateX(-58%) rotate(-4deg); font-size:26px;'>&#127801;</div>
+                <div class='stk' style='right:76px; bottom:74px;'>
+                    <svg width='22' height='22'><circle cx='11' cy='11' r='10' fill='#f06292' stroke='#c2185b' stroke-width='1.2'/><circle cx='7' cy='7' r='3' fill='rgba(255,200,220,0.5)'/></svg>
+                </div>
+
+                <!-- SCATTERED MINI -->
+                <div class='stk' style='left:106px; top:66px; font-size:12px;'>&#128140;</div>
+                <div class='stk' style='right:105px; top:82px; font-size:11px;'>&#127890;</div>
+                <div class='stk' style='left:36%; bottom:126px; font-size:12px;'>&#10024;</div>
+                <div class='stk' style='right:36%; bottom:114px; font-size:13px;'>&#127775;</div>
+            </div>
+
+            <!-- TITLE CENTER -->
+            <div class='cover-center'>
+
+                <!-- "MY" -->
+                <div class='title-my'>
+                    <div class='ltr' style='background:#f48fb1; color:white; font-family:"Noto Sans KR",sans-serif; font-size:1.5rem; font-weight:900; padding:4px 10px; transform:rotate(-4deg); letter-spacing:1px;'>M</div>
+                    <div class='ltr' style='background:white; color:#9c4dcc; font-family:"Quicksand",sans-serif; font-size:1.5rem; padding:4px 10px; transform:rotate(5deg);'>Y</div>
+                </div>
+
+                <!-- Hangul subtitle: "" = "My Memory" -->
+                <div class='hangul-sub'></div>
+
+                <!-- Star row -->
+                <div class='star-row'>
+                    <span class='s'>&#11088;</span><span class='s'>&#10024;</span><span class='s'>&#11088;</span><span class='s'>&#10024;</span><span class='s'>&#11088;</span><span class='s'>&#10024;</span><span class='s'>&#11088;</span>
+                </div>
+
+                <!-- "MEMORIES" -->
+                <div class='title-memories'>
+                    <div class='ltr' style='background:#ce93d8; color:white; font-family:"Noto Sans KR",sans-serif; font-size:1.8rem; font-weight:900; padding:5px 10px; transform:rotate(-3deg);'>M</div>
+                    <div class='ltr' style='background:#fff0a0; color:#9c4dcc; font-family:"Quicksand",sans-serif; font-size:1.8rem; padding:5px 9px; transform:rotate(4deg);'>e</div>
+                    <div class='ltr' style='background:#f48fb1; color:white; font-family:"Noto Sans KR",sans-serif; font-size:1.8rem; font-weight:900; padding:5px 9px; transform:rotate(-5deg);'>m</div>
+                    <div class='ltr' style='background:#b3e5fc; color:#1565c0; font-family:"Quicksand",sans-serif; font-size:1.8rem; padding:5px 8px; transform:rotate(3deg);'>O</div>
+                    <div class='ltr' style='background:white; color:#c2185b; font-family:"Noto Sans KR",sans-serif; font-size:1.8rem; font-weight:900; padding:5px 9px; transform:rotate(-2deg);'>R</div>
+                    <div class='ltr' style='background:#b8eed8; color:#2e7d32; font-family:"Quicksand",sans-serif; font-size:1.8rem; padding:5px 7px; transform:rotate(6deg);'>I</div>
+                    <div class='ltr' style='background:#b39ddb; color:white; font-family:"Noto Sans KR",sans-serif; font-size:1.8rem; font-weight:900; padding:5px 9px; transform:rotate(-3deg);'>E</div>
+                    <div class='ltr' style='background:#ffd700; color:#6a1a8a; font-family:"Quicksand",sans-serif; font-size:1.8rem; padding:5px 8px; transform:rotate(3deg);'>S</div>
+                </div>
+
+                <!-- Blog title -->
+                <div class='site-title-cover'>&#127775; <data:blog.title/> &#127775;</div>
+            </div>
+
+            <div class='click-hint'>&#10024; Swipe to open &#10024;</div>
+        </div>
+
+        <!-- INTRO PAGE -->
+        <div class='face back'>
+            <div style='display:flex;height:100%;align-items:center;justify-content:center;flex-direction:column;padding:36px;text-align:center;background:linear-gradient(160deg,#fdf6ff,#fef0fa);gap:14px;'>
+                <div style='font-size:3rem;line-height:1;filter:drop-shadow(0 3px 8px rgba(180,80,200,0.2));'>&#128081;</div>
+                <h2 style='font-family:"Noto Sans KR",sans-serif;color:#9c27b0;font-size:1.6rem;margin:0;letter-spacing:2px;font-weight:900;'>        </h2>
+                <div style='font-family:"Quicksand",sans-serif;font-size:0.75rem;color:#ba68c8;letter-spacing:2px;margin-top:-8px;'>WELCOME, MY IDOL ✨</div>
+                <div style='display:flex;gap:6px;font-size:1.1rem;'>&#11088;&#10024;&#127775;&#10024;&#11088;</div>
+                <p style='font-family:"Quicksand",sans-serif;font-size:0.92rem;line-height:1.9;color:#ab89c0;margin:0;font-weight:500;'>
+                    &quot; Memories are the most <br/> precious photocards you have.&quot;
+                </p>
+                <div style='font-size:1.8rem;margin-top:4px;'>&#127801; &#128081; &#128142;</div>
+            </div>
+        </div>
+    </div>
+
+    <div id='dynamic-area'/>
+
+    <!-- BACK COVER -->
+    <div class='sheet' id='sheet-end'>
+        <div class='face front'>
+            <div style='display:flex;height:100%;align-items:center;justify-content:center;flex-direction:column;background:linear-gradient(160deg,#fdf6ff,#fef0fa);gap:14px;'>
+                <div style='font-size:3rem;'>&#127890;</div>
+                <h2 style='font-family:"Noto Sans KR",sans-serif;letter-spacing:2px;color:#9c27b0;font-size:1.6rem;margin:0;font-weight:900;'>        </h2>
+                <div style='font-family:"Quicksand",sans-serif;font-size:0.7rem;color:#ba68c8;letter-spacing:2px;'>Thank you &#128150;</div>
+                <div style='display:flex;gap:6px;font-size:1.1rem;margin-top:4px;'>&#11088;&#10024;&#127775;&#10024;&#11088;</div>
+                <div style='font-size:1.6rem;'>&#127801; &#128081; &#128140;</div>
+            </div>
+        </div>
+        <div class='face back cover-skin' style='transform: rotateY(180deg);'>
+            <div class='spine-fold'/>
+        </div>
+    </div>
+</div>
+
+<script>
+//<![CDATA[
+var photos=[], currentSheet=0, totalSheets=0;
+var stage=document.getElementById('stage');
+var dynamicArea=document.getElementById('dynamic-area');
+var endSheet=document.getElementById('sheet-end');
+var isPortrait=window.matchMedia("(max-width: 850px) and (orientation: portrait)").matches;
+
+function loadFeed(json){
+    if(!json.feed||!json.feed.entry){useDemo();return;}
+    var entries=json.feed.entry;
+    for(var i=0;i<entries.length;i++){
+        var div=document.createElement('div');
+        div.innerHTML=entries[i].content.$t;
+        var imgs=div.getElementsByTagName('img');
+        for(var k=0;k<imgs.length;k++){
+            var src=imgs[k].src;
+            if(src.indexOf('blogspot')>-1||src.indexOf('googleusercontent')>-1){
+                src=src.replace(/\/s\d+(-c)?\//,'/s2048/').replace(/=s\d+/,'=s2048');
+            }
+            photos.push(src);
+        }
+    }
+    if(photos.length>0)buildBook();else useDemo();
+}
+
+function useDemo(){
+    var c=[['F8BBD9','c2185b'],['E1BEE7','7b1fa2'],['D1C4E9','512da8'],['B3E5FC','0277bd'],['C8E6C9','2e7d32'],['FFF9C4','f57f17']];
+    for(var i=0;i<12;i++) photos.push("https://via.placeholder.com/1000x1000/"+c[i%6][0]+"/"+c[i%6][1]+"?text=Memory+"+(i+1));
+    buildBook();
+}
+
+(function(){
+    dynamicArea.innerHTML='<div class="loader">&#10024; Loading...</div>';
+    var s=document.createElement('script');
+    s.src="/feeds/posts/default?alt=json-in-script&callback=loadFeed&max-results=50";
+    s.onerror=function(){useDemo();};
+    document.body.appendChild(s);
+})();
+
+// Fixed photo count pattern per page: 2,4,1,4,2,6,3, repeating
+var PAGE_PATTERN=[2,4,1,4,2,6,3];
+
+function buildBook(){
+    dynamicArea.innerHTML='';
+    var photoIdx=0, sheetCount=0, patternIdx=0, pageNum=0;
+
+    // On portrait/mobile: insert welcome page as its own separate sheet first
+    if(isPortrait){
+        sheetCount++;
+        var welcomeSheet=document.createElement('div');
+        welcomeSheet.className='sheet'; welcomeSheet.id='sheet-'+sheetCount; welcomeSheet.style.zIndex=100-sheetCount;
+        welcomeSheet.innerHTML=
+            '<div class="face front"><div style="display:flex;height:100%;align-items:center;justify-content:center;flex-direction:column;padding:36px;text-align:center;background:linear-gradient(160deg,#fdf6ff,#fef0fa);gap:14px;">'
+            +'<div style="font-size:3rem;line-height:1;filter:drop-shadow(0 3px 8px rgba(180,80,200,0.2));">&#128081;</div>'
+            +'<h2 style="font-family:\'Noto Sans KR\',sans-serif;color:#9c27b0;font-size:1.6rem;margin:0;letter-spacing:2px;font-weight:900;">        </h2>'
+            +'<div style="font-family:\'Quicksand\',sans-serif;font-size:0.75rem;color:#ba68c8;letter-spacing:2px;margin-top:-8px;">WELCOME, MY IDOL ✨</div>'
+            +'<div style="display:flex;gap:6px;font-size:1.1rem;">&#11088;&#10024;&#127775;&#10024;&#11088;</div>'
+            +'<p style="font-family:\'Quicksand\',sans-serif;font-size:0.92rem;line-height:1.9;color:#ab89c0;margin:0;font-weight:500;">&quot; Memories are the most <br/> precious photocards you have.&quot;</p>'
+            +'<div style="font-size:1.8rem;margin-top:4px;">&#127801; &#128081; &#128142;</div>'
+            +'</div></div>'
+            +'<div class="face back"><div style="display:flex;height:100%;align-items:center;justify-content:center;font-size:2.5rem;">&#11088;</div></div>';
+        dynamicArea.appendChild(welcomeSheet);
+    }
+
+    while(photoIdx<photos.length){
+        sheetCount++;
+        var sheet=document.createElement('div');
+        sheet.className='sheet'; sheet.id='sheet-'+sheetCount; sheet.style.zIndex=100-sheetCount;
+
+        var cF=PAGE_PATTERN[patternIdx%PAGE_PATTERN.length]; patternIdx++;
+        pageNum++;
+        var frontHTML=generateGrid(photoIdx,cF,false,pageNum);
+        photoIdx+=cF;
+
+        var backHTML='';
+        if(isPortrait){
+            backHTML='<div class="face back"><div style="display:flex;height:100%;align-items:center;justify-content:center;font-size:2.5rem;">&#11088;</div></div>';
+        } else {
+            if(photoIdx<photos.length){
+                var cB=PAGE_PATTERN[patternIdx%PAGE_PATTERN.length]; patternIdx++;
+                pageNum++;
+                backHTML=generateGrid(photoIdx,cB,true,pageNum);
+                photoIdx+=cB;
+            } else {
+                backHTML='<div class="face back"></div>';
+            }
+        }
+        sheet.innerHTML=frontHTML+backHTML;
+        dynamicArea.appendChild(sheet);
+    }
+    totalSheets=sheetCount+1;
+    endSheet.id='sheet-'+totalSheets; endSheet.style.zIndex=1;
+    optimizeVisibility();
+}
+
+function generateGrid(startIndex,count,isBack,pageNum){
+    if(startIndex+count>photos.length) count=photos.length-startIndex;
+    if(count===0) return '<div class="face '+(isBack?'back':'front')+'"></div>';
+    // For layout-1, use a centered single-photo layout
+    var layoutClass = 'layout-'+count;
+    var html='<div class="face '+(isBack?'back':'front')+'"><div class="grid-layout '+layoutClass+'">';
+    for(var i=0;i<count;i++){
+        var idx=startIndex+i;
+        if(idx<photos.length) html+='<div class="photo-item" onclick="openLightbox('+idx+')"><img src="'+photos[idx]+'" loading="lazy"></div>';
+    }
+    html+='</div><div class="pg-num">'+pageNum+'</div></div>';
+    return html;
+}
+
+function optimizeVisibility(){
+    for(var i=0;i<=totalSheets;i++){
+        var el=document.getElementById('sheet-'+i); if(!el) continue;
+        if(i===0){el.classList.toggle('inactive',currentSheet>3);continue;}
+        el.classList.toggle('inactive',i<currentSheet-3||i>currentSheet+3);
+    }
+}
+
+function openBook(){stage.classList.remove('closed');stage.classList.add('opened');nextPage();}
+function closeBook(){
+    for(var i=totalSheets;i>=1;i--){var el=document.getElementById('sheet-'+i);if(el){el.classList.remove('flipped');el.style.zIndex=100-i;}}
+    var cover=document.getElementById('sheet-0'); cover.classList.remove('flipped'); cover.style.zIndex=1000;
+    currentSheet=0; stage.classList.remove('opened'); stage.classList.add('closed'); optimizeVisibility();
+}
+function nextPage(){
+    if(currentSheet<totalSheets){
+        var el=document.getElementById('sheet-'+currentSheet);
+        if(el){el.style.zIndex=1000;el.classList.add('flipped');setTimeout(function(){el.style.zIndex=200+currentSheet;},400);currentSheet++;optimizeVisibility();}
+    }
+}
+function prevPage(){
+    if(currentSheet>0){
+        currentSheet--;
+        var el=document.getElementById('sheet-'+currentSheet);
+        if(el){el.style.zIndex=1000;el.classList.remove('flipped');setTimeout(function(){if(currentSheet===0){el.style.zIndex=1000;closeBook();}else{el.style.zIndex=100-currentSheet;}},400);optimizeVisibility();}
+    }
+}
+
+var startX=0,endX=0,isLbOpen=false,isDragging=false;
+document.addEventListener('mousedown',function(e){if(!isLbOpen){startX=e.clientX;isDragging=true;}});
+document.addEventListener('mouseup',function(e){if(isLbOpen||!isDragging)return;isDragging=false;endX=e.clientX;processInput(e.target);});
+document.addEventListener('touchstart',function(e){if(isLbOpen){lbTouchStart(e);return;}startX=e.changedTouches[0].clientX;});
+document.addEventListener('touchend',function(e){if(isLbOpen){lbTouchEnd(e);return;}endX=e.changedTouches[0].clientX;processInput(e.target);});
+function processInput(t){
+    if(Math.abs(endX-startX)>50){if(endX<startX){if(currentSheet===0)openBook();else nextPage();}else{prevPage();}return;}
+    if(t.tagName==='IMG'||t.classList.contains('photo-item'))return;
+    if(endX>window.innerWidth/2){if(currentSheet===0)openBook();else nextPage();}else{prevPage();}
+}
+
+var lb=document.getElementById('lightbox'),lbImg=document.getElementById('lb-img'),
+    lbCounter=document.getElementById('lb-counter'),lbContainer=document.getElementById('lb-container'),
+    scale=1,currentPhotoIndex=0,pointX=0,pointY=0,pStartX=0,pStartY=0,isPanning=false,lbTxS=0,lbTxE=0;
+
+function openLightbox(idx){isLbOpen=true;currentPhotoIndex=idx;lbImg.src=photos[idx];lb.classList.add('active');updateCounter();resetZoom();if(window.event)window.event.stopPropagation();}
+function updateCounter(){lbCounter.innerText=(currentPhotoIndex+1)+' / '+photos.length;}
+function closeLightbox(){isLbOpen=false;lb.classList.remove('active');}
+lb.addEventListener('click',function(e){if(e.target===lb||e.target===lbContainer)closeLightbox();});
+function toggleZoom(){if(scale===1)maxZoom();else resetZoom();}
+function maxZoom(){scale=2.5;lbImg.classList.add('zoomed');updateTransform();}
+function resetZoom(){scale=1;pointX=0;pointY=0;lbImg.classList.remove('zoomed');updateTransform();}
+function updateTransform(){lbImg.style.transform='translate('+pointX+'px,'+pointY+'px) scale('+scale+')';}
+lbImg.addEventListener('mousedown',function(e){if(scale<=1)return;e.preventDefault();isPanning=true;pStartX=e.clientX-pointX;pStartY=e.clientY-pointY;lbImg.style.transition='none';});
+window.addEventListener('mousemove',function(e){if(!isPanning)return;e.preventDefault();pointX=e.clientX-pStartX;pointY=e.clientY-pStartY;updateTransform();});
+window.addEventListener('mouseup',function(){if(isPanning){isPanning=false;lbImg.style.transition='transform 0.3s ease';}});
+function lbTouchStart(e){if(scale>1){isPanning=true;pStartX=e.touches[0].clientX-pointX;pStartY=e.touches[0].clientY-pointY;lbImg.style.transition='none';}else{lbTxS=e.changedTouches[0].clientX;}}
+lbImg.addEventListener('touchmove',function(e){if(scale>1&&isPanning){e.preventDefault();pointX=e.touches[0].clientX-pStartX;pointY=e.touches[0].clientY-pStartY;updateTransform();}});
+function lbTouchEnd(e){if(scale>1){isPanning=false;lbImg.style.transition='transform 0.3s ease';}else{lbTxE=e.changedTouches[0].clientX;if(Math.abs(lbTxE-lbTxS)>50){if(lbTxE<lbTxS)nextPhoto();else prevPhoto();}}}
+function changePhoto(newIdx,dir){lbImg.style.transition='all 0.3s ease';lbImg.style.opacity=0;lbImg.style.transform=dir==='next'?'translateX(-30px)':'translateX(30px)';setTimeout(function(){currentPhotoIndex=newIdx;lbImg.src=photos[newIdx];updateCounter();resetZoom();lbImg.style.transition='none';lbImg.style.transform=dir==='next'?'translateX(30px)':'translateX(-30px)';void lbImg.offsetWidth;lbImg.style.transition='all 0.3s ease';lbImg.style.opacity=1;lbImg.style.transform='translate(0,0) scale(1)';},300);}
+function nextPhoto(){if(currentPhotoIndex<photos.length-1)changePhoto(currentPhotoIndex+1,'next');}
+function prevPhoto(){if(currentPhotoIndex>0)changePhoto(currentPhotoIndex-1,'prev');}
+document.addEventListener('keydown',function(e){if(isLbOpen){if(e.key==='Escape')closeLightbox();if(e.key==='ArrowRight')nextPhoto();if(e.key==='ArrowLeft')prevPhoto();return;}if(e.key==='ArrowRight')nextPage();if(e.key==='ArrowLeft')prevPage();});
+//]]>
+</script>
+
+</body>
+</html>
